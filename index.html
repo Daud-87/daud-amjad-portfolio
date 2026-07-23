@@ -64,8 +64,95 @@
   ::selection{background:var(--teal);color:#04120F;}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
 
-  /* background texture */
-  .grid-bg{
+  /* ===== SPACE BACKGROUND ===== */
+  .nebula{
+    position:fixed;inset:-15%;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 38% at 18% 12%, rgba(145,132,242,.16), transparent 60%),
+      radial-gradient(ellipse 48% 34% at 88% 66%, rgba(66,217,196,.13), transparent 60%),
+      radial-gradient(ellipse 42% 30% at 55% 100%, rgba(231,169,84,.08), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 40% 45%, rgba(66,217,196,.05), transparent 65%);
+    filter:blur(14px);
+    animation:nebulaDrift 46s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes nebulaDrift{
+    0%{transform:translate3d(0,0,0) rotate(0deg) scale(1);}
+    100%{transform:translate3d(-2.5%,3%,0) rotate(5deg) scale(1.05);}
+  }
+  .stars-layer{position:fixed;inset:-20% -5%;z-index:0;pointer-events:none;background-repeat:repeat;will-change:background-position;}
+  #starsSmall{
+    background-image:
+      radial-gradient(1px 1px at 14px 26px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 45px 90px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 78px 15px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 110px 130px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 140px 50px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 20px 140px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 95px 60px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 130px 100px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 60px 45px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 150px 20px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 10px 100px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 85px 150px, #cfe3ff, transparent 100%),
+      radial-gradient(1px 1px at 120px 10px, #e9edf4, transparent 100%),
+      radial-gradient(1px 1px at 35px 120px, #cfe3ff, transparent 100%);
+    background-size:160px 160px;
+    opacity:.5;
+    animation:twinkleSmall 5.5s ease-in-out infinite;
+  }
+  #starsMedium{
+    background-image:
+      radial-gradient(1.4px 1.4px at 30px 40px, rgba(233,237,244,.95), transparent 100%),
+      radial-gradient(1.4px 1.4px at 120px 90px, rgba(233,237,244,.9), transparent 100%),
+      radial-gradient(1.4px 1.4px at 200px 150px, rgba(233,237,244,.95), transparent 100%),
+      radial-gradient(1.4px 1.4px at 60px 200px, rgba(233,237,244,.9), transparent 100%),
+      radial-gradient(1.4px 1.4px at 180px 30px, rgba(233,237,244,.95), transparent 100%),
+      radial-gradient(1.4px 1.4px at 240px 110px, rgba(233,237,244,.9), transparent 100%),
+      radial-gradient(1.4px 1.4px at 20px 230px, rgba(233,237,244,.95), transparent 100%),
+      radial-gradient(1.4px 1.4px at 150px 220px, rgba(233,237,244,.9), transparent 100%),
+      radial-gradient(1.4px 1.4px at 90px 10px, rgba(233,237,244,.95), transparent 100%),
+      radial-gradient(1.4px 1.4px at 230px 190px, rgba(233,237,244,.9), transparent 100%);
+    background-size:260px 260px;
+    opacity:.7;
+    animation:twinkleMed 7.5s ease-in-out infinite;
+  }
+  #starsLarge{
+    background-image:
+      radial-gradient(2.4px 2.4px at 60px 80px, rgba(66,217,196,.95), rgba(66,217,196,0) 70%),
+      radial-gradient(2.4px 2.4px at 220px 140px, rgba(145,132,242,.95), rgba(145,132,242,0) 70%),
+      radial-gradient(2.4px 2.4px at 320px 60px, rgba(233,237,244,1), rgba(233,237,244,0) 70%),
+      radial-gradient(2.4px 2.4px at 140px 300px, rgba(231,169,84,.9), rgba(231,169,84,0) 70%),
+      radial-gradient(2.4px 2.4px at 300px 320px, rgba(66,217,196,.9), rgba(66,217,196,0) 70%),
+      radial-gradient(2.4px 2.4px at 40px 250px, rgba(233,237,244,1), rgba(233,237,244,0) 70%);
+    background-size:380px 380px;
+    opacity:.85;
+    animation:twinkleLarge 9s ease-in-out infinite;
+  }
+  @keyframes twinkleSmall{0%,100%{opacity:.3;}50%{opacity:.65;}}
+  @keyframes twinkleMed{0%,100%{opacity:.45;}50%{opacity:.85;}}
+  @keyframes twinkleLarge{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+  .shooting-star{
+    position:fixed;width:2px;height:2px;border-radius:50%;
+    background:#fff;box-shadow:0 0 8px 1.5px rgba(255,255,255,.9);
+    z-index:0;pointer-events:none;
+    animation:shoot 1.3s linear forwards;
+  }
+  .shooting-star::before{
+    content:'';position:absolute;top:50%;right:0;width:110px;height:1px;
+    background:linear-gradient(90deg, rgba(255,255,255,.85), transparent);
+    transform-origin:right center;
+  }
+  @keyframes shoot{
+    0%{transform:translate(0,0);opacity:1;}
+    85%{opacity:1;}
+    100%{transform:translate(-320px,220px);opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nebula, #starsSmall, #starsMedium, #starsLarge{animation:none;}
+    .shooting-star{display:none;}
+  }
     position:fixed;inset:0;z-index:0;pointer-events:none;
     background-image:
       linear-gradient(rgba(66,217,196,0.035) 1px, transparent 1px),
@@ -634,6 +721,10 @@
 </style>
 </head>
 <body>
+<div class="nebula" id="nebula"></div>
+<div class="stars-layer" id="starsSmall"></div>
+<div class="stars-layer" id="starsMedium"></div>
+<div class="stars-layer" id="starsLarge"></div>
 <div class="grid-bg"></div>
 
 <header>
@@ -1185,6 +1276,38 @@
   }
   window.addEventListener('scroll', onScroll);
   onScroll();
+
+  // ===== Space background: scroll parallax + shooting stars =====
+  const spaceReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const starsSmallEl = document.getElementById('starsSmall');
+  const starsMediumEl = document.getElementById('starsMedium');
+  const starsLargeEl = document.getElementById('starsLarge');
+
+  if(!spaceReduced){
+    let parallaxTicking = false;
+    function updateParallax(){
+      const y = window.scrollY;
+      starsSmallEl.style.backgroundPosition = `0 ${y * 0.02}px`;
+      starsMediumEl.style.backgroundPosition = `0 ${y * 0.05}px`;
+      starsLargeEl.style.backgroundPosition = `0 ${y * 0.09}px`;
+      parallaxTicking = false;
+    }
+    window.addEventListener('scroll', ()=>{
+      if(!parallaxTicking){ requestAnimationFrame(updateParallax); parallaxTicking = true; }
+    }, {passive:true});
+    updateParallax();
+
+    function spawnShootingStar(){
+      const el = document.createElement('div');
+      el.className = 'shooting-star';
+      el.style.top = (Math.random() * 45) + 'vh';
+      el.style.left = (55 + Math.random() * 40) + 'vw';
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(), 1400);
+    }
+    setInterval(()=>{ if(Math.random() < 0.55) spawnShootingStar(); }, 4200);
+    setTimeout(spawnShootingStar, 1200);
+  }
 
   // Reveal on scroll — staggered, with count-up for numeric stats
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
