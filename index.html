@@ -2,35 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Daud Amjad — Odoo 19 Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          ink: '#0A0F1C',
-          panel: '#131C30',
-          panel2: '#0D1424',
-          line: '#213050',
-          teal: '#42D9C4',
-          amber: '#E7A954',
-          violet: '#9184F2',
-        },
-        fontFamily: {
-          display: ['Space Grotesk', 'sans-serif'],
-          mono: ['IBM Plex Mono', 'monospace'],
-        }
-      }
-    }
-  }
-</script>
 <style>
   :root{
     --bg:#0A0F1C;
@@ -63,16 +41,33 @@
   a{color:inherit;text-decoration:none;}
   ::selection{background:var(--teal);color:#04120F;}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  button{font-family:inherit;}
 
-  /* ===== SPACE BACKGROUND ===== */
+  /* ===== SCROLL PROGRESS ===== */
+  #scrollProgress{
+    position:fixed;top:0;left:0;height:3px;width:0%;z-index:300;
+    background:linear-gradient(90deg,var(--teal),var(--violet),var(--amber));
+    box-shadow:0 0 10px rgba(66,217,196,.6);
+    transition:width .1s linear;
+  }
+
+  /* ===== SPACE BACKGROUND — animated solar system ===== */
+  .space-stage{
+    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 70% at 62% 38%, rgba(88,40,120,.55), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 20% 70%, rgba(40,20,90,.5), transparent 62%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(120,40,90,.35), transparent 60%),
+      radial-gradient(circle at 50% 45%, #1a0f2e 0%, #0d0a1c 45%, #060512 75%, #030309 100%);
+  }
   .nebula{
     position:fixed;inset:-15%;z-index:0;pointer-events:none;
     background:
-      radial-gradient(ellipse 55% 38% at 18% 12%, rgba(145,132,242,.16), transparent 60%),
-      radial-gradient(ellipse 48% 34% at 88% 66%, rgba(66,217,196,.13), transparent 60%),
-      radial-gradient(ellipse 42% 30% at 55% 100%, rgba(231,169,84,.08), transparent 60%),
-      radial-gradient(ellipse 60% 45% at 40% 45%, rgba(66,217,196,.05), transparent 65%);
-    filter:blur(14px);
+      radial-gradient(ellipse 50% 36% at 22% 18%, rgba(168,90,220,.22), transparent 62%),
+      radial-gradient(ellipse 46% 32% at 82% 62%, rgba(231,120,169,.16), transparent 62%),
+      radial-gradient(ellipse 42% 30% at 55% 96%, rgba(231,169,84,.12), transparent 62%),
+      radial-gradient(ellipse 58% 44% at 42% 48%, rgba(102,66,214,.14), transparent 65%);
+    filter:blur(18px);
     animation:nebulaDrift 46s ease-in-out infinite alternate;
     will-change:transform;
   }
@@ -80,7 +75,24 @@
     0%{transform:translate3d(0,0,0) rotate(0deg) scale(1);}
     100%{transform:translate3d(-2.5%,3%,0) rotate(5deg) scale(1.05);}
   }
-  .stars-layer{position:fixed;inset:-20% -5%;z-index:0;pointer-events:none;background-repeat:repeat;will-change:background-position;}
+  .solar-svg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    width:100vw;height:100vh;
+    opacity:.9;
+  }
+  .orbit-ring{
+    fill:none;stroke:rgba(255,255,255,.22);stroke-width:1.2;
+  }
+  .sun-glow{opacity:.65;animation:sunPulse 4.5s ease-in-out infinite;}
+  .sun-core{animation:sunPulse 4.5s ease-in-out infinite;}
+  @keyframes sunPulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.06);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .solar-svg animateMotion, .sun-glow, .sun-core{ animation:none !important; }
+  }
+  .stars-layer{position:fixed;inset:-20% -5%;z-index:0;pointer-events:none;background-repeat:repeat;will-change:background-position, transform;}
   #starsSmall{
     background-image:
       radial-gradient(1px 1px at 14px 26px, #cfe3ff, transparent 100%),
@@ -99,7 +111,7 @@
       radial-gradient(1px 1px at 35px 120px, #cfe3ff, transparent 100%);
     background-size:160px 160px;
     opacity:.5;
-    animation:twinkleSmall 5.5s ease-in-out infinite;
+    animation:twinkleSmall 5.5s ease-in-out infinite, driftSmall 90s linear infinite;
   }
   #starsMedium{
     background-image:
@@ -115,7 +127,7 @@
       radial-gradient(1.4px 1.4px at 230px 190px, rgba(233,237,244,.9), transparent 100%);
     background-size:260px 260px;
     opacity:.7;
-    animation:twinkleMed 7.5s ease-in-out infinite;
+    animation:twinkleMed 7.5s ease-in-out infinite, driftMed 130s linear infinite reverse;
   }
   #starsLarge{
     background-image:
@@ -127,11 +139,14 @@
       radial-gradient(2.4px 2.4px at 40px 250px, rgba(233,237,244,1), rgba(233,237,244,0) 70%);
     background-size:380px 380px;
     opacity:.85;
-    animation:twinkleLarge 9s ease-in-out infinite;
+    animation:twinkleLarge 9s ease-in-out infinite, driftLarge 170s linear infinite;
   }
   @keyframes twinkleSmall{0%,100%{opacity:.3;}50%{opacity:.65;}}
   @keyframes twinkleMed{0%,100%{opacity:.45;}50%{opacity:.85;}}
   @keyframes twinkleLarge{0%,100%{opacity:.55;}50%{opacity:1;}}
+  @keyframes driftSmall{0%{background-position:0 0;}100%{background-position:160px 320px;}}
+  @keyframes driftMed{0%{background-position:0 0;}100%{background-position:-260px 260px;}}
+  @keyframes driftLarge{0%{background-position:0 0;}100%{background-position:380px -380px;}}
 
   .shooting-star{
     position:fixed;width:2px;height:2px;border-radius:50%;
@@ -149,16 +164,25 @@
     85%{opacity:1;}
     100%{transform:translate(-320px,220px);opacity:0;}
   }
-  @media (prefers-reduced-motion: reduce){
-    .nebula, #starsSmall, #starsMedium, #starsLarge{animation:none;}
-    .shooting-star{display:none;}
-  }
+  .grid-bg{
     position:fixed;inset:0;z-index:0;pointer-events:none;
     background-image:
       linear-gradient(rgba(66,217,196,0.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(66,217,196,0.035) 1px, transparent 1px);
     background-size:64px 64px;
     mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nebula, #starsSmall, #starsMedium, #starsLarge{animation:none;}
+    .shooting-star{display:none;}
+  }
+
+  /* cursor spotlight */
+  #cursorGlow{
+    position:fixed;top:0;left:0;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle, rgba(66,217,196,.08), transparent 70%);
+    transform:translate(-50%,-50%);z-index:0;pointer-events:none;
+    transition:opacity .3s ease;opacity:0;
   }
 
   /* floating 3D orbs */
@@ -219,7 +243,7 @@
   .navlinks a:not(.active):hover::after{transform:scaleX(1);}
 
   /* ripple */
-  .btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt{position:relative;overflow:hidden;}
+  .btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt,.chip,.filter-chip,.expand-btn,.copy-btn,.scrolltop-btn{position:relative;overflow:hidden;}
   .ripple-el{
     position:absolute;border-radius:50%;background:rgba(255,255,255,.45);
     transform:scale(0);animation:rippleAnim .6s ease-out forwards;pointer-events:none;
@@ -267,8 +291,20 @@
     font-size:clamp(2.1rem, 5.2vw, 3.9rem);
     font-weight:700;line-height:1.1;margin-bottom:24px;
   }
-  h1.headline .accent{color:var(--teal);}
-  h1.headline .accent2{color:var(--violet);}
+  h1.headline .accent{
+    background:linear-gradient(100deg, var(--teal), #7EEFDD, var(--teal));
+    background-size:220% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 5s linear infinite;
+  }
+  h1.headline .accent2{
+    background:linear-gradient(100deg, var(--violet), #C3BBFF, var(--violet));
+    background-size:220% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shine 5s linear infinite;
+  }
+  @keyframes shine{ to{ background-position:-220% center; } }
+  @media (prefers-reduced-motion: reduce){ h1.headline .accent, h1.headline .accent2{ animation:none; } }
   .hero-sub{
     font-size:16.5px;color:var(--text-dim);max-width:540px;margin-bottom:34px;
   }
@@ -320,37 +356,16 @@
   .l-row:last-child{border-bottom:none;}
   .l-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
   .l-row .k::before{content:'';width:6px;height:6px;border-radius:2px;background:var(--teal);flex-shrink:0;transform:rotate(45deg);}
-  .l-row.l-row-warn .k::before{background:var(--amber);}
   .l-row.l-row-total{margin-top:4px;padding-top:14px;border-top:1px solid var(--border-soft);border-bottom:none;}
   .l-row.l-row-total .k::before{background:var(--violet);}
   .l-row.l-row-total .v{font-size:17px;font-weight:700;color:var(--text);}
   .l-row .v{font-family:var(--mono);font-weight:500;font-size:14px;transition:color .3s ease;}
-  .l-row .v.changed{color:var(--amber);}
-  .l-row.removing{opacity:0.35;}
-  .l-row.removing .v{text-decoration:line-through;}
-
-  .amount-display{text-align:center;padding:10px 0 4px;}
-  .amount-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-faint);margin-bottom:10px;}
-  .amount-value{
-    font-family:var(--display);font-size:3rem;font-weight:700;line-height:1;
-    transition:color .4s ease, text-shadow .4s ease, transform .3s ease;
-  }
-  .amount-value.critical{color:#F25555;text-shadow:0 0 26px rgba(242,85,85,0.35);animation:critPulse 1.8s infinite;}
-  .amount-value.resolved{color:var(--teal);text-shadow:0 0 26px rgba(66,217,196,0.3);animation:none;}
-  .amount-value.changed{transform:scale(1.06);}
-  @keyframes critPulse{
-    0%,100%{opacity:1;}
-    50%{opacity:0.72;}
-  }
-  .amount-sub{font-size:12px;color:var(--text-faint);margin-top:8px;}
-  @media (prefers-reduced-motion: reduce){ .amount-value.critical{animation:none;} }
 
   .city-select{
     background:var(--surface-2);color:var(--text);border:1px solid var(--border);
     border-radius:7px;padding:6px 10px;font-family:var(--mono);font-size:12.5px;
     max-width:150px;cursor:pointer;
   }
-  .pop-map-svg{width:100%;height:auto;margin:6px 0 4px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:10px;}
   .pop-real-map{
     width:100%;height:250px;margin:6px 0 2px;border-radius:10px;overflow:hidden;
     border:1px solid var(--border-soft);background:var(--surface-2);
@@ -386,23 +401,6 @@
   .kkn-popup .leaflet-popup-tip{background:var(--surface);border:1px solid var(--border);}
   .kkn-popup b{color:var(--teal);}
   @media (prefers-reduced-motion: reduce){ .kkn-marker .ring{animation:none;} }
-  .map-grid line{stroke:var(--border-soft);stroke-width:1;stroke-dasharray:3 4;}
-  .map-region{fill:rgba(66,217,196,0.05);stroke:var(--border);stroke-width:1.2;stroke-dasharray:5 4;}
-  .map-region-label{fill:var(--text-faint);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.04em;}
-  .pop-city-label{fill:var(--text-faint);font-family:'IBM Plex Mono',monospace;font-size:11px;transition:fill .2s ease;}
-  .pop-dot{fill:var(--text-faint);opacity:0.55;transition:fill .2s ease, opacity .2s ease, r .2s ease;}
-  .pop-dot-group.selected .pop-dot{fill:var(--amber);opacity:1;r:5.5;}
-  .pop-dot-group.selected .pop-city-label{fill:var(--amber);font-weight:600;}
-  .pop-pin{transition:opacity .25s ease;}
-  .pop-pin-ring{fill:none;stroke:var(--teal);stroke-width:2;opacity:0.5;animation:pinRing 1.6s infinite;}
-  .pop-pin-core{fill:var(--teal);}
-  .pop-pin-label-bg{fill:var(--surface);stroke:var(--teal);stroke-width:1;}
-  .pop-pin-label-text{fill:var(--text);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;}
-  @keyframes pinRing{
-    0%{r:4;opacity:0.7;}
-    100%{r:16;opacity:0;}
-  }
-  @media (prefers-reduced-motion: reduce){ .pop-pin-ring{animation:none;} }
   .ledger-foot{padding:14px 18px;border-top:1px solid var(--border-soft);background:var(--surface-2);}
   .ledger-btn{
     width:100%;background:var(--violet);color:#fff;border:none;font-family:var(--body);
@@ -469,13 +467,40 @@
   }
   .chip:hover{border-color:var(--teal);color:var(--text);transform:translateY(-3px) rotateX(8deg);}
 
+  /* MODULE FILTER BAR */
+  .module-toolbar{
+    display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:28px;
+  }
+  .module-search{
+    flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);
+    border-radius:8px;padding:11px 16px;color:var(--text);font-family:var(--mono);font-size:13px;
+    transition:border-color .18s ease;
+  }
+  .module-search:focus{outline:none;border-color:var(--teal);}
+  .module-search::placeholder{color:var(--text-faint);}
+  .filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-chip{
+    font-family:var(--mono);font-size:11.5px;color:var(--text-dim);background:var(--surface);
+    border:1px solid var(--border);padding:8px 13px;border-radius:100px;cursor:pointer;transition:all .18s ease;
+  }
+  .filter-chip:hover{border-color:var(--teal);color:var(--text);}
+  .filter-chip.active{background:var(--teal);color:#04211D;border-color:var(--teal);font-weight:600;}
+  .module-count{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-bottom:18px;}
+
   /* MODULE REGISTRY */
   .module-card{
     border:1px solid var(--border);border-radius:12px;background:var(--surface);
-    padding:26px 26px 22px;margin-bottom:18px;transition:border-color .2s ease, transform .5s cubic-bezier(.16,.84,.44,1), box-shadow .4s ease;
-    transform-style:preserve-3d;will-change:transform;
+    padding:26px 26px 22px;margin-bottom:18px;transition:border-color .2s ease, transform .5s cubic-bezier(.16,.84,.44,1), box-shadow .4s ease, opacity .3s ease, max-height .3s ease;
+    transform-style:preserve-3d;will-change:transform;position:relative;
   }
+  .module-card::before{
+    content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0;
+    background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(66,217,196,.08), transparent 70%);
+    transition:opacity .3s ease;
+  }
+  .module-card:hover::before{opacity:1;}
   .module-card:hover{border-color:var(--teal);box-shadow:0 24px 50px -20px rgba(66,217,196,.25);}
+  .module-card.hidden-card{display:none;}
   .m-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:12px;}
   .m-name{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--text);}
   .m-name .path-sep{color:var(--text-faint);font-weight:400;}
@@ -487,8 +512,25 @@
   .badge.prod{background:rgba(66,217,196,0.12);color:var(--teal);border:1px solid rgba(66,217,196,0.3);}
   .badge.ver{background:rgba(255,255,255,0.05);color:var(--text-faint);border:1px solid var(--border);}
   .m-desc{color:var(--text-dim);font-size:14.5px;margin-bottom:16px;max-width:720px;}
-  .m-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .m-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
   .m-tag{font-size:11.5px;font-family:var(--mono);color:var(--text-faint);padding:4px 10px;border:1px solid var(--border-soft);border-radius:100px;}
+  .expand-btn{
+    background:none;border:1px solid var(--border-soft);color:var(--teal);font-family:var(--mono);
+    font-size:11.5px;padding:7px 13px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    transition:all .18s ease;
+  }
+  .expand-btn:hover{border-color:var(--teal);background:rgba(66,217,196,.08);}
+  .expand-btn .chev{transition:transform .3s ease;display:inline-block;}
+  .expand-btn.open .chev{transform:rotate(180deg);}
+  .m-detail{
+    max-height:0;overflow:hidden;transition:max-height .4s ease, margin-top .4s ease;
+  }
+  .m-detail.open{max-height:600px;margin-top:16px;}
+  .m-detail-inner{
+    border-top:1px solid var(--border-soft);padding-top:16px;color:var(--text-dim);font-size:13.5px;
+  }
+  .m-detail-inner ul{padding-left:18px;}
+  .m-detail-inner li{margin-bottom:7px;}
 
   /* NETOPS MAP */
   .map-toggle-btn{
@@ -503,18 +545,27 @@
   }
   .netops-map-wrap.open{max-height:420px;}
   .netops-svg{width:100%;height:auto;margin-top:18px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:10px;padding:8px;}
-  .net-line{stroke:var(--border);stroke-width:1.5;stroke-dasharray:4 3;}
+  .net-line{stroke:var(--border);stroke-width:1.5;stroke-dasharray:4 3;animation:dashMove 3s linear infinite;}
+  @keyframes dashMove{ to{ stroke-dashoffset:-14; } }
   .net-core{fill:var(--violet);animation:pulse 2.4s infinite;}
   .net-node circle{fill:var(--teal);}
   .net-label{fill:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;}
   .net-core-label{fill:var(--text);font-weight:600;font-size:12px;}
   .netops-map-note{color:var(--text-faint);font-size:12px;margin-top:10px;line-height:1.5;}
-  @media (prefers-reduced-motion: reduce){ .net-core{animation:none;} }
+  @media (prefers-reduced-motion: reduce){ .net-core{animation:none;} .net-line{animation:none;} }
   .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
   .proj-block-head{font-weight:600;font-size:14px;margin-bottom:10px;color:var(--text);}
   .proj-list{padding-left:18px;color:var(--text-dim);font-size:13.5px;}
   .proj-list li{margin-bottom:8px;}
   @media (max-width:800px){.proj-grid{grid-template-columns:1fr;gap:20px;}}
+
+  .live-badge{
+    display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--teal);
+    border:1px solid rgba(66,217,196,.35);background:rgba(66,217,196,.08);padding:7px 13px;border-radius:100px;
+    transition:all .18s ease;
+  }
+  .live-badge:hover{background:rgba(66,217,196,.16);transform:translateY(-2px);}
+  .live-badge .d{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
 
   /* BUSINESS CALCULATOR */
   .calc-card{
@@ -593,12 +644,18 @@
     background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
     transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,.84,.44,1);
   }
-  .cc-row{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border-soft);font-size:13.5px;gap:10px;flex-wrap:wrap;}
+  .cc-row{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border-soft);font-size:13.5px;gap:10px;flex-wrap:wrap;align-items:center;}
   .cc-row:last-child{border:none;}
   .cc-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11px;text-transform:uppercase;}
   .cc-row .v{font-weight:600;text-align:right;}
   .cc-available{display:flex;align-items:center;gap:7px;}
   .cc-available .d{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
+  .copy-btn{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);
+    font-family:var(--mono);font-size:11px;padding:6px 11px;border-radius:6px;cursor:pointer;transition:all .18s ease;
+  }
+  .copy-btn:hover{border-color:var(--teal);color:var(--teal);}
+  .copy-btn.copied{border-color:var(--teal);color:var(--teal);background:rgba(66,217,196,.1);}
 
   footer{
     margin-top:80px;border-top:1px solid var(--border-soft);padding:40px 0;
@@ -608,6 +665,28 @@
   .footer-meta{color:var(--text-faint);font-size:12.5px;font-family:var(--mono);}
   .footer-links{display:flex;gap:20px;font-size:13px;color:var(--text-dim);}
   .footer-links a:hover{color:var(--teal);}
+
+  /* SCROLL TO TOP */
+  .scrolltop-btn{
+    position:fixed;bottom:26px;right:26px;width:46px;height:46px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--border);color:var(--teal);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:150;
+    opacity:0;pointer-events:none;transform:translateY(12px) scale(.9);
+    transition:opacity .3s ease, transform .3s ease, border-color .18s ease;
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+  }
+  .scrolltop-btn.show{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
+  .scrolltop-btn:hover{border-color:var(--teal);}
+
+  /* toast */
+  #toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);z-index:250;
+    background:var(--surface);border:1px solid var(--teal);color:var(--text);
+    font-family:var(--mono);font-size:12.5px;padding:12px 20px;border-radius:100px;
+    opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;
+    box-shadow:0 10px 26px rgba(0,0,0,.4);
+  }
+  #toast.show{opacity:1;transform:translate(-50%,0);}
 
   /* RESUME MODAL */
   .modal-overlay{
@@ -697,9 +776,12 @@
 
   [data-reveal]{opacity:0;transform:perspective(1000px) translateY(30px) rotateX(10deg);transition:opacity .7s ease, transform .7s cubic-bezier(.16,.84,.44,1);}
   [data-reveal].in{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0);}
+  .hero-load{opacity:0;transform:translateY(18px);animation:heroIn .8s cubic-bezier(.16,.84,.44,1) forwards;}
+  @keyframes heroIn{to{opacity:1;transform:translateY(0);}}
   @media (prefers-reduced-motion: reduce){
     [data-reveal]{opacity:1;transform:none;transition:none;}
-    .brand .dot, .ledger-status .d, .cc-available .d{animation:none;}
+    .hero-load{opacity:1;transform:none;animation:none;}
+    .brand .dot, .ledger-status .d, .cc-available .d, .live-badge .d{animation:none;}
   }
 
   /* mobile drawer */
@@ -717,15 +799,203 @@
     .hero-stats{gap:22px;}
     .m-top{flex-direction:column;}
     .rd-entry-top{flex-direction:column;gap:2px;}
+    .module-toolbar{flex-direction:column;align-items:stretch;}
+    .filter-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;}
+    .scrolltop-btn{bottom:calc(18px + env(safe-area-inset-bottom));right:18px;width:42px;height:42px;}
+    .solar-svg{opacity:.75;}
+  }
+  @media (max-width:340px){
+    .hero-stats{gap:16px;}
+    .stat b{font-size:1.5rem;}
   }
 </style>
 </head>
 <body>
+<div id="scrollProgress"></div>
+<div class="space-stage"></div>
+<svg class="solar-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <radialGradient id="sunCorona" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,200,110,.35)"/>
+      <stop offset="60%" stop-color="rgba(255,150,70,.12)"/>
+      <stop offset="100%" stop-color="rgba(255,150,70,0)"/>
+    </radialGradient>
+    <radialGradient id="sunHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,190,90,.6)"/>
+      <stop offset="100%" stop-color="rgba(255,190,90,0)"/>
+    </radialGradient>
+    <radialGradient id="sunGrad" cx="42%" cy="38%" r="68%">
+      <stop offset="0%" stop-color="#fffaeb"/>
+      <stop offset="22%" stop-color="#ffe396"/>
+      <stop offset="48%" stop-color="#ffb94d"/>
+      <stop offset="75%" stop-color="#f2782e"/>
+      <stop offset="100%" stop-color="#c8420f"/>
+    </radialGradient>
+    <filter id="sunTexture" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09 0.14" numOctaves="3" seed="6" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 0.55  0 0 0 0 0.1  0 0 0 0.55 0" result="tint"/>
+      <feComposite in="tint" in2="SourceAlpha" operator="in" result="clipped"/>
+      <feBlend in="SourceGraphic" in2="clipped" mode="overlay"/>
+    </filter>
+
+    <!-- realistic sphere gradients: bright highlight -> body color -> dark limb -->
+    <radialGradient id="pMercury" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#f2f0ec"/><stop offset="30%" stop-color="#c7c3bd"/><stop offset="68%" stop-color="#8b8781"/><stop offset="100%" stop-color="#48453f"/></radialGradient>
+    <radialGradient id="pVenus" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#fff2cf"/><stop offset="32%" stop-color="#e8c77e"/><stop offset="68%" stop-color="#c48f43"/><stop offset="100%" stop-color="#6b4a1e"/></radialGradient>
+    <radialGradient id="pEarth" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#bfe8ff"/><stop offset="28%" stop-color="#5fa6e8"/><stop offset="55%" stop-color="#2f6fb8"/><stop offset="80%" stop-color="#1a3f6e"/><stop offset="100%" stop-color="#0a1e38"/></radialGradient>
+    <radialGradient id="pMars" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#ffcfa8"/><stop offset="30%" stop-color="#e17a45"/><stop offset="68%" stop-color="#a4471f"/><stop offset="100%" stop-color="#54210c"/></radialGradient>
+    <radialGradient id="pJupiter" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#fbe6c4"/><stop offset="30%" stop-color="#e7bf8c"/><stop offset="62%" stop-color="#b9834e"/><stop offset="100%" stop-color="#5f3c20"/></radialGradient>
+    <radialGradient id="pSaturn" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#fcefd0"/><stop offset="32%" stop-color="#e9d3a0"/><stop offset="65%" stop-color="#c1a06a"/><stop offset="100%" stop-color="#5f4b2b"/></radialGradient>
+    <radialGradient id="pUranus" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#dafcf7"/><stop offset="35%" stop-color="#8fe0da"/><stop offset="70%" stop-color="#4aa39c"/><stop offset="100%" stop-color="#1c4844"/></radialGradient>
+    <radialGradient id="pNeptune" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#c6d4ff"/><stop offset="32%" stop-color="#6c8ef0"/><stop offset="68%" stop-color="#2f4bb0"/><stop offset="100%" stop-color="#131f52"/></radialGradient>
+
+    <!-- terminator shadow shared by every planet for a consistent 3D sphere read -->
+    <radialGradient id="shade" cx="68%" cy="66%" r="78%">
+      <stop offset="38%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,.68)"/>
+    </radialGradient>
+    <!-- soft rim light opposite the sun's key light -->
+    <radialGradient id="rimLight" cx="18%" cy="16%" r="30%">
+      <stop offset="0%" stop-color="rgba(255,255,255,.5)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <pattern id="bandsJupiter" patternUnits="objectBoundingBox" width="1" height="0.16">
+      <rect width="1" height="0.085" fill="#8a5a2e" opacity=".38"/>
+      <rect y="0.085" width="1" height="0.075" fill="#f4dcb0" opacity=".22"/>
+    </pattern>
+    <pattern id="bandsSaturn" patternUnits="objectBoundingBox" width="1" height="0.14">
+      <rect width="1" height="0.07" fill="#8f7440" opacity=".3"/>
+      <rect y="0.07" width="1" height="0.07" fill="#fdf0cf" opacity=".2"/>
+    </pattern>
+
+    <filter id="craterTex" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="9" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0" result="a"/>
+      <feComposite in="a" in2="SourceAlpha" operator="in" result="clipped"/>
+      <feBlend in="SourceGraphic" in2="clipped" mode="multiply"/>
+    </filter>
+    <filter id="atmosBlur" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#caa96b" stop-opacity="0"/>
+      <stop offset="18%" stop-color="#e8d3a0" stop-opacity=".85"/>
+      <stop offset="40%" stop-color="#a9895a" stop-opacity=".55"/>
+      <stop offset="60%" stop-color="#e8d3a0" stop-opacity=".7"/>
+      <stop offset="82%" stop-color="#a9895a" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#caa96b" stop-opacity="0"/>
+    </linearGradient>
+
+    <path id="orbit1" d="M 640,460 A 120,44 0 1,0 880,460 A 120,44 0 1,0 640,460 Z"/>
+    <path id="orbit2" d="M 560,460 A 200,74 0 1,0 960,460 A 200,74 0 1,0 560,460 Z"/>
+    <path id="orbit3" d="M 480,460 A 280,104 0 1,0 1040,460 A 280,104 0 1,0 480,460 Z"/>
+    <path id="orbit4" d="M 400,460 A 360,134 0 1,0 1120,460 A 360,134 0 1,0 400,460 Z"/>
+    <path id="orbit5" d="M 320,460 A 440,164 0 1,0 1200,460 A 440,164 0 1,0 320,460 Z"/>
+    <path id="orbit6" d="M 240,460 A 520,194 0 1,0 1280,460 A 520,194 0 1,0 240,460 Z"/>
+    <path id="orbit7" d="M 150,460 A 610,228 0 1,0 1370,460 A 610,228 0 1,0 150,460 Z"/>
+    <path id="orbit8" d="M 70,460 A 690,257 0 1,0 1450,460 A 690,257 0 1,0 70,460 Z"/>
+  </defs>
+
+  <!-- orbit rings -->
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="120" ry="44"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="200" ry="74"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="280" ry="104"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="360" ry="134"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="440" ry="164"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="520" ry="194"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="610" ry="228"/>
+  <ellipse class="orbit-ring" cx="760" cy="460" rx="690" ry="257"/>
+
+  <!-- sun -->
+  <circle class="sun-glow" cx="760" cy="460" r="150" fill="url(#sunCorona)"/>
+  <circle class="sun-glow" cx="760" cy="460" r="95" fill="url(#sunHalo)"/>
+  <circle class="sun-core" cx="760" cy="460" r="42" fill="url(#sunGrad)"/>
+  <circle class="sun-core" cx="760" cy="460" r="42" fill="url(#sunGrad)" filter="url(#sunTexture)" opacity=".85"/>
+
+  <!-- Mercury: cratered rock -->
+  <g>
+    <animateMotion dur="14s" repeatCount="indefinite"><mpath href="#orbit1"/></animateMotion>
+    <circle r="6" fill="url(#pMercury)"/>
+    <circle r="6" fill="url(#pMercury)" filter="url(#craterTex)" opacity=".55"/>
+    <circle r="6" fill="url(#shade)"/>
+    <circle r="6" fill="url(#rimLight)" opacity=".4"/>
+  </g>
+
+  <!-- Venus: hazy clouded rock -->
+  <g>
+    <animateMotion dur="22s" repeatCount="indefinite"><mpath href="#orbit2"/></animateMotion>
+    <circle r="14" fill="url(#pVenus)" filter="url(#atmosBlur)" opacity=".3"/>
+    <circle r="9" fill="url(#pVenus)"/>
+    <circle r="9" fill="url(#shade)"/>
+    <circle r="9" fill="url(#rimLight)" opacity=".35"/>
+  </g>
+
+  <!-- Earth: blue marble with atmosphere -->
+  <g>
+    <animateMotion dur="32s" repeatCount="indefinite"><mpath href="#orbit3"/></animateMotion>
+    <circle r="16" fill="#4f8fe0" filter="url(#atmosBlur)" opacity=".35"/>
+    <circle r="10" fill="url(#pEarth)"/>
+    <circle r="10" fill="url(#pEarth)" filter="url(#craterTex)" opacity=".22"/>
+    <circle r="10" fill="url(#shade)"/>
+    <circle r="10" fill="url(#rimLight)" opacity=".5"/>
+  </g>
+
+  <!-- Mars: cratered red desert -->
+  <g>
+    <animateMotion dur="44s" repeatCount="indefinite"><mpath href="#orbit4"/></animateMotion>
+    <circle r="8" fill="url(#pMars)"/>
+    <circle r="8" fill="url(#pMars)" filter="url(#craterTex)" opacity=".5"/>
+    <circle r="8" fill="url(#shade)"/>
+    <circle r="8" fill="url(#rimLight)" opacity=".3"/>
+  </g>
+
+  <!-- Jupiter: banded gas giant -->
+  <g>
+    <animateMotion dur="60s" repeatCount="indefinite"><mpath href="#orbit5"/></animateMotion>
+    <circle r="30" fill="#e0b57c" filter="url(#atmosBlur)" opacity=".2"/>
+    <circle r="20" fill="url(#pJupiter)"/>
+    <circle r="20" fill="url(#bandsJupiter)"/>
+    <circle r="20" fill="url(#shade)"/>
+    <circle r="20" fill="url(#rimLight)" opacity=".35"/>
+  </g>
+
+  <!-- Saturn: banded gas giant with rings -->
+  <g>
+    <animateMotion dur="78s" repeatCount="indefinite"><mpath href="#orbit6"/></animateMotion>
+    <ellipse rx="34" ry="9" fill="none" stroke="url(#ringGrad)" stroke-width="7" transform="rotate(-18)"/>
+    <circle r="16" fill="url(#pSaturn)"/>
+    <circle r="16" fill="url(#bandsSaturn)"/>
+    <circle r="16" fill="url(#shade)"/>
+    <circle r="16" fill="url(#rimLight)" opacity=".35"/>
+    <ellipse rx="34" ry="9" fill="none" stroke="url(#ringGrad)" stroke-width="4" opacity=".8" transform="rotate(-18)" clip-path="inset(9px 0 0 0)"/>
+  </g>
+
+  <!-- Uranus: smooth pale ice giant -->
+  <g>
+    <animateMotion dur="96s" repeatCount="indefinite"><mpath href="#orbit7"/></animateMotion>
+    <circle r="20" fill="#7fd6cf" filter="url(#atmosBlur)" opacity=".25"/>
+    <circle r="13" fill="url(#pUranus)"/>
+    <circle r="13" fill="url(#shade)"/>
+    <circle r="13" fill="url(#rimLight)" opacity=".4"/>
+  </g>
+
+  <!-- Neptune: deep blue ice giant -->
+  <g>
+    <animateMotion dur="115s" repeatCount="indefinite"><mpath href="#orbit8"/></animateMotion>
+    <circle r="19" fill="#4f6fe0" filter="url(#atmosBlur)" opacity=".3"/>
+    <circle r="12" fill="url(#pNeptune)"/>
+    <circle r="12" fill="url(#shade)"/>
+    <circle r="12" fill="url(#rimLight)" opacity=".4"/>
+  </g>
+</svg>
 <div class="nebula" id="nebula"></div>
 <div class="stars-layer" id="starsSmall"></div>
 <div class="stars-layer" id="starsMedium"></div>
 <div class="stars-layer" id="starsLarge"></div>
 <div class="grid-bg"></div>
+<div id="cursorGlow"></div>
+<div id="toast"></div>
 
 <header>
   <nav>
@@ -748,21 +1018,21 @@
 </header>
 
 <!-- MOBILE DRAWER -->
-<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/60 z-[190] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-<div id="mobileDrawer" class="fixed top-0 right-0 h-full w-72 max-w-[82vw] bg-[#0F1526] border-l border-white/10 z-[200] transition-transform duration-300 ease-out p-6 flex flex-col gap-1 shadow-2xl">
-  <div class="flex justify-between items-center mb-6">
-    <span class="font-semibold tracking-tight text-white font-display">Menu</span>
-    <button id="closeMobileDrawer" type="button" aria-label="Close menu" class="w-8 h-8 rounded-full border border-white/10 text-white/70 hover:text-white flex items-center justify-center">✕</button>
+<div id="mobileDrawerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;opacity:0;pointer-events:none;transition:opacity .3s ease;"></div>
+<div id="mobileDrawer" style="position:fixed;top:0;right:0;height:100%;width:280px;max-width:82vw;background:#0F1526;border-left:1px solid rgba(255,255,255,.1);z-index:200;transition:transform .3s ease-out;padding:24px;display:flex;flex-direction:column;gap:4px;box-shadow:-10px 0 40px rgba(0,0,0,.5);">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <span style="font-weight:600;color:#fff;font-family:var(--display);">Menu</span>
+    <button id="closeMobileDrawer" type="button" aria-label="Close menu" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;background:none;cursor:pointer;">✕</button>
   </div>
-  <a href="#home" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Home</a>
-  <a href="#about" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">About</a>
-  <a href="#toolkit" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Toolkit</a>
-  <a href="#modules" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Modules</a>
-  <a href="#projects" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Projects</a>
-  <a href="#path" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Path</a>
-  <a href="#estimate" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Estimate</a>
-  <a href="#contact" class="mobile-navlink block px-4 py-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-teal-300 transition">Contact</a>
-  <button id="mobileResumeBtn" type="button" class="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-semibold py-3 transition hover:brightness-110">Résumé ↗</button>
+  <a href="#home" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Home</a>
+  <a href="#about" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">About</a>
+  <a href="#toolkit" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Toolkit</a>
+  <a href="#modules" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Modules</a>
+  <a href="#projects" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Projects</a>
+  <a href="#path" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Path</a>
+  <a href="#estimate" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Estimate</a>
+  <a href="#contact" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Contact</a>
+  <button id="mobileResumeBtn" type="button" style="margin-top:16px;border:none;border-radius:100px;background:linear-gradient(135deg,var(--violet),#6E62D9);color:#fff;font-weight:600;padding:13px;cursor:pointer;">Résumé ↗</button>
 </div>
 
 <main class="wrap">
@@ -773,7 +1043,7 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
     <div class="hero-grid">
-      <div data-reveal>
+      <div class="hero-load" style="animation-delay:.05s;">
         <div class="hero-tag">● PRODUCTION ERP · KK NETWORKS (ISP / TELECOM)</div>
         <h1 class="headline">Odoo 19 development that<span class="accent"> holds up</span> once it hits <span class="accent2">production.</span></h1>
         <p class="hero-sub">I'm <b>Daud Amjad</b> — an Odoo 19 Developer who builds and maintains the CRM, subscription billing, accounting, and network-operations modules running a live telecom business. I write the Python and XML that make a workflow behave the way the business needs — then I'm the one who finds out why it didn't.</p>
@@ -782,14 +1052,14 @@
           <a href="#contact" class="btn-secondary">Get in touch</a>
         </div>
         <div class="hero-stats">
-          <div class="stat"><b data-count="15" data-suffix="+">0+</b><span>Modules Maintained</span></div>
+          <div class="stat"><b data-count="15" data-suffix="+">25+</b><span>Modules Maintained</span></div>
           <div class="stat"><b>17→19</b><span>Odoo Migration Led</span></div>
-          <div class="stat"><b data-count="2" data-suffix="">0</b><span>Live Environments</span></div>
-          <div class="stat"><b data-count="2026" data-suffix="">0</b><span>CS Graduate</span></div>
+          <div class="stat"><b data-count="2" data-suffix="">3</b><span>Live Environments</span></div>
+          <div class="stat"><b data-count="2026" data-suffix="">2026</b><span>CS Graduate</span></div>
         </div>
       </div>
 
-      <div data-reveal>
+      <div class="hero-load" style="animation-delay:.2s;">
         <div class="tilt-wrap">
         <div class="ledger" id="tiltLedger">
           <div class="ledger-top">
@@ -850,7 +1120,7 @@
 
       <div data-reveal>
         <div class="profile-card">
-          <img src="profile.jpg" alt="Daud Amjad" class="profile-photo">
+          <img src="profile.jpg" alt="Daud Amjad" class="profile-photo" onerror="this.style.display='none'">
           <div class="profile-info">
             <div class="profile-name">Daud Amjad</div>
             <div class="profile-role">Odoo 19 Developer — Team Lead</div>
@@ -913,72 +1183,136 @@
   <section id="modules">
     <div class="eyebrow">( 03 ) — Module Registry</div>
     <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:14px;">Modules I've built and keep running.</h2>
-    <p class="about-body" style="margin-bottom:36px;">A working slice of the custom Odoo 19 suite deployed at KK Networks — each one still live in production.</p>
+    <p class="about-body" style="margin-bottom:28px;">A working slice of the custom Odoo 19 suite deployed at KK Networks — each one still live in production. Filter by domain, or expand a card for the technical detail.</p>
 
-    <div class="module-card" data-reveal>
+    <div class="module-toolbar" data-reveal>
+      <input type="text" id="moduleSearch" class="module-search" placeholder="Search modules — e.g. 'billing', 'invoice', 'approval'...">
+      <div class="filter-chips" id="filterChips">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="billing">Billing</button>
+        <button class="filter-chip" data-filter="crm">CRM</button>
+        <button class="filter-chip" data-filter="accounting">Accounting</button>
+        <button class="filter-chip" data-filter="hr">HR</button>
+        <button class="filter-chip" data-filter="infra">Infra</button>
+      </div>
+    </div>
+    <div class="module-count" id="moduleCount">Showing 7 of 7 modules</div>
+
+    <div class="module-card" data-reveal data-tags="billing accounting" data-search="services fixed subscription approval kanban notifications">
       <div class="m-top">
         <div class="m-name">services_fixed</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Stage-based approval workflows for IP Lead, Termination, IP Change Request, and Upgrade/Downgrade requests — with per-stage approver configuration by user or department, Kanban pipelines, and stage-wise email notifications modeled on the company's CRM.</p>
       <div class="m-tags"><span class="m-tag">Python</span><span class="m-tag">Approval Workflows</span><span class="m-tag">QWeb Email Templates</span><span class="m-tag">Kanban Views</span></div>
+      <button class="expand-btn" data-target="detail-1">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-1">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Same-day double-approval on Upgrade/Downgrade could produce a nonsensical 2-day sliver invoice line — traced to alter-subscription logic recomputing off the wrong active line.</li>
+            <li>Termination inventory sourcing moved from <code>stock.quant</code> to full <code>stock.move</code> history, since quants missed service/consumable products entirely.</li>
+            <li>Fixed zero/negative quant counting and a mismatched <code>product_uom_id</code> field name that silently broke reporting.</li>
+            <li>Added stage-wise email dispatch across all four workflow models, with deduplicated recipients from stage custodians plus record creator.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal data-tags="billing accounting" data-search="sales subscription enhancement update sale proration mrr invoice cron">
       <div class="m-top">
         <div class="m-name">sales_subscription_enhancement <span class="path-sep">/</span> update_sale_subscription</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">The subscription billing engine — Alter Subscription approvals write correct old/new quantity, price, and date values into invoice lines and subscription history, cross-month proration is handled correctly, and recurring invoice generation advances from the actual last invoice date instead of resetting.</p>
       <div class="m-tags"><span class="m-tag">Subscription Logic</span><span class="m-tag">Invoicing</span><span class="m-tag">Cron Jobs</span><span class="m-tag">Proration</span></div>
+      <button class="expand-btn" data-target="detail-2">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-2">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Fixed a missing <code>partner_id</code> filter that let invoice matching pick up the wrong customer's line during alteration.</li>
+            <li>Removed duplicate orphaned invoice lines created when a subscription was altered more than once in the same month.</li>
+            <li>Resolved a race condition between <code>_compute_actual_used_price</code> and <code>_compute_total_price_to_pay</code> that was producing Rs. 0 invoice amounts.</li>
+            <li>Traced a blocking <code>"Only one product line is allowed in subscription"</code> validation error to a hard-coded <code>len(order_line) &gt; 1</code> check colliding with a <code>name</code> vs <code>default_code</code> product mismatch.</li>
+            <li>Added <code>mrr_reopen_fix.py</code> to correctly compensate the MRR baseline when a subscription is reopened.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal data-tags="accounting" data-search="accounting enhancements invoice design tax pra ait qweb">
       <div class="m-top">
         <div class="m-name">accouting_enhancements <span class="path-sep">/</span> kkn_invoice_design</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Invoice PDF templates that report the tax-inclusive total instead of base price, and correctly expand grouped taxes — PRA 19.5%, AIT 15% — into individual line-item columns for accounting review.</p>
       <div class="m-tags"><span class="m-tag">QWeb PDF</span><span class="m-tag">Accounting</span><span class="m-tag">Tax Reporting</span></div>
+      <button class="expand-btn" data-target="detail-3">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-3">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Rebuilt the QWeb report to break out grouped taxes into named columns instead of a single lumped tax figure.</li>
+            <li>Recurring bills module (<code>update_account_kkn_extend</code>) got working clone/delete logic for posted bills, corrected view-button domains, fixed date formatting, and rebuilt <code>ir.model.access.csv</code> permissions.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal data-tags="infra" data-search="pop utility electricity gas water telephone fuel dashboard custodian">
       <div class="m-top">
         <div class="m-name">pop <span class="path-sep">/</span> utility suite</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Point-of-Presence infrastructure tracking with live smart-button counters across six utility modules — electricity, gas, water, telephone, fuel — plus stage-based custodian permissions and localized date handling.</p>
       <div class="m-tags"><span class="m-tag">Infra Tracking</span><span class="m-tag">Dashboards</span><span class="m-tag">Computed Fields</span></div>
+      <button class="expand-btn" data-target="detail-4">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-4">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Fixed multi-stage approval button visibility by correcting <code>_get_approval()</code> to check the actual current stage's custodian, not a stale one.</li>
+            <li>Switched <code>is_stage_custodian</code> to <code>store=False</code> so it recomputes live on every form load instead of caching a wrong value.</li>
+            <li>Standardized date fields to <code>DD/MM/YYYY</code> without a calendar popup, and resolved a <code>ValueError</code> from writing formatted strings into a <code>fields.Date</code>.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal data-tags="crm" data-search="crm kkn lead pipeline stage custodian notification">
       <div class="m-top">
         <div class="m-name">kkn_crm_19</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">The company's CRM pipeline — lead stages, custodian-based approval routing, and the stage-wise email notification pattern that every other approval workflow at KK Networks (services, terminations, upgrades) is now modeled on.</p>
       <div class="m-tags"><span class="m-tag">CRM</span><span class="m-tag">Lead Pipeline</span><span class="m-tag">Notifications</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">update_account_kkn_extend</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
+      <button class="expand-btn" data-target="detail-5">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-5">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Established the per-stage subject/body template pattern with direct <code>mail.mail</code> dispatch, later reused across four other workflow modules.</li>
+            <li>Custodian-routing logic became the reference implementation for <code>services_fixed</code> and <code>netops</code> stage approvals.</li>
+          </ul>
+        </div>
       </div>
-      <p class="m-desc">Recurring bills and accounts module — clone and delete logic for posted bills, corrected view-button domains and date formatting, and access rights rebuilt from a broken <span class="m-tag" style="border:none;padding:0;">ir.model.access.csv</span> configuration.</p>
-      <div class="m-tags"><span class="m-tag">Accounts</span><span class="m-tag">Recurring Bills</span><span class="m-tag">Access Rights</span></div>
     </div>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal data-tags="hr" data-search="applicant portal candidate evaluation payroll onboarding education">
       <div class="m-top">
         <div class="m-name">kkn_applicant_portal <span class="path-sep">/</span> kkn_candidate_evaluation_report</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">HR &amp; hiring — applicant portal with certification tracking on employee records, salary structure configuration for onboarded staff, and a candidate evaluation QWeb report rebuilt from a broken layout into a fully paginated, correctly footered PDF.</p>
       <div class="m-tags"><span class="m-tag">HR</span><span class="m-tag">Payroll Setup</span><span class="m-tag">QWeb Reports</span></div>
+      <button class="expand-btn" data-target="detail-6">Technical detail <span class="chev">▾</span></button>
+      <div class="m-detail" id="detail-6">
+        <div class="m-detail-inner">
+          <ul>
+            <li>Fixed the education print template where degree titles rendered in the wrong column.</li>
+            <li>Rebuilt pagination and footer repetition on the candidate evaluation report so multi-page evaluations print cleanly.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="module-card" data-reveal style="margin-bottom:0;">
+    <div class="module-card" data-reveal data-tags="infra" data-search="netops network operations multi company tufa">
       <div class="m-top">
         <div class="m-name">netops</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
@@ -1008,6 +1342,8 @@
         <div class="netops-map-note">Illustrative POP topology — five area nodes reporting status back to the core, the same structure the <b style="color:var(--text);">netops</b> module tracks.</div>
       </div>
     </div>
+
+    <p id="noModulesMsg" style="display:none;color:var(--text-faint);font-family:var(--mono);font-size:13px;padding:20px 0;">No modules match that search — try a different term or clear the filter.</p>
   </section>
 
   <!-- PROJECTS -->
@@ -1070,7 +1406,9 @@
         <div class="m-name">Mian Amjad Garments — Business Management System</div>
         <div class="m-badges"><span class="badge prod">Client Project</span><span class="badge ver">Full-Stack</span></div>
       </div>
-      <p class="m-desc">A complete inventory, billing, and ledger system built for a garments/textile business, from role-based login to printable invoices. Built solo by <b style="color:var(--text);">Daud Amjad</b> — frontend, backend API, and business logic.</p>
+      <p class="m-desc">A complete inventory, billing, and ledger system built for a garments/textile business, from role-based login to printable invoices. Built solo by <b style="color:var(--text);">Daud Amjad</b> — frontend, backend API, and business logic. Live and in real use by the client today.</p>
+
+      <a href="https://mian-amjad-garments-erp.vercel.app/" target="_blank" rel="noopener" class="live-badge" style="margin-bottom:20px;"><span class="d"></span>View Live Site ↗ — mian-amjad-garments-erp.vercel.app</a>
 
       <div class="rule" style="margin:20px 0;"></div>
 
@@ -1246,6 +1584,7 @@
           <div class="cc-row"><span class="k">Based in</span><span class="v">Lahore, Pakistan</span></div>
           <div class="cc-row"><span class="k">LinkedIn</span><span class="v">/in/daud-amjad-0625113b1</span></div>
           <div class="cc-row"><span class="k">Availability</span><span class="v cc-available"><span class="d"></span>Open to opportunities</span></div>
+          <div class="cc-row"><span class="k">Email</span><button class="copy-btn" id="copyEmailBtn" type="button">Copy address</button></div>
         </div>
       </div>
     </div>
@@ -1260,10 +1599,16 @@
   </section>
 </main>
 
+<button class="scrolltop-btn" id="scrollTopBtn" type="button" aria-label="Scroll to top">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
 <script>
-  // Nav active state on scroll
+  // Nav active state on scroll + scroll progress bar
   const sections = document.querySelectorAll('section[id]');
   const navlinks = document.querySelectorAll('.navlink');
+  const scrollProgress = document.getElementById('scrollProgress');
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
   function onScroll(){
     let current = sections[0].id;
     const offset = 140;
@@ -1273,30 +1618,19 @@
     navlinks.forEach(l=>{
       l.classList.toggle('active', l.getAttribute('href') === '#'+current);
     });
+    const doc = document.documentElement;
+    const total = doc.scrollHeight - doc.clientHeight;
+    scrollProgress.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
+    scrollTopBtn.classList.toggle('show', window.scrollY > 700);
   }
   window.addEventListener('scroll', onScroll);
   onScroll();
+  scrollTopBtn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
 
-  // ===== Space background: scroll parallax + shooting stars =====
+  // ===== Space background: shooting stars =====
   const spaceReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const starsSmallEl = document.getElementById('starsSmall');
-  const starsMediumEl = document.getElementById('starsMedium');
-  const starsLargeEl = document.getElementById('starsLarge');
 
   if(!spaceReduced){
-    let parallaxTicking = false;
-    function updateParallax(){
-      const y = window.scrollY;
-      starsSmallEl.style.backgroundPosition = `0 ${y * 0.02}px`;
-      starsMediumEl.style.backgroundPosition = `0 ${y * 0.05}px`;
-      starsLargeEl.style.backgroundPosition = `0 ${y * 0.09}px`;
-      parallaxTicking = false;
-    }
-    window.addEventListener('scroll', ()=>{
-      if(!parallaxTicking){ requestAnimationFrame(updateParallax); parallaxTicking = true; }
-    }, {passive:true});
-    updateParallax();
-
     function spawnShootingStar(){
       const el = document.createElement('div');
       el.className = 'shooting-star';
@@ -1308,6 +1642,25 @@
     setInterval(()=>{ if(Math.random() < 0.55) spawnShootingStar(); }, 4200);
     setTimeout(spawnShootingStar, 1200);
   }
+
+  // cursor spotlight glow (hover-capable devices only)
+  const cursorGlow = document.getElementById('cursorGlow');
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    window.addEventListener('mousemove', e=>{
+      cursorGlow.style.opacity = '1';
+      cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+    });
+    window.addEventListener('mouseleave', ()=>{ cursorGlow.style.opacity = '0'; });
+  }
+
+  // module-card spotlight follow (mouse position -> CSS vars)
+  document.querySelectorAll('.module-card').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
 
   // Reveal on scroll — staggered, with count-up for numeric stats
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1347,7 +1700,7 @@
   }
 
   // Ripple feedback on primary interactive buttons
-  document.querySelectorAll('.btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt').forEach(btn=>{
+  document.querySelectorAll('.btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt,.filter-chip,.expand-btn,.copy-btn,.scrolltop-btn').forEach(btn=>{
     btn.addEventListener('click', function(e){
       const r = this.getBoundingClientRect();
       const d = Math.max(r.width, r.height);
@@ -1426,7 +1779,6 @@
   };
 
   let localized = false;
-  let selectedMarker = null;
   const cityMarkers = {};
 
   function fmtDeg(v, posLabel, negLabel){
@@ -1447,7 +1799,6 @@
     attributionControl: true,
   }).setView([31.55, 73.0], 6);
 
-  // Dark basemap tiles (CARTO dark, free, no API key) to match the site theme
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap &copy; CARTO',
     subdomains: 'abcd',
@@ -1508,9 +1859,70 @@
   });
 
   highlightSelectedDot();
-  // Leaflet sometimes measures its container before layout settles inside the reveal animation
   setTimeout(()=>popMap.invalidateSize(), 400);
   window.addEventListener('load', ()=>popMap.invalidateSize());
+
+  // ===== Module search + tag filter =====
+  const moduleSearch = document.getElementById('moduleSearch');
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const moduleCards = document.querySelectorAll('#modules .module-card');
+  const moduleCount = document.getElementById('moduleCount');
+  const noModulesMsg = document.getElementById('noModulesMsg');
+  let activeFilter = 'all';
+
+  function applyModuleFilter(){
+    const q = moduleSearch.value.trim().toLowerCase();
+    let shown = 0;
+    moduleCards.forEach(card=>{
+      const tags = (card.dataset.tags || '').toLowerCase();
+      const searchable = (card.dataset.search || '') + ' ' + card.querySelector('.m-name').textContent.toLowerCase();
+      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+      const matchesSearch = !q || searchable.toLowerCase().includes(q);
+      const visible = matchesFilter && matchesSearch;
+      card.classList.toggle('hidden-card', !visible);
+      if(visible) shown++;
+    });
+    moduleCount.textContent = `Showing ${shown} of ${moduleCards.length} modules`;
+    noModulesMsg.style.display = shown === 0 ? 'block' : 'none';
+  }
+
+  moduleSearch.addEventListener('input', applyModuleFilter);
+  filterChips.forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      filterChips.forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      applyModuleFilter();
+    });
+  });
+  applyModuleFilter();
+
+  // ===== Module expand/collapse detail =====
+  document.querySelectorAll('.expand-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.target);
+      const isOpen = target.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.innerHTML = (isOpen ? 'Hide detail' : 'Technical detail') + ' <span class="chev">▾</span>';
+    });
+  });
+
+  // ===== Copy email + toast =====
+  const toast = document.getElementById('toast');
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 2200);
+  }
+  document.getElementById('copyEmailBtn')?.addEventListener('click', function(){
+    const email = 'daudamjadofficial@gmail.com';
+    navigator.clipboard?.writeText(email).then(()=>{
+      this.textContent = 'Copied ✓';
+      this.classList.add('copied');
+      showToast('Email address copied to clipboard');
+      setTimeout(()=>{ this.textContent = 'Copy address'; this.classList.remove('copied'); }, 1800);
+    }).catch(()=>{ showToast(email); });
+  });
 </script>
 
 <!-- RESUME MODAL -->
@@ -1525,7 +1937,7 @@
     </div>
     <div class="resume-doc" id="resumeDoc">
       <div class="rd-head">
-        <img src="profile.jpg" alt="Daud Amjad" class="rd-photo">
+        <img src="profile.jpg" alt="Daud Amjad" class="rd-photo" onerror="this.style.display='none'">
         <div>
           <div class="rd-name">Daud Amjad</div>
           <div class="rd-title">Odoo 19 Developer | Software Developer | ERP Customization Specialist</div>
@@ -1594,6 +2006,14 @@
             <li>Built with Python (Flask) for AI, Node.js for auth/backend, HTML/Tailwind/JS frontend, and MySQL.</li>
           </ul>
         </div>
+        <div class="rd-entry">
+          <div class="rd-entry-top"><b>Mian Amjad Garments — Business Management System</b><span>Client Project · Live</span></div>
+          <div class="rd-entry-sub">mian-amjad-garments-erp.vercel.app</div>
+          <ul>
+            <li>Solo-built inventory, billing, and customer ledger system for a real garments/textile client, in active use.</li>
+            <li>Role-based Admin/Customer portals, per-inch made-to-measure pricing calculator, and printable branded invoicing.</li>
+          </ul>
+        </div>
       </div>
 
       <div class="rd-section">
@@ -1644,7 +2064,7 @@
   let complexity = 1;
   let migration = 0;
 
-  const BASE_PER_MODULE = 35000; // Rs, illustrative base rate per simple module
+  const BASE_PER_MODULE = 35000;
   const MIGRATION_FLAT = 40000;
 
   function formatRs(n){
