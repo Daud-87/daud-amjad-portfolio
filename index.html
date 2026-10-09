@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daud Amjad — Odoo 19 Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
   :root{
     --bg:#0A0F1C;
@@ -36,134 +34,12 @@
     font-family:var(--body);
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
   }
   a{color:inherit;text-decoration:none;}
   ::selection{background:var(--teal);color:#04120F;}
   .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
-  button{font-family:inherit;}
 
-  /* ===== SCROLL PROGRESS ===== */
-  #scrollProgress{
-    position:fixed;top:0;left:0;height:3px;width:0%;z-index:300;
-    background:linear-gradient(90deg,var(--teal),var(--violet),var(--amber));
-    box-shadow:0 0 10px rgba(66,217,196,.6);
-    transition:width .1s linear;
-  }
-
-  /* ===== SPACE BACKGROUND — animated solar system ===== */
-  .space-stage{
-    position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-    background:
-      radial-gradient(ellipse 90% 70% at 62% 38%, rgba(88,40,120,.55), transparent 60%),
-      radial-gradient(ellipse 70% 60% at 20% 70%, rgba(40,20,90,.5), transparent 62%),
-      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(120,40,90,.35), transparent 60%),
-      radial-gradient(circle at 50% 45%, #1a0f2e 0%, #0d0a1c 45%, #060512 75%, #030309 100%);
-  }
-  .nebula{
-    position:fixed;inset:-15%;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(ellipse 50% 36% at 22% 18%, rgba(168,90,220,.22), transparent 62%),
-      radial-gradient(ellipse 46% 32% at 82% 62%, rgba(231,120,169,.16), transparent 62%),
-      radial-gradient(ellipse 42% 30% at 55% 96%, rgba(231,169,84,.12), transparent 62%),
-      radial-gradient(ellipse 58% 44% at 42% 48%, rgba(102,66,214,.14), transparent 65%);
-    filter:blur(18px);
-    animation:nebulaDrift 46s ease-in-out infinite alternate;
-    will-change:transform;
-  }
-  @keyframes nebulaDrift{
-    0%{transform:translate3d(0,0,0) rotate(0deg) scale(1);}
-    100%{transform:translate3d(-2.5%,3%,0) rotate(5deg) scale(1.05);}
-  }
-  .solar-svg{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    width:100vw;height:100vh;
-    opacity:.9;
-  }
-  .orbit-ring{
-    fill:none;stroke:rgba(255,255,255,.22);stroke-width:1.2;
-  }
-  .sun-glow{opacity:.65;animation:sunPulse 4.5s ease-in-out infinite;}
-  .sun-core{animation:sunPulse 4.5s ease-in-out infinite;}
-  @keyframes sunPulse{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.06);}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .solar-svg animateMotion, .sun-glow, .sun-core{ animation:none !important; }
-  }
-  .stars-layer{position:fixed;inset:-20% -5%;z-index:0;pointer-events:none;background-repeat:repeat;will-change:background-position, transform;}
-  #starsSmall{
-    background-image:
-      radial-gradient(1px 1px at 14px 26px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 45px 90px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 78px 15px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 110px 130px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 140px 50px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 20px 140px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 95px 60px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 130px 100px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 60px 45px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 150px 20px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 10px 100px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 85px 150px, #cfe3ff, transparent 100%),
-      radial-gradient(1px 1px at 120px 10px, #e9edf4, transparent 100%),
-      radial-gradient(1px 1px at 35px 120px, #cfe3ff, transparent 100%);
-    background-size:160px 160px;
-    opacity:.5;
-    animation:twinkleSmall 5.5s ease-in-out infinite, driftSmall 90s linear infinite;
-  }
-  #starsMedium{
-    background-image:
-      radial-gradient(1.4px 1.4px at 30px 40px, rgba(233,237,244,.95), transparent 100%),
-      radial-gradient(1.4px 1.4px at 120px 90px, rgba(233,237,244,.9), transparent 100%),
-      radial-gradient(1.4px 1.4px at 200px 150px, rgba(233,237,244,.95), transparent 100%),
-      radial-gradient(1.4px 1.4px at 60px 200px, rgba(233,237,244,.9), transparent 100%),
-      radial-gradient(1.4px 1.4px at 180px 30px, rgba(233,237,244,.95), transparent 100%),
-      radial-gradient(1.4px 1.4px at 240px 110px, rgba(233,237,244,.9), transparent 100%),
-      radial-gradient(1.4px 1.4px at 20px 230px, rgba(233,237,244,.95), transparent 100%),
-      radial-gradient(1.4px 1.4px at 150px 220px, rgba(233,237,244,.9), transparent 100%),
-      radial-gradient(1.4px 1.4px at 90px 10px, rgba(233,237,244,.95), transparent 100%),
-      radial-gradient(1.4px 1.4px at 230px 190px, rgba(233,237,244,.9), transparent 100%);
-    background-size:260px 260px;
-    opacity:.7;
-    animation:twinkleMed 7.5s ease-in-out infinite, driftMed 130s linear infinite reverse;
-  }
-  #starsLarge{
-    background-image:
-      radial-gradient(2.4px 2.4px at 60px 80px, rgba(66,217,196,.95), rgba(66,217,196,0) 70%),
-      radial-gradient(2.4px 2.4px at 220px 140px, rgba(145,132,242,.95), rgba(145,132,242,0) 70%),
-      radial-gradient(2.4px 2.4px at 320px 60px, rgba(233,237,244,1), rgba(233,237,244,0) 70%),
-      radial-gradient(2.4px 2.4px at 140px 300px, rgba(231,169,84,.9), rgba(231,169,84,0) 70%),
-      radial-gradient(2.4px 2.4px at 300px 320px, rgba(66,217,196,.9), rgba(66,217,196,0) 70%),
-      radial-gradient(2.4px 2.4px at 40px 250px, rgba(233,237,244,1), rgba(233,237,244,0) 70%);
-    background-size:380px 380px;
-    opacity:.85;
-    animation:twinkleLarge 9s ease-in-out infinite, driftLarge 170s linear infinite;
-  }
-  @keyframes twinkleSmall{0%,100%{opacity:.3;}50%{opacity:.65;}}
-  @keyframes twinkleMed{0%,100%{opacity:.45;}50%{opacity:.85;}}
-  @keyframes twinkleLarge{0%,100%{opacity:.55;}50%{opacity:1;}}
-  @keyframes driftSmall{0%{background-position:0 0;}100%{background-position:160px 320px;}}
-  @keyframes driftMed{0%{background-position:0 0;}100%{background-position:-260px 260px;}}
-  @keyframes driftLarge{0%{background-position:0 0;}100%{background-position:380px -380px;}}
-
-  .shooting-star{
-    position:fixed;width:2px;height:2px;border-radius:50%;
-    background:#fff;box-shadow:0 0 8px 1.5px rgba(255,255,255,.9);
-    z-index:0;pointer-events:none;
-    animation:shoot 1.3s linear forwards;
-  }
-  .shooting-star::before{
-    content:'';position:absolute;top:50%;right:0;width:110px;height:1px;
-    background:linear-gradient(90deg, rgba(255,255,255,.85), transparent);
-    transform-origin:right center;
-  }
-  @keyframes shoot{
-    0%{transform:translate(0,0);opacity:1;}
-    85%{opacity:1;}
-    100%{transform:translate(-320px,220px);opacity:0;}
-  }
+  /* background texture */
   .grid-bg{
     position:fixed;inset:0;z-index:0;pointer-events:none;
     background-image:
@@ -172,29 +48,6 @@
     background-size:64px 64px;
     mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
   }
-  @media (prefers-reduced-motion: reduce){
-    .nebula, #starsSmall, #starsMedium, #starsLarge{animation:none;}
-    .shooting-star{display:none;}
-  }
-
-  /* cursor spotlight */
-  #cursorGlow{
-    position:fixed;top:0;left:0;width:520px;height:520px;border-radius:50%;
-    background:radial-gradient(circle, rgba(66,217,196,.08), transparent 70%);
-    transform:translate(-50%,-50%);z-index:0;pointer-events:none;
-    transition:opacity .3s ease;opacity:0;
-  }
-
-  /* floating 3D orbs */
-  .orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;}
-  .orb-1{width:340px;height:340px;background:radial-gradient(circle,rgba(66,217,196,.28),transparent 70%);top:-60px;right:-40px;animation:float3d 9s ease-in-out infinite;}
-  .orb-2{width:260px;height:260px;background:radial-gradient(circle,rgba(145,132,242,.25),transparent 70%);bottom:0;left:-60px;animation:float3d 11s ease-in-out infinite reverse;}
-  .orb-3{width:180px;height:180px;background:radial-gradient(circle,rgba(231,169,84,.18),transparent 70%);top:40%;left:40%;animation:float3d 13s ease-in-out infinite;}
-  @keyframes float3d{
-    0%,100%{transform:translate3d(0,0,0) rotate3d(1,1,0,0deg) scale(1);}
-    50%{transform:translate3d(0,-26px,40px) rotate3d(1,1,0,16deg) scale(1.06);}
-  }
-  @media (prefers-reduced-motion: reduce){ .orb{animation:none;} }
 
   /* NAV */
   header{
@@ -232,24 +85,10 @@
   .navlinks{display:flex;gap:2px;}
   .navlinks a{
     font-size:13.5px;color:var(--text-dim);padding:9px 13px;border-radius:100px;
-    transition:all .18s ease;position:relative;
+    transition:all .18s ease;
   }
   .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);background:var(--surface);}
   .navlinks a.active{color:var(--bg);background:var(--teal);}
-  .navlinks a:not(.active)::after{
-    content:'';position:absolute;left:14px;right:14px;bottom:4px;height:1px;background:var(--teal);
-    transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.16,.84,.44,1);
-  }
-  .navlinks a:not(.active):hover::after{transform:scaleX(1);}
-
-  /* ripple */
-  .btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt,.chip,.filter-chip,.expand-btn,.copy-btn,.scrolltop-btn{position:relative;overflow:hidden;}
-  .ripple-el{
-    position:absolute;border-radius:50%;background:rgba(255,255,255,.45);
-    transform:scale(0);animation:rippleAnim .6s ease-out forwards;pointer-events:none;
-  }
-  @keyframes rippleAnim{to{transform:scale(2.6);opacity:0;}}
-  @media (prefers-reduced-motion: reduce){ .ripple-el{animation:none;display:none;} }
   .nav-cta{
     margin-left:8px;
     background:linear-gradient(135deg, var(--violet), #6E62D9);
@@ -259,11 +98,9 @@
   }
   .nav-cta:hover{filter:brightness(1.12);}
   button.nav-cta{border:none;cursor:pointer;font-family:var(--body);}
-  .mobile-menu-btn{display:none;}
   @media (max-width:820px){
     .navlinks{display:none;}
     .brand{border-right:none;padding-right:0;margin-right:0;}
-    .mobile-menu-btn{display:flex;}
   }
 
   section{position:relative;z-index:1;padding:120px 0 40px;}
@@ -276,10 +113,9 @@
   .rule{height:1px;background:var(--border-soft);margin:28px 0;border:none;}
 
   /* HERO */
-  #home{padding-top:170px;min-height:92vh;position:relative;overflow:hidden;}
+  #home{padding-top:170px;min-height:92vh;}
   .hero-grid{
     display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;
-    position:relative;z-index:1;
   }
   .hero-tag{
     display:inline-flex;align-items:center;gap:8px;
@@ -288,39 +124,27 @@
     padding:6px 12px;border-radius:100px;margin-bottom:26px;
   }
   h1.headline{
-    font-size:clamp(2.1rem, 5.2vw, 3.9rem);
-    font-weight:700;line-height:1.1;margin-bottom:24px;
+    font-size:clamp(2.3rem, 5.2vw, 3.9rem);
+    font-weight:700;line-height:1.08;margin-bottom:24px;
   }
-  h1.headline .accent{
-    background:linear-gradient(100deg, var(--teal), #7EEFDD, var(--teal));
-    background-size:220% auto;
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    animation:shine 5s linear infinite;
-  }
-  h1.headline .accent2{
-    background:linear-gradient(100deg, var(--violet), #C3BBFF, var(--violet));
-    background-size:220% auto;
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    animation:shine 5s linear infinite;
-  }
-  @keyframes shine{ to{ background-position:-220% center; } }
-  @media (prefers-reduced-motion: reduce){ h1.headline .accent, h1.headline .accent2{ animation:none; } }
+  h1.headline .accent{color:var(--teal);}
+  h1.headline .accent2{color:var(--violet);}
   .hero-sub{
-    font-size:16.5px;color:var(--text-dim);max-width:540px;margin-bottom:34px;
+    font-size:17px;color:var(--text-dim);max-width:540px;margin-bottom:34px;
   }
   .hero-sub b{color:var(--text);font-weight:600;}
   .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
   .btn-primary{
     background:var(--teal);color:#04211D;font-weight:600;font-size:14.5px;
     padding:13px 24px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;
-    transition:transform .18s ease, filter .18s ease, box-shadow .18s ease;
+    transition:transform .18s ease, filter .18s ease;
   }
-  .btn-primary:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.08);box-shadow:0 10px 26px rgba(66,217,196,.25);}
+  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.08);}
   .btn-secondary{
     border:1px solid var(--border);color:var(--text);font-weight:500;font-size:14.5px;
     padding:13px 22px;border-radius:8px;transition:all .18s ease;
   }
-  .btn-secondary:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-2px);}
+  .btn-secondary:hover{border-color:var(--teal);color:var(--teal);}
   .hero-stats{
     display:flex;gap:36px;flex-wrap:wrap;padding-top:28px;border-top:1px solid var(--border-soft);
   }
@@ -330,12 +154,9 @@
   .stat span{font-size:12px;color:var(--text-faint);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;}
 
   /* LEDGER WIDGET — signature element */
-  .tilt-wrap{perspective:1200px;}
   .ledger{
     background:var(--surface);border:1px solid var(--border);border-radius:14px;
     overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
-    transform-style:preserve-3d;will-change:transform;
-    transition:transform .5s cubic-bezier(.16,.84,.44,1);
   }
   .ledger-top{
     display:flex;align-items:center;justify-content:space-between;
@@ -351,56 +172,11 @@
   .l-row{
     display:flex;justify-content:space-between;align-items:center;
     padding:11px 0;border-bottom:1px dashed var(--border-soft);font-size:13.5px;
-    transition:opacity .35s ease, max-height .35s ease;
   }
   .l-row:last-child{border-bottom:none;}
-  .l-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
-  .l-row .k::before{content:'';width:6px;height:6px;border-radius:2px;background:var(--teal);flex-shrink:0;transform:rotate(45deg);}
-  .l-row.l-row-total{margin-top:4px;padding-top:14px;border-top:1px solid var(--border-soft);border-bottom:none;}
-  .l-row.l-row-total .k::before{background:var(--violet);}
-  .l-row.l-row-total .v{font-size:17px;font-weight:700;color:var(--text);}
+  .l-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;}
   .l-row .v{font-family:var(--mono);font-weight:500;font-size:14px;transition:color .3s ease;}
-
-  .city-select{
-    background:var(--surface-2);color:var(--text);border:1px solid var(--border);
-    border-radius:7px;padding:6px 10px;font-family:var(--mono);font-size:12.5px;
-    max-width:150px;cursor:pointer;
-  }
-  .pop-real-map{
-    width:100%;height:250px;margin:6px 0 2px;border-radius:10px;overflow:hidden;
-    border:1px solid var(--border-soft);background:var(--surface-2);
-    box-shadow:inset 0 0 0 1px rgba(66,217,196,.06);
-  }
-  .pop-real-map .leaflet-control-attribution{
-    background:rgba(13,20,36,.75)!important;color:var(--text-faint)!important;font-size:9px!important;
-  }
-  .pop-real-map .leaflet-control-attribution a{color:var(--text-dim)!important;}
-  .pop-real-map .leaflet-control-zoom a{
-    background:var(--surface)!important;color:var(--text)!important;border-color:var(--border)!important;
-  }
-  .map-caption{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--text-faint);text-align:center;margin:2px 0 8px;}
-  .kkn-marker{position:relative;width:0;height:0;}
-  .kkn-marker .core{
-    position:absolute;top:-5px;left:-5px;width:10px;height:10px;border-radius:50%;
-    background:var(--teal);box-shadow:0 0 10px rgba(66,217,196,.9);
-  }
-  .kkn-marker .ring{
-    position:absolute;top:-9px;left:-9px;width:18px;height:18px;border-radius:50%;
-    border:2px solid var(--teal);opacity:.7;animation:markerPing 1.6s ease-out infinite;
-  }
-  .kkn-marker.selected .core{background:var(--amber);box-shadow:0 0 12px rgba(231,169,84,.95);}
-  .kkn-marker.selected .ring{border-color:var(--amber);}
-  @keyframes markerPing{
-    0%{transform:scale(0.6);opacity:.8;}
-    100%{transform:scale(2.2);opacity:0;}
-  }
-  .kkn-popup .leaflet-popup-content-wrapper{
-    background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;
-    font-family:var(--mono);font-size:12px;box-shadow:0 12px 30px rgba(0,0,0,.4);
-  }
-  .kkn-popup .leaflet-popup-tip{background:var(--surface);border:1px solid var(--border);}
-  .kkn-popup b{color:var(--teal);}
-  @media (prefers-reduced-motion: reduce){ .kkn-marker .ring{animation:none;} }
+  .l-row .v.changed{color:var(--amber);}
   .ledger-foot{padding:14px 18px;border-top:1px solid var(--border-soft);background:var(--surface-2);}
   .ledger-btn{
     width:100%;background:var(--violet);color:#fff;border:none;font-family:var(--body);
@@ -417,12 +193,11 @@
 
   /* ABOUT */
   .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:start;}
-  .about-lead{font-size:1.4rem;font-weight:500;line-height:1.4;margin-bottom:26px;font-family:var(--display);}
+  .about-lead{font-size:1.5rem;font-weight:500;line-height:1.4;margin-bottom:26px;font-family:var(--display);}
   .about-lead .hl{color:var(--teal);}
   .about-body{color:var(--text-dim);font-size:15.5px;margin-bottom:14px;max-width:560px;}
   .facts{
     background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-    transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,.84,.44,1);
   }
   .facts-head{
     font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
@@ -430,7 +205,7 @@
   }
   .fact-row{
     display:flex;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border-soft);
-    font-size:13.5px;gap:12px;flex-wrap:wrap;
+    font-size:13.5px;
   }
   .fact-row:last-child{border-bottom:none;}
   .fact-row .k{color:var(--text-faint);}
@@ -439,7 +214,6 @@
     display:flex;align-items:center;gap:16px;
     background:var(--surface);border:1px solid var(--border);border-radius:12px;
     padding:18px;margin-bottom:18px;
-    transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,.84,.44,1);
   }
   .profile-photo{
     width:72px;height:72px;border-radius:50%;object-fit:cover;
@@ -465,42 +239,14 @@
     border:1px solid var(--border);padding:8px 14px;border-radius:8px;background:var(--surface);
     transition:all .18s ease;
   }
-  .chip:hover{border-color:var(--teal);color:var(--text);transform:translateY(-3px) rotateX(8deg);}
-
-  /* MODULE FILTER BAR */
-  .module-toolbar{
-    display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:28px;
-  }
-  .module-search{
-    flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);
-    border-radius:8px;padding:11px 16px;color:var(--text);font-family:var(--mono);font-size:13px;
-    transition:border-color .18s ease;
-  }
-  .module-search:focus{outline:none;border-color:var(--teal);}
-  .module-search::placeholder{color:var(--text-faint);}
-  .filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
-  .filter-chip{
-    font-family:var(--mono);font-size:11.5px;color:var(--text-dim);background:var(--surface);
-    border:1px solid var(--border);padding:8px 13px;border-radius:100px;cursor:pointer;transition:all .18s ease;
-  }
-  .filter-chip:hover{border-color:var(--teal);color:var(--text);}
-  .filter-chip.active{background:var(--teal);color:#04211D;border-color:var(--teal);font-weight:600;}
-  .module-count{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-bottom:18px;}
+  .chip:hover{border-color:var(--teal);color:var(--text);}
 
   /* MODULE REGISTRY */
   .module-card{
     border:1px solid var(--border);border-radius:12px;background:var(--surface);
-    padding:26px 26px 22px;margin-bottom:18px;transition:border-color .2s ease, transform .5s cubic-bezier(.16,.84,.44,1), box-shadow .4s ease, opacity .3s ease, max-height .3s ease;
-    transform-style:preserve-3d;will-change:transform;position:relative;
+    padding:26px 26px 22px;margin-bottom:18px;transition:border-color .2s ease;
   }
-  .module-card::before{
-    content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;opacity:0;
-    background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(66,217,196,.08), transparent 70%);
-    transition:opacity .3s ease;
-  }
-  .module-card:hover::before{opacity:1;}
-  .module-card:hover{border-color:var(--teal);box-shadow:0 24px 50px -20px rgba(66,217,196,.25);}
-  .module-card.hidden-card{display:none;}
+  .module-card:hover{border-color:var(--border);}
   .m-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:12px;}
   .m-name{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--text);}
   .m-name .path-sep{color:var(--text-faint);font-weight:400;}
@@ -512,65 +258,18 @@
   .badge.prod{background:rgba(66,217,196,0.12);color:var(--teal);border:1px solid rgba(66,217,196,0.3);}
   .badge.ver{background:rgba(255,255,255,0.05);color:var(--text-faint);border:1px solid var(--border);}
   .m-desc{color:var(--text-dim);font-size:14.5px;margin-bottom:16px;max-width:720px;}
-  .m-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .m-tags{display:flex;gap:8px;flex-wrap:wrap;}
   .m-tag{font-size:11.5px;font-family:var(--mono);color:var(--text-faint);padding:4px 10px;border:1px solid var(--border-soft);border-radius:100px;}
-  .expand-btn{
-    background:none;border:1px solid var(--border-soft);color:var(--teal);font-family:var(--mono);
-    font-size:11.5px;padding:7px 13px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
-    transition:all .18s ease;
-  }
-  .expand-btn:hover{border-color:var(--teal);background:rgba(66,217,196,.08);}
-  .expand-btn .chev{transition:transform .3s ease;display:inline-block;}
-  .expand-btn.open .chev{transform:rotate(180deg);}
-  .m-detail{
-    max-height:0;overflow:hidden;transition:max-height .4s ease, margin-top .4s ease;
-  }
-  .m-detail.open{max-height:600px;margin-top:16px;}
-  .m-detail-inner{
-    border-top:1px solid var(--border-soft);padding-top:16px;color:var(--text-dim);font-size:13.5px;
-  }
-  .m-detail-inner ul{padding-left:18px;}
-  .m-detail-inner li{margin-bottom:7px;}
-
-  /* NETOPS MAP */
-  .map-toggle-btn{
-    margin-top:16px;background:var(--surface-2);border:1px solid var(--border);color:var(--teal);
-    font-family:var(--mono);font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:8px;
-    cursor:pointer;transition:all .18s ease;
-  }
-  .map-toggle-btn:hover{border-color:var(--teal);background:rgba(66,217,196,0.08);}
-  .map-toggle-btn.open{color:var(--amber);border-color:rgba(231,169,84,0.4);}
-  .netops-map-wrap{
-    max-height:0;overflow:hidden;transition:max-height .4s ease;
-  }
-  .netops-map-wrap.open{max-height:420px;}
-  .netops-svg{width:100%;height:auto;margin-top:18px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:10px;padding:8px;}
-  .net-line{stroke:var(--border);stroke-width:1.5;stroke-dasharray:4 3;animation:dashMove 3s linear infinite;}
-  @keyframes dashMove{ to{ stroke-dashoffset:-14; } }
-  .net-core{fill:var(--violet);animation:pulse 2.4s infinite;}
-  .net-node circle{fill:var(--teal);}
-  .net-label{fill:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;}
-  .net-core-label{fill:var(--text);font-weight:600;font-size:12px;}
-  .netops-map-note{color:var(--text-faint);font-size:12px;margin-top:10px;line-height:1.5;}
-  @media (prefers-reduced-motion: reduce){ .net-core{animation:none;} .net-line{animation:none;} }
   .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
   .proj-block-head{font-weight:600;font-size:14px;margin-bottom:10px;color:var(--text);}
   .proj-list{padding-left:18px;color:var(--text-dim);font-size:13.5px;}
   .proj-list li{margin-bottom:8px;}
   @media (max-width:800px){.proj-grid{grid-template-columns:1fr;gap:20px;}}
 
-  .live-badge{
-    display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--teal);
-    border:1px solid rgba(66,217,196,.35);background:rgba(66,217,196,.08);padding:7px 13px;border-radius:100px;
-    transition:all .18s ease;
-  }
-  .live-badge:hover{background:rgba(66,217,196,.16);transform:translateY(-2px);}
-  .live-badge .d{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
-
   /* BUSINESS CALCULATOR */
   .calc-card{
     background:var(--surface);border:1px solid var(--border);border-radius:14px;
-    padding:32px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,.84,.44,1);
+    padding:32px;
   }
   .calc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;}
   .calc-field{margin-bottom:26px;}
@@ -597,8 +296,7 @@
     background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;padding:26px;
   }
   .calc-result-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);}
-  .calc-result-value{font-family:var(--display);font-size:1.7rem;font-weight:700;color:var(--teal);margin-top:8px;transition:transform .25s ease;}
-  .calc-result-value.bump{transform:scale(1.05);}
+  .calc-result-value{font-family:var(--display);font-size:1.9rem;font-weight:700;color:var(--teal);margin-top:8px;}
   .calc-result-sub{color:var(--text-dim);font-size:13px;margin-top:4px;}
   .calc-note{color:var(--text-faint);font-size:12px;line-height:1.5;}
   @media (max-width:800px){
@@ -625,7 +323,6 @@
   .cert-row{
     display:flex;justify-content:space-between;align-items:center;gap:12px;
     background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;
-    flex-wrap:wrap;
   }
   .cert-row .name{font-weight:600;}
   .cert-row .issuer{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;}
@@ -634,28 +331,21 @@
   /* CONTACT */
   #contact{padding-bottom:0;}
   .contact-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;align-items:start;}
-  .contact-headline{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:700;margin-bottom:18px;}
+  .contact-headline{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;margin-bottom:18px;}
   .contact-headline .dim{color:var(--text-faint);}
   .contact-email{
-    font-family:var(--display);font-size:clamp(1.15rem,3vw,1.9rem);font-weight:600;color:var(--teal);
+    font-family:var(--display);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:600;color:var(--teal);
     display:inline-flex;align-items:center;gap:10px;margin:18px 0 26px;word-break:break-all;
   }
   .contact-card{
     background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-    transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,.84,.44,1);
   }
-  .cc-row{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border-soft);font-size:13.5px;gap:10px;flex-wrap:wrap;align-items:center;}
+  .cc-row{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border-soft);font-size:13.5px;}
   .cc-row:last-child{border:none;}
   .cc-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11px;text-transform:uppercase;}
   .cc-row .v{font-weight:600;text-align:right;}
   .cc-available{display:flex;align-items:center;gap:7px;}
   .cc-available .d{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
-  .copy-btn{
-    background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);
-    font-family:var(--mono);font-size:11px;padding:6px 11px;border-radius:6px;cursor:pointer;transition:all .18s ease;
-  }
-  .copy-btn:hover{border-color:var(--teal);color:var(--teal);}
-  .copy-btn.copied{border-color:var(--teal);color:var(--teal);background:rgba(66,217,196,.1);}
 
   footer{
     margin-top:80px;border-top:1px solid var(--border-soft);padding:40px 0;
@@ -666,28 +356,6 @@
   .footer-links{display:flex;gap:20px;font-size:13px;color:var(--text-dim);}
   .footer-links a:hover{color:var(--teal);}
 
-  /* SCROLL TO TOP */
-  .scrolltop-btn{
-    position:fixed;bottom:26px;right:26px;width:46px;height:46px;border-radius:50%;
-    background:var(--surface);border:1px solid var(--border);color:var(--teal);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:150;
-    opacity:0;pointer-events:none;transform:translateY(12px) scale(.9);
-    transition:opacity .3s ease, transform .3s ease, border-color .18s ease;
-    box-shadow:0 10px 26px rgba(0,0,0,.35);
-  }
-  .scrolltop-btn.show{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
-  .scrolltop-btn:hover{border-color:var(--teal);}
-
-  /* toast */
-  #toast{
-    position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);z-index:250;
-    background:var(--surface);border:1px solid var(--teal);color:var(--text);
-    font-family:var(--mono);font-size:12.5px;padding:12px 20px;border-radius:100px;
-    opacity:0;pointer-events:none;transition:opacity .3s ease, transform .3s ease;
-    box-shadow:0 10px 26px rgba(0,0,0,.4);
-  }
-  #toast.show{opacity:1;transform:translate(-50%,0);}
-
   /* RESUME MODAL */
   .modal-overlay{
     position:fixed;inset:0;z-index:1000;background:rgba(4,7,14,0.78);backdrop-filter:blur(4px);
@@ -697,9 +365,9 @@
   .resume-modal{
     background:var(--surface);border:1px solid var(--border);border-radius:14px;
     max-width:760px;width:100%;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);
-    animation:modalIn .35s cubic-bezier(.16,.84,.44,1);
+    animation:modalIn .28s ease;
   }
-  @keyframes modalIn{from{opacity:0;transform:perspective(1000px) translateY(24px) rotateX(6deg) scale(.97);}to{opacity:1;transform:none;}}
+  @keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.98);}to{opacity:1;transform:none;}}
   .resume-modal-bar{
     display:flex;justify-content:space-between;align-items:center;
     padding:14px 20px;border-bottom:1px solid var(--border-soft);background:var(--surface-2);
@@ -716,7 +384,7 @@
   }
   .resume-close-btn:hover{color:var(--text);border-color:var(--teal);}
   .resume-doc{padding:32px 34px 40px;color:var(--text);background:var(--bg-elevated);}
-  .rd-head{display:flex;gap:18px;align-items:center;margin-bottom:26px;padding-bottom:22px;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+  .rd-head{display:flex;gap:18px;align-items:center;margin-bottom:26px;padding-bottom:22px;border-bottom:2px solid var(--border);}
   .rd-photo{width:78px;height:78px;border-radius:12px;object-fit:cover;border:2px solid var(--teal);flex-shrink:0;}
   .rd-name{font-family:var(--display);font-size:1.5rem;font-weight:700;}
   .rd-title{color:var(--teal);font-size:13.5px;margin-top:4px;font-weight:500;}
@@ -774,232 +442,20 @@
     .rd-skill-row b{ color:#000 !important; }
   }
 
-  [data-reveal]{opacity:0;transform:perspective(1000px) translateY(30px) rotateX(10deg);transition:opacity .7s ease, transform .7s cubic-bezier(.16,.84,.44,1);}
-  [data-reveal].in{opacity:1;transform:perspective(1000px) translateY(0) rotateX(0);}
-  .hero-load{opacity:0;transform:translateY(18px);animation:heroIn .8s cubic-bezier(.16,.84,.44,1) forwards;}
-  @keyframes heroIn{to{opacity:1;transform:translateY(0);}}
+  [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  [data-reveal].in{opacity:1;transform:translateY(0);}
   @media (prefers-reduced-motion: reduce){
     [data-reveal]{opacity:1;transform:none;transition:none;}
-    .hero-load{opacity:1;transform:none;animation:none;}
-    .brand .dot, .ledger-status .d, .cc-available .d, .live-badge .d{animation:none;}
-  }
-
-  /* mobile drawer */
-  #mobileDrawer{transform:translateX(100%);}
-  #mobileDrawer.open{transform:translateX(0);}
-  #mobileDrawerOverlay.open{opacity:1;pointer-events:auto;}
-
-  /* general mobile tightening */
-  @media (max-width:480px){
-    .wrap{padding:0 18px;}
-    section{padding:96px 0 28px;}
-    #home{padding-top:130px;}
-    .hero-ctas{flex-direction:column;align-items:stretch;}
-    .hero-ctas a{justify-content:center;}
-    .hero-stats{gap:22px;}
-    .m-top{flex-direction:column;}
-    .rd-entry-top{flex-direction:column;gap:2px;}
-    .module-toolbar{flex-direction:column;align-items:stretch;}
-    .filter-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;}
-    .scrolltop-btn{bottom:calc(18px + env(safe-area-inset-bottom));right:18px;width:42px;height:42px;}
-    .solar-svg{opacity:.75;}
-  }
-  @media (max-width:340px){
-    .hero-stats{gap:16px;}
-    .stat b{font-size:1.5rem;}
+    .brand .dot, .ledger-status .d, .cc-available .d{animation:none;}
   }
 </style>
 </head>
 <body>
-<div id="scrollProgress"></div>
-<div class="space-stage"></div>
-<svg class="solar-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <radialGradient id="sunCorona" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="rgba(255,200,110,.35)"/>
-      <stop offset="60%" stop-color="rgba(255,150,70,.12)"/>
-      <stop offset="100%" stop-color="rgba(255,150,70,0)"/>
-    </radialGradient>
-    <radialGradient id="sunHalo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="rgba(255,190,90,.6)"/>
-      <stop offset="100%" stop-color="rgba(255,190,90,0)"/>
-    </radialGradient>
-    <radialGradient id="sunGrad" cx="42%" cy="38%" r="68%">
-      <stop offset="0%" stop-color="#fffaeb"/>
-      <stop offset="22%" stop-color="#ffe396"/>
-      <stop offset="48%" stop-color="#ffb94d"/>
-      <stop offset="75%" stop-color="#f2782e"/>
-      <stop offset="100%" stop-color="#c8420f"/>
-    </radialGradient>
-    <filter id="sunTexture" x="-30%" y="-30%" width="160%" height="160%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.09 0.14" numOctaves="3" seed="6" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 0.55  0 0 0 0 0.1  0 0 0 0.55 0" result="tint"/>
-      <feComposite in="tint" in2="SourceAlpha" operator="in" result="clipped"/>
-      <feBlend in="SourceGraphic" in2="clipped" mode="overlay"/>
-    </filter>
-
-    <!-- realistic sphere gradients: bright highlight -> body color -> dark limb -->
-    <radialGradient id="pMercury" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#f2f0ec"/><stop offset="30%" stop-color="#c7c3bd"/><stop offset="68%" stop-color="#8b8781"/><stop offset="100%" stop-color="#48453f"/></radialGradient>
-    <radialGradient id="pVenus" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#fff2cf"/><stop offset="32%" stop-color="#e8c77e"/><stop offset="68%" stop-color="#c48f43"/><stop offset="100%" stop-color="#6b4a1e"/></radialGradient>
-    <radialGradient id="pEarth" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#bfe8ff"/><stop offset="28%" stop-color="#5fa6e8"/><stop offset="55%" stop-color="#2f6fb8"/><stop offset="80%" stop-color="#1a3f6e"/><stop offset="100%" stop-color="#0a1e38"/></radialGradient>
-    <radialGradient id="pMars" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#ffcfa8"/><stop offset="30%" stop-color="#e17a45"/><stop offset="68%" stop-color="#a4471f"/><stop offset="100%" stop-color="#54210c"/></radialGradient>
-    <radialGradient id="pJupiter" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#fbe6c4"/><stop offset="30%" stop-color="#e7bf8c"/><stop offset="62%" stop-color="#b9834e"/><stop offset="100%" stop-color="#5f3c20"/></radialGradient>
-    <radialGradient id="pSaturn" cx="36%" cy="30%" r="74%"><stop offset="0%" stop-color="#fcefd0"/><stop offset="32%" stop-color="#e9d3a0"/><stop offset="65%" stop-color="#c1a06a"/><stop offset="100%" stop-color="#5f4b2b"/></radialGradient>
-    <radialGradient id="pUranus" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#dafcf7"/><stop offset="35%" stop-color="#8fe0da"/><stop offset="70%" stop-color="#4aa39c"/><stop offset="100%" stop-color="#1c4844"/></radialGradient>
-    <radialGradient id="pNeptune" cx="38%" cy="32%" r="72%"><stop offset="0%" stop-color="#c6d4ff"/><stop offset="32%" stop-color="#6c8ef0"/><stop offset="68%" stop-color="#2f4bb0"/><stop offset="100%" stop-color="#131f52"/></radialGradient>
-
-    <!-- terminator shadow shared by every planet for a consistent 3D sphere read -->
-    <radialGradient id="shade" cx="68%" cy="66%" r="78%">
-      <stop offset="38%" stop-color="rgba(0,0,0,0)"/>
-      <stop offset="100%" stop-color="rgba(0,0,0,.68)"/>
-    </radialGradient>
-    <!-- soft rim light opposite the sun's key light -->
-    <radialGradient id="rimLight" cx="18%" cy="16%" r="30%">
-      <stop offset="0%" stop-color="rgba(255,255,255,.5)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-    </radialGradient>
-
-    <pattern id="bandsJupiter" patternUnits="objectBoundingBox" width="1" height="0.16">
-      <rect width="1" height="0.085" fill="#8a5a2e" opacity=".38"/>
-      <rect y="0.085" width="1" height="0.075" fill="#f4dcb0" opacity=".22"/>
-    </pattern>
-    <pattern id="bandsSaturn" patternUnits="objectBoundingBox" width="1" height="0.14">
-      <rect width="1" height="0.07" fill="#8f7440" opacity=".3"/>
-      <rect y="0.07" width="1" height="0.07" fill="#fdf0cf" opacity=".2"/>
-    </pattern>
-
-    <filter id="craterTex" x="-30%" y="-30%" width="160%" height="160%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="9" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0" result="a"/>
-      <feComposite in="a" in2="SourceAlpha" operator="in" result="clipped"/>
-      <feBlend in="SourceGraphic" in2="clipped" mode="multiply"/>
-    </filter>
-    <filter id="atmosBlur" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="6"/>
-    </filter>
-
-    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#caa96b" stop-opacity="0"/>
-      <stop offset="18%" stop-color="#e8d3a0" stop-opacity=".85"/>
-      <stop offset="40%" stop-color="#a9895a" stop-opacity=".55"/>
-      <stop offset="60%" stop-color="#e8d3a0" stop-opacity=".7"/>
-      <stop offset="82%" stop-color="#a9895a" stop-opacity=".5"/>
-      <stop offset="100%" stop-color="#caa96b" stop-opacity="0"/>
-    </linearGradient>
-
-    <path id="orbit1" d="M 640,460 A 120,44 0 1,0 880,460 A 120,44 0 1,0 640,460 Z"/>
-    <path id="orbit2" d="M 560,460 A 200,74 0 1,0 960,460 A 200,74 0 1,0 560,460 Z"/>
-    <path id="orbit3" d="M 480,460 A 280,104 0 1,0 1040,460 A 280,104 0 1,0 480,460 Z"/>
-    <path id="orbit4" d="M 400,460 A 360,134 0 1,0 1120,460 A 360,134 0 1,0 400,460 Z"/>
-    <path id="orbit5" d="M 320,460 A 440,164 0 1,0 1200,460 A 440,164 0 1,0 320,460 Z"/>
-    <path id="orbit6" d="M 240,460 A 520,194 0 1,0 1280,460 A 520,194 0 1,0 240,460 Z"/>
-    <path id="orbit7" d="M 150,460 A 610,228 0 1,0 1370,460 A 610,228 0 1,0 150,460 Z"/>
-    <path id="orbit8" d="M 70,460 A 690,257 0 1,0 1450,460 A 690,257 0 1,0 70,460 Z"/>
-  </defs>
-
-  <!-- orbit rings -->
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="120" ry="44"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="200" ry="74"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="280" ry="104"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="360" ry="134"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="440" ry="164"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="520" ry="194"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="610" ry="228"/>
-  <ellipse class="orbit-ring" cx="760" cy="460" rx="690" ry="257"/>
-
-  <!-- sun -->
-  <circle class="sun-glow" cx="760" cy="460" r="150" fill="url(#sunCorona)"/>
-  <circle class="sun-glow" cx="760" cy="460" r="95" fill="url(#sunHalo)"/>
-  <circle class="sun-core" cx="760" cy="460" r="42" fill="url(#sunGrad)"/>
-  <circle class="sun-core" cx="760" cy="460" r="42" fill="url(#sunGrad)" filter="url(#sunTexture)" opacity=".85"/>
-
-  <!-- Mercury: cratered rock -->
-  <g>
-    <animateMotion dur="14s" repeatCount="indefinite"><mpath href="#orbit1"/></animateMotion>
-    <circle r="6" fill="url(#pMercury)"/>
-    <circle r="6" fill="url(#pMercury)" filter="url(#craterTex)" opacity=".55"/>
-    <circle r="6" fill="url(#shade)"/>
-    <circle r="6" fill="url(#rimLight)" opacity=".4"/>
-  </g>
-
-  <!-- Venus: hazy clouded rock -->
-  <g>
-    <animateMotion dur="22s" repeatCount="indefinite"><mpath href="#orbit2"/></animateMotion>
-    <circle r="14" fill="url(#pVenus)" filter="url(#atmosBlur)" opacity=".3"/>
-    <circle r="9" fill="url(#pVenus)"/>
-    <circle r="9" fill="url(#shade)"/>
-    <circle r="9" fill="url(#rimLight)" opacity=".35"/>
-  </g>
-
-  <!-- Earth: blue marble with atmosphere -->
-  <g>
-    <animateMotion dur="32s" repeatCount="indefinite"><mpath href="#orbit3"/></animateMotion>
-    <circle r="16" fill="#4f8fe0" filter="url(#atmosBlur)" opacity=".35"/>
-    <circle r="10" fill="url(#pEarth)"/>
-    <circle r="10" fill="url(#pEarth)" filter="url(#craterTex)" opacity=".22"/>
-    <circle r="10" fill="url(#shade)"/>
-    <circle r="10" fill="url(#rimLight)" opacity=".5"/>
-  </g>
-
-  <!-- Mars: cratered red desert -->
-  <g>
-    <animateMotion dur="44s" repeatCount="indefinite"><mpath href="#orbit4"/></animateMotion>
-    <circle r="8" fill="url(#pMars)"/>
-    <circle r="8" fill="url(#pMars)" filter="url(#craterTex)" opacity=".5"/>
-    <circle r="8" fill="url(#shade)"/>
-    <circle r="8" fill="url(#rimLight)" opacity=".3"/>
-  </g>
-
-  <!-- Jupiter: banded gas giant -->
-  <g>
-    <animateMotion dur="60s" repeatCount="indefinite"><mpath href="#orbit5"/></animateMotion>
-    <circle r="30" fill="#e0b57c" filter="url(#atmosBlur)" opacity=".2"/>
-    <circle r="20" fill="url(#pJupiter)"/>
-    <circle r="20" fill="url(#bandsJupiter)"/>
-    <circle r="20" fill="url(#shade)"/>
-    <circle r="20" fill="url(#rimLight)" opacity=".35"/>
-  </g>
-
-  <!-- Saturn: banded gas giant with rings -->
-  <g>
-    <animateMotion dur="78s" repeatCount="indefinite"><mpath href="#orbit6"/></animateMotion>
-    <ellipse rx="34" ry="9" fill="none" stroke="url(#ringGrad)" stroke-width="7" transform="rotate(-18)"/>
-    <circle r="16" fill="url(#pSaturn)"/>
-    <circle r="16" fill="url(#bandsSaturn)"/>
-    <circle r="16" fill="url(#shade)"/>
-    <circle r="16" fill="url(#rimLight)" opacity=".35"/>
-    <ellipse rx="34" ry="9" fill="none" stroke="url(#ringGrad)" stroke-width="4" opacity=".8" transform="rotate(-18)" clip-path="inset(9px 0 0 0)"/>
-  </g>
-
-  <!-- Uranus: smooth pale ice giant -->
-  <g>
-    <animateMotion dur="96s" repeatCount="indefinite"><mpath href="#orbit7"/></animateMotion>
-    <circle r="20" fill="#7fd6cf" filter="url(#atmosBlur)" opacity=".25"/>
-    <circle r="13" fill="url(#pUranus)"/>
-    <circle r="13" fill="url(#shade)"/>
-    <circle r="13" fill="url(#rimLight)" opacity=".4"/>
-  </g>
-
-  <!-- Neptune: deep blue ice giant -->
-  <g>
-    <animateMotion dur="115s" repeatCount="indefinite"><mpath href="#orbit8"/></animateMotion>
-    <circle r="19" fill="#4f6fe0" filter="url(#atmosBlur)" opacity=".3"/>
-    <circle r="12" fill="url(#pNeptune)"/>
-    <circle r="12" fill="url(#shade)"/>
-    <circle r="12" fill="url(#rimLight)" opacity=".4"/>
-  </g>
-</svg>
-<div class="nebula" id="nebula"></div>
-<div class="stars-layer" id="starsSmall"></div>
-<div class="stars-layer" id="starsMedium"></div>
-<div class="stars-layer" id="starsLarge"></div>
 <div class="grid-bg"></div>
-<div id="cursorGlow"></div>
-<div id="toast"></div>
 
 <header>
   <nav>
-    <div class="brand"><span class="dot"></span>Daud Amjad.</div>
+    <div class="brand"><span class="dot"></span>DA.</div>
     <div class="navlinks">
       <a href="#home" class="navlink active">Home</a>
       <a href="#about" class="navlink">About</a>
@@ -1011,39 +467,15 @@
       <a href="#contact" class="navlink">Contact</a>
     </div>
     <button class="nav-cta" id="openResumeBtn" type="button">Résumé ↗</button>
-    <button id="mobileMenuBtn" type="button" aria-label="Open menu" class="mobile-menu-btn items-center justify-center w-9 h-9 rounded-full border border-white/10 text-teal-300 ml-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
   </nav>
 </header>
-
-<!-- MOBILE DRAWER -->
-<div id="mobileDrawerOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;opacity:0;pointer-events:none;transition:opacity .3s ease;"></div>
-<div id="mobileDrawer" style="position:fixed;top:0;right:0;height:100%;width:280px;max-width:82vw;background:#0F1526;border-left:1px solid rgba(255,255,255,.1);z-index:200;transition:transform .3s ease-out;padding:24px;display:flex;flex-direction:column;gap:4px;box-shadow:-10px 0 40px rgba(0,0,0,.5);">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-    <span style="font-weight:600;color:#fff;font-family:var(--display);">Menu</span>
-    <button id="closeMobileDrawer" type="button" aria-label="Close menu" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;background:none;cursor:pointer;">✕</button>
-  </div>
-  <a href="#home" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Home</a>
-  <a href="#about" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">About</a>
-  <a href="#toolkit" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Toolkit</a>
-  <a href="#modules" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Modules</a>
-  <a href="#projects" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Projects</a>
-  <a href="#path" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Path</a>
-  <a href="#estimate" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Estimate</a>
-  <a href="#contact" class="mobile-navlink" style="display:block;padding:12px 16px;border-radius:8px;color:rgba(255,255,255,.8);transition:.2s;">Contact</a>
-  <button id="mobileResumeBtn" type="button" style="margin-top:16px;border:none;border-radius:100px;background:linear-gradient(135deg,var(--violet),#6E62D9);color:#fff;font-weight:600;padding:13px;cursor:pointer;">Résumé ↗</button>
-</div>
 
 <main class="wrap">
 
   <!-- HERO -->
   <section id="home">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
     <div class="hero-grid">
-      <div class="hero-load" style="animation-delay:.05s;">
+      <div data-reveal>
         <div class="hero-tag">● PRODUCTION ERP · KK NETWORKS (ISP / TELECOM)</div>
         <h1 class="headline">Odoo 19 development that<span class="accent"> holds up</span> once it hits <span class="accent2">production.</span></h1>
         <p class="hero-sub">I'm <b>Daud Amjad</b> — an Odoo 19 Developer who builds and maintains the CRM, subscription billing, accounting, and network-operations modules running a live telecom business. I write the Python and XML that make a workflow behave the way the business needs — then I'm the one who finds out why it didn't.</p>
@@ -1052,44 +484,29 @@
           <a href="#contact" class="btn-secondary">Get in touch</a>
         </div>
         <div class="hero-stats">
-          <div class="stat"><b data-count="15" data-suffix="+">25+</b><span>Modules Maintained</span></div>
+          <div class="stat"><b>15+</b><span>Modules Maintained</span></div>
           <div class="stat"><b>17→19</b><span>Odoo Migration Led</span></div>
-          <div class="stat"><b data-count="2" data-suffix="">3</b><span>Live Environments</span></div>
-          <div class="stat"><b data-count="2026" data-suffix="">2026</b><span>CS Graduate</span></div>
+          <div class="stat"><b>2</b><span>Live Environments</span></div>
+          <div class="stat"><b>2026</b><span>CS Graduate</span></div>
         </div>
       </div>
 
-      <div class="hero-load" style="animation-delay:.2s;">
-        <div class="tilt-wrap">
-        <div class="ledger" id="tiltLedger">
+      <div data-reveal>
+        <div class="ledger">
           <div class="ledger-top">
-            <span class="path">location.pop — geo_localize_location()</span>
-            <span class="ledger-status" id="ledgerStatus" style="color:var(--amber);"><span class="d" style="background:var(--amber);"></span><span id="statusText">not localized</span></span>
+            <span class="path">account.move.line — invoice #INV/2026/0417</span>
+            <span class="ledger-status" id="ledgerStatus" style="color:var(--amber);"><span class="d" style="background:var(--amber);"></span><span id="statusText">duplicate detected</span></span>
           </div>
-          <div class="ledger-body" style="padding-bottom:16px;">
-            <div class="l-row" style="border:none;padding-bottom:12px;">
-              <span class="k">Station</span>
-              <select id="citySelect" class="city-select">
-                <option value="lahore" selected>Lahore</option>
-                <option value="islamabad">Islamabad</option>
-                <option value="faisalabad">Faisalabad</option>
-                <option value="multan">Multan</option>
-                <option value="sialkot">Sialkot</option>
-              </select>
-            </div>
-
-            <div id="popRealMap" class="pop-real-map"></div>
-            <div class="map-caption">LIVE MAP — OPENSTREETMAP · PAKISTAN POP NETWORK</div>
-
-            <div class="l-row"><span class="k">Latitude</span><span class="v" id="latVal">—</span></div>
-            <div class="l-row"><span class="k">Longitude</span><span class="v" id="lngVal">—</span></div>
-            <div class="l-row l-row-total"><span class="k">Date Localization</span><span class="v" id="dateVal">—</span></div>
+          <div class="ledger-body" id="ledgerBody">
+            <div class="l-row"><span class="k">Line 1</span><span class="v" id="line1">Basic Plan — Rs. 2,500</span></div>
+            <div class="l-row" id="line2Row"><span class="k">Line 2</span><span class="v" id="line2">Basic Plan — Rs. 2,500 <span style="color:var(--amber);">(orphaned)</span></span></div>
+            <div class="l-row"><span class="k">Alterations this month</span><span class="v" id="alterVal">2</span></div>
+            <div class="l-row"><span class="k">Invoice Total</span><span class="v" id="totalVal">Rs. 5,000</span></div>
           </div>
           <div class="ledger-foot">
-            <button class="ledger-btn" id="upgradeBtn">Geo-Localize This POP →</button>
-            <div class="ledger-note">Real feature: picking a station calls <span style="font-family:var(--mono);">geo_localize_location()</span>, which geocodes the address and writes <span style="font-family:var(--mono);">partner_latitude</span> / <span style="font-family:var(--mono);">partner_longitude</span> — the same coordinates that power the module's live map view.</div>
+            <button class="ledger-btn" id="upgradeBtn">Run Fix → Dedupe Invoice Lines</button>
+            <div class="ledger-note">Real bug: multiple same-month alterations were writing a fresh invoice line each time instead of updating the existing one.</div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -1120,7 +537,7 @@
 
       <div data-reveal>
         <div class="profile-card">
-          <img src="profile.jpg" alt="Daud Amjad" class="profile-photo" onerror="this.style.display='none'">
+          <img src="profile.jpg" alt="Daud Amjad" class="profile-photo">
           <div class="profile-info">
             <div class="profile-name">Daud Amjad</div>
             <div class="profile-role">Odoo 19 Developer — Team Lead</div>
@@ -1143,7 +560,7 @@
   <!-- TOOLKIT -->
   <section id="toolkit">
     <div class="eyebrow">( 02 ) — Capabilities</div>
-    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:36px;">The stack behind the ERP.</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:36px;">The stack behind the ERP.</h2>
 
     <div class="tk-cat" data-reveal>
       <div class="tk-cat-head"><span class="tk-num">01</span><span class="tk-name">Languages &amp; Backend</span></div>
@@ -1182,182 +599,94 @@
   <!-- MODULE REGISTRY -->
   <section id="modules">
     <div class="eyebrow">( 03 ) — Module Registry</div>
-    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:14px;">Modules I've built and keep running.</h2>
-    <p class="about-body" style="margin-bottom:28px;">A working slice of the custom Odoo 19 suite deployed at KK Networks — each one still live in production. Filter by domain, or expand a card for the technical detail.</p>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">Modules I've built and keep running.</h2>
+    <p class="about-body" style="margin-bottom:36px;">A working slice of the custom Odoo 19 suite deployed at KK Networks — each one still live in production.</p>
 
-    <div class="module-toolbar" data-reveal>
-      <input type="text" id="moduleSearch" class="module-search" placeholder="Search modules — e.g. 'billing', 'invoice', 'approval'...">
-      <div class="filter-chips" id="filterChips">
-        <button class="filter-chip active" data-filter="all">All</button>
-        <button class="filter-chip" data-filter="billing">Billing</button>
-        <button class="filter-chip" data-filter="crm">CRM</button>
-        <button class="filter-chip" data-filter="accounting">Accounting</button>
-        <button class="filter-chip" data-filter="hr">HR</button>
-        <button class="filter-chip" data-filter="infra">Infra</button>
-      </div>
-    </div>
-    <div class="module-count" id="moduleCount">Showing 7 of 7 modules</div>
-
-    <div class="module-card" data-reveal data-tags="billing accounting" data-search="services fixed subscription approval kanban notifications">
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">services_fixed</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Stage-based approval workflows for IP Lead, Termination, IP Change Request, and Upgrade/Downgrade requests — with per-stage approver configuration by user or department, Kanban pipelines, and stage-wise email notifications modeled on the company's CRM.</p>
       <div class="m-tags"><span class="m-tag">Python</span><span class="m-tag">Approval Workflows</span><span class="m-tag">QWeb Email Templates</span><span class="m-tag">Kanban Views</span></div>
-      <button class="expand-btn" data-target="detail-1">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-1">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Same-day double-approval on Upgrade/Downgrade could produce a nonsensical 2-day sliver invoice line — traced to alter-subscription logic recomputing off the wrong active line.</li>
-            <li>Termination inventory sourcing moved from <code>stock.quant</code> to full <code>stock.move</code> history, since quants missed service/consumable products entirely.</li>
-            <li>Fixed zero/negative quant counting and a mismatched <code>product_uom_id</code> field name that silently broke reporting.</li>
-            <li>Added stage-wise email dispatch across all four workflow models, with deduplicated recipients from stage custodians plus record creator.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="billing accounting" data-search="sales subscription enhancement update sale proration mrr invoice cron">
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">sales_subscription_enhancement <span class="path-sep">/</span> update_sale_subscription</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">The subscription billing engine — Alter Subscription approvals write correct old/new quantity, price, and date values into invoice lines and subscription history, cross-month proration is handled correctly, and recurring invoice generation advances from the actual last invoice date instead of resetting.</p>
       <div class="m-tags"><span class="m-tag">Subscription Logic</span><span class="m-tag">Invoicing</span><span class="m-tag">Cron Jobs</span><span class="m-tag">Proration</span></div>
-      <button class="expand-btn" data-target="detail-2">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-2">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Fixed a missing <code>partner_id</code> filter that let invoice matching pick up the wrong customer's line during alteration.</li>
-            <li>Removed duplicate orphaned invoice lines created when a subscription was altered more than once in the same month.</li>
-            <li>Resolved a race condition between <code>_compute_actual_used_price</code> and <code>_compute_total_price_to_pay</code> that was producing Rs. 0 invoice amounts.</li>
-            <li>Traced a blocking <code>"Only one product line is allowed in subscription"</code> validation error to a hard-coded <code>len(order_line) &gt; 1</code> check colliding with a <code>name</code> vs <code>default_code</code> product mismatch.</li>
-            <li>Added <code>mrr_reopen_fix.py</code> to correctly compensate the MRR baseline when a subscription is reopened.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="accounting" data-search="accounting enhancements invoice design tax pra ait qweb">
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">accouting_enhancements <span class="path-sep">/</span> kkn_invoice_design</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Invoice PDF templates that report the tax-inclusive total instead of base price, and correctly expand grouped taxes — PRA 19.5%, AIT 15% — into individual line-item columns for accounting review.</p>
       <div class="m-tags"><span class="m-tag">QWeb PDF</span><span class="m-tag">Accounting</span><span class="m-tag">Tax Reporting</span></div>
-      <button class="expand-btn" data-target="detail-3">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-3">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Rebuilt the QWeb report to break out grouped taxes into named columns instead of a single lumped tax figure.</li>
-            <li>Recurring bills module (<code>update_account_kkn_extend</code>) got working clone/delete logic for posted bills, corrected view-button domains, fixed date formatting, and rebuilt <code>ir.model.access.csv</code> permissions.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="infra" data-search="pop utility electricity gas water telephone fuel dashboard custodian">
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">pop <span class="path-sep">/</span> utility suite</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Point-of-Presence infrastructure tracking with live smart-button counters across six utility modules — electricity, gas, water, telephone, fuel — plus stage-based custodian permissions and localized date handling.</p>
       <div class="m-tags"><span class="m-tag">Infra Tracking</span><span class="m-tag">Dashboards</span><span class="m-tag">Computed Fields</span></div>
-      <button class="expand-btn" data-target="detail-4">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-4">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Fixed multi-stage approval button visibility by correcting <code>_get_approval()</code> to check the actual current stage's custodian, not a stale one.</li>
-            <li>Switched <code>is_stage_custodian</code> to <code>store=False</code> so it recomputes live on every form load instead of caching a wrong value.</li>
-            <li>Standardized date fields to <code>DD/MM/YYYY</code> without a calendar popup, and resolved a <code>ValueError</code> from writing formatted strings into a <code>fields.Date</code>.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="crm" data-search="crm kkn lead pipeline stage custodian notification">
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">kkn_crm_19</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">The company's CRM pipeline — lead stages, custodian-based approval routing, and the stage-wise email notification pattern that every other approval workflow at KK Networks (services, terminations, upgrades) is now modeled on.</p>
       <div class="m-tags"><span class="m-tag">CRM</span><span class="m-tag">Lead Pipeline</span><span class="m-tag">Notifications</span></div>
-      <button class="expand-btn" data-target="detail-5">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-5">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Established the per-stage subject/body template pattern with direct <code>mail.mail</code> dispatch, later reused across four other workflow modules.</li>
-            <li>Custodian-routing logic became the reference implementation for <code>services_fixed</code> and <code>netops</code> stage approvals.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="hr" data-search="applicant portal candidate evaluation payroll onboarding education">
+    <div class="module-card" data-reveal>
+      <div class="m-top">
+        <div class="m-name">update_account_kkn_extend</div>
+        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
+      </div>
+      <p class="m-desc">Recurring bills and accounts module — clone and delete logic for posted bills, corrected view-button domains and date formatting, and access rights rebuilt from a broken <span class="m-tag" style="border:none;padding:0;">ir.model.access.csv</span> configuration.</p>
+      <div class="m-tags"><span class="m-tag">Accounts</span><span class="m-tag">Recurring Bills</span><span class="m-tag">Access Rights</span></div>
+    </div>
+
+    <div class="module-card" data-reveal>
       <div class="m-top">
         <div class="m-name">kkn_applicant_portal <span class="path-sep">/</span> kkn_candidate_evaluation_report</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">HR &amp; hiring — applicant portal with certification tracking on employee records, salary structure configuration for onboarded staff, and a candidate evaluation QWeb report rebuilt from a broken layout into a fully paginated, correctly footered PDF.</p>
       <div class="m-tags"><span class="m-tag">HR</span><span class="m-tag">Payroll Setup</span><span class="m-tag">QWeb Reports</span></div>
-      <button class="expand-btn" data-target="detail-6">Technical detail <span class="chev">▾</span></button>
-      <div class="m-detail" id="detail-6">
-        <div class="m-detail-inner">
-          <ul>
-            <li>Fixed the education print template where degree titles rendered in the wrong column.</li>
-            <li>Rebuilt pagination and footer repetition on the candidate evaluation report so multi-page evaluations print cleanly.</li>
-          </ul>
-        </div>
-      </div>
     </div>
 
-    <div class="module-card" data-reveal data-tags="infra" data-search="netops network operations multi company tufa">
+    <div class="module-card" data-reveal style="margin-bottom:0;">
       <div class="m-top">
         <div class="m-name">netops</div>
         <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
       </div>
       <p class="m-desc">Network Operations — tracks infrastructure assets and service records across KK Networks' and Tufa Telecommunication's ISP network, feeding the same custodian and stage-approval structure used across the other workflow modules.</p>
       <div class="m-tags"><span class="m-tag">Netops</span><span class="m-tag">Infrastructure</span><span class="m-tag">Multi-Company</span></div>
-
-      <button type="button" class="map-toggle-btn" id="netopsMapBtn" onclick="toggleNetopsMap()">View Coverage Map ▾</button>
-
-      <div class="netops-map-wrap" id="netopsMapWrap">
-        <svg viewBox="0 0 640 300" class="netops-svg" xmlns="http://www.w3.org/2000/svg">
-          <line x1="320" y1="150" x2="120" y2="60" class="net-line"/>
-          <line x1="320" y1="150" x2="520" y2="55" class="net-line"/>
-          <line x1="320" y1="150" x2="90" y2="220" class="net-line"/>
-          <line x1="320" y1="150" x2="330" y2="260" class="net-line"/>
-          <line x1="320" y1="150" x2="530" y2="230" class="net-line"/>
-
-          <circle cx="320" cy="150" r="15" class="net-core"/>
-          <text x="320" y="130" class="net-label net-core-label" text-anchor="middle">KKN NOC — Core</text>
-
-          <g class="net-node"><circle cx="120" cy="60" r="8"/><text x="120" y="42" class="net-label" text-anchor="middle">Model Town</text></g>
-          <g class="net-node"><circle cx="520" cy="55" r="8"/><text x="520" y="37" class="net-label" text-anchor="middle">Gulberg</text></g>
-          <g class="net-node"><circle cx="90" cy="220" r="8"/><text x="90" y="245" class="net-label" text-anchor="middle">Township</text></g>
-          <g class="net-node"><circle cx="330" cy="260" r="8"/><text x="330" y="285" class="net-label" text-anchor="middle">Iqbal Town</text></g>
-          <g class="net-node"><circle cx="530" cy="230" r="8"/><text x="530" y="255" class="net-label" text-anchor="middle">DHA</text></g>
-        </svg>
-        <div class="netops-map-note">Illustrative POP topology — five area nodes reporting status back to the core, the same structure the <b style="color:var(--text);">netops</b> module tracks.</div>
-      </div>
     </div>
-
-    <p id="noModulesMsg" style="display:none;color:var(--text-faint);font-family:var(--mono);font-size:13px;padding:20px 0;">No modules match that search — try a different term or clear the filter.</p>
   </section>
 
   <!-- PROJECTS -->
   <section id="projects">
-    <div class="eyebrow">( 04 ) — Beyond Odoo</div>
-    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:14px;">Full-stack &amp; AI projects I've built end to end.</h2>
-    <p class="about-body" style="margin-bottom:36px;">The Odoo work is the day job — outside of it, this is what I build on my own: an AI-powered platform for university, and a full business management system for a real client.</p>
+    <div class="eyebrow">( 04 ) — Academic Project</div>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">Final Year Project — built end to end.</h2>
+    <p class="about-body" style="margin-bottom:36px;">Outside the Odoo work, this is the project I led at university — a full-stack AI travel platform, taken from idea defence through to a tested, deployed final system.</p>
 
-    <div class="module-card" data-reveal>
+    <div class="module-card" data-reveal style="margin-bottom:0;">
       <div class="m-top">
         <div class="m-name">Wander Hub AI</div>
-        <div class="m-badges"><span class="badge prod">BSCS Final Year Project — S25BS053</span><span class="badge ver">UCP · 2025 – 2026</span></div>
+        <div class="m-badges"><span class="badge prod">BSCS Final Year Project</span><span class="badge ver">2025 – 2026</span></div>
       </div>
-      <p class="m-desc">An AI-powered web-based tourism assistant built to make trip planning across Pakistan simpler and more personal — smart package recommendations, an NLP chatbot, voice interaction, multilingual translation, real-time weather, and live currency conversion, all in one platform for travelers, guides, and admins. Built by <b style="color:var(--text);">Daud Amjad</b> as a BSCS Final Year Project, advised by Mr. Jawad Hassan — covering documentation, frontend development, and AI model training.</p>
+      <p class="m-desc">An AI-powered web platform for planning trips across Pakistan — built with a three-person team (Group S25BS053) under advisor Mr. Jawad Hassan. My role covered <b style="color:var(--text);">documentation, frontend development, and AI model training.</b></p>
 
       <div class="rule" style="margin:20px 0;"></div>
 
@@ -1365,30 +694,24 @@
         <div class="proj-block">
           <div class="proj-block-head">What it does</div>
           <ul class="proj-list">
-            <li>KNN and K-Means models recommend travel packages by budget, destination, and travel mode (air/road) — trained and tuned as part of my AI model training role</li>
-            <li>NLP-powered chatbot resolves travel queries and helps shape itineraries in natural conversation</li>
-            <li>Speech-to-text voice input plus multilingual text translation with text-to-speech playback for foreign visitors</li>
-            <li>Live weather forecasting (Open-Meteo) and an instant currency converter for trip budgeting</li>
-            <li>Custom travel package requests, Hajj &amp; Umrah packages, and guide booking with in-app chat</li>
-            <li>Role-based dashboards for User, Travel Guide, and Admin — bookings, payments, package management, and analytics</li>
+            <li>KNN and K-Means models recommend travel packages by budget, destination, and travel mode (air/road)</li>
+            <li>NLP chatbot answers travel questions and helps build itineraries in natural conversation</li>
+            <li>Voice input (speech-to-text) and multilingual text translation with text-to-speech playback</li>
+            <li>Live weather forecasting (Open-Meteo) and currency conversion for trip budgeting</li>
+            <li>Separate User, Travel Guide, and Admin dashboards with booking, chat, and payment workflows</li>
           </ul>
         </div>
         <div class="proj-block">
-          <div class="proj-block-head">Layout &amp; screens</div>
+          <div class="proj-block-head">Layout &amp; pages</div>
           <ul class="proj-list">
-            <li>Landing page — feature highlights, role-based Login/Sign-up (User / Guider / Admin)</li>
-            <li>All / Air / Road package browser with filters, ratings, and cart</li>
-            <li>AI Predictor — destination/budget/days/transport inputs → ranked package matches with a content-vs-price match slider</li>
-            <li>Translator &amp; Chatbot panel, voice input side by side</li>
-            <li>Guide panel (accept/reject bookings, live chat, availability) and Admin panel (bookings, payments, package requests, revenue analytics)</li>
-            <li>Currency converter, weather forecast with map, and a demo payment/receipt flow</li>
+            <li>Landing page with feature highlights and role-based login/signup</li>
+            <li>Package browser — All / Air / Road packages with filters, ratings, and cart</li>
+            <li>AI Predictor — budget/days/transport inputs → ranked package matches</li>
+            <li>Translator &amp; Chatbot panel, side by side</li>
+            <li>Guide panel (bookings + chat) and Admin panel (bookings, payments, package requests, analytics)</li>
           </ul>
         </div>
       </div>
-
-      <div class="rule" style="margin:20px 0;"></div>
-      <div class="proj-block-head" style="margin-bottom:12px;">Abstract (from the final report)</div>
-      <p class="m-desc" style="font-style:italic;">Wander Hub AI is an intelligent web-based tourism assistant built to make exploring Pakistan easier. It recommends tours and packages using K-Nearest Neighbors based on budget, location, and travel mode, backed by a conversational NLP chatbot, a speech-to-text voice module, and multilingual translation for foreign visitors. Users browse destinations and packages, manage profiles, and get admin responses, while guides and admins track queries, update packages, and message users through a dedicated dashboard — making it a smart, scalable way to enhance travel in Pakistan.</p>
 
       <div class="rule" style="margin:20px 0;"></div>
       <div class="proj-block-head" style="margin-bottom:12px;">Stack &amp; skills applied</div>
@@ -1396,54 +719,7 @@
         <span class="m-tag">Python (Flask)</span><span class="m-tag">Node.js</span><span class="m-tag">HTML / CSS / JS</span>
         <span class="m-tag">Tailwind CSS</span><span class="m-tag">KNN</span><span class="m-tag">K-Means Clustering</span>
         <span class="m-tag">NLP</span><span class="m-tag">scikit-learn</span><span class="m-tag">AI Model Training</span>
-        <span class="m-tag">Open-Meteo API</span><span class="m-tag">Google Translate &amp; TTS</span><span class="m-tag">OpenStreetMap</span>
-        <span class="m-tag">MySQL</span><span class="m-tag">XAMPP (local dev)</span><span class="m-tag">JWT Auth</span>
-      </div>
-    </div>
-
-    <div class="module-card" data-reveal style="margin-top:18px;margin-bottom:0;">
-      <div class="m-top">
-        <div class="m-name">Mian Amjad Garments — Business Management System</div>
-        <div class="m-badges"><span class="badge prod">Client Project</span><span class="badge ver">Full-Stack</span></div>
-      </div>
-      <p class="m-desc">A complete inventory, billing, and ledger system built for a garments/textile business, from role-based login to printable invoices. Built solo by <b style="color:var(--text);">Daud Amjad</b> — frontend, backend API, and business logic. Live and in real use by the client today.</p>
-
-      <a href="https://mian-amjad-garments-erp.vercel.app/" target="_blank" rel="noopener" class="live-badge" style="margin-bottom:20px;"><span class="d"></span>View Live Site ↗ — mian-amjad-garments-erp.vercel.app</a>
-
-      <div class="rule" style="margin:20px 0;"></div>
-
-      <div class="proj-grid">
-        <div class="proj-block">
-          <div class="proj-block-head">What it does</div>
-          <ul class="proj-list">
-            <li>Role-based Admin and Customer portals behind a single login screen, backed by token auth</li>
-            <li>Multi-attribute inventory (product × color × size) with live stock-in / sold / current-stock tracking and stock valuation</li>
-            <li>A custom per-inch pricing calculator for made-to-measure items — quick-select inch presets plus custom measurement input, auto-computing purchase and sale price</li>
-            <li>Billing engine with percent/fixed discounts, GST tax, live invoice preview, and one-click branded printable invoice</li>
-            <li>Customer ledger with running balances, payments, and full transaction history</li>
-            <li>Orders, purchase orders, and a business-wide reports dashboard (stock value, sales, receivables, total business value)</li>
-          </ul>
-        </div>
-        <div class="proj-block">
-          <div class="proj-block-head">Layout &amp; screens</div>
-          <ul class="proj-list">
-            <li>Branded login with Admin / Customer role switch</li>
-            <li>Dashboard — stock value, pieces in stock, sales, receivables, low/sold-out stock alerts, recent transactions</li>
-            <li>Inventory browser tabbed by product line</li>
-            <li>Stock Entry — separate Stock In and Stock Out panels with the per-inch calculator</li>
-            <li>Billing panel with live invoice preview and print</li>
-            <li>Customers &amp; Ledger, Orders &amp; Purchase Orders, and Reports panels</li>
-            <li>Customer-facing portal — My Orders, My Balance, New Order</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="rule" style="margin:20px 0;"></div>
-      <div class="proj-block-head" style="margin-bottom:12px;">Stack &amp; skills applied</div>
-      <div class="m-tags" style="margin-bottom:0;">
-        <span class="m-tag">JavaScript (Vanilla SPA)</span><span class="m-tag">REST API</span><span class="m-tag">Token Auth</span>
-        <span class="m-tag">Dynamic Pricing Logic</span><span class="m-tag">Invoice Generation</span><span class="m-tag">Ledger &amp; Payments</span>
-        <span class="m-tag">Role-Based Access</span><span class="m-tag">Print-to-PDF</span>
+        <span class="m-tag">Open-Meteo API</span><span class="m-tag">Translation &amp; TTS API</span><span class="m-tag">MySQL</span>
       </div>
     </div>
   </section>
@@ -1451,7 +727,7 @@
   <!-- PATH -->
   <section id="path">
     <div class="eyebrow">( 05 ) — Experience &amp; Education</div>
-    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:36px;">The path so far.</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:36px;">The path so far.</h2>
 
     <div class="path-grid">
       <div data-reveal>
@@ -1522,7 +798,7 @@
   <!-- ESTIMATE / BUSINESS CALCULATOR -->
   <section id="estimate">
     <div class="eyebrow">( 06 ) — Business Tool</div>
-    <h2 style="font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:14px;">What would your Odoo project cost?</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">What would your Odoo project cost?</h2>
     <p class="about-body" style="margin-bottom:32px;max-width:640px;">A rough, transparent starting point — not a quote. Pick what you need and I'll follow up with an exact scope and price.</p>
 
     <div class="calc-card" data-reveal>
@@ -1584,7 +860,6 @@
           <div class="cc-row"><span class="k">Based in</span><span class="v">Lahore, Pakistan</span></div>
           <div class="cc-row"><span class="k">LinkedIn</span><span class="v">/in/daud-amjad-0625113b1</span></div>
           <div class="cc-row"><span class="k">Availability</span><span class="v cc-available"><span class="d"></span>Open to opportunities</span></div>
-          <div class="cc-row"><span class="k">Email</span><button class="copy-btn" id="copyEmailBtn" type="button">Copy address</button></div>
         </div>
       </div>
     </div>
@@ -1599,16 +874,10 @@
   </section>
 </main>
 
-<button class="scrolltop-btn" id="scrollTopBtn" type="button" aria-label="Scroll to top">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-</button>
-
 <script>
-  // Nav active state on scroll + scroll progress bar
+  // Nav active state on scroll
   const sections = document.querySelectorAll('section[id]');
   const navlinks = document.querySelectorAll('.navlink');
-  const scrollProgress = document.getElementById('scrollProgress');
-  const scrollTopBtn = document.getElementById('scrollTopBtn');
   function onScroll(){
     let current = sections[0].id;
     const offset = 140;
@@ -1618,310 +887,60 @@
     navlinks.forEach(l=>{
       l.classList.toggle('active', l.getAttribute('href') === '#'+current);
     });
-    const doc = document.documentElement;
-    const total = doc.scrollHeight - doc.clientHeight;
-    scrollProgress.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
-    scrollTopBtn.classList.toggle('show', window.scrollY > 700);
   }
   window.addEventListener('scroll', onScroll);
   onScroll();
-  scrollTopBtn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
 
-  // ===== Space background: shooting stars =====
-  const spaceReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if(!spaceReduced){
-    function spawnShootingStar(){
-      const el = document.createElement('div');
-      el.className = 'shooting-star';
-      el.style.top = (Math.random() * 45) + 'vh';
-      el.style.left = (55 + Math.random() * 40) + 'vw';
-      document.body.appendChild(el);
-      setTimeout(()=>el.remove(), 1400);
-    }
-    setInterval(()=>{ if(Math.random() < 0.55) spawnShootingStar(); }, 4200);
-    setTimeout(spawnShootingStar, 1200);
-  }
-
-  // cursor spotlight glow (hover-capable devices only)
-  const cursorGlow = document.getElementById('cursorGlow');
-  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    window.addEventListener('mousemove', e=>{
-      cursorGlow.style.opacity = '1';
-      cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
-    });
-    window.addEventListener('mouseleave', ()=>{ cursorGlow.style.opacity = '0'; });
-  }
-
-  // module-card spotlight follow (mouse position -> CSS vars)
-  document.querySelectorAll('.module-card').forEach(card=>{
-    card.addEventListener('mousemove', e=>{
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
-  });
-
-  // Reveal on scroll — staggered, with count-up for numeric stats
+  // Reveal on scroll
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function animateCountUp(el){
-    const target = parseInt(el.dataset.count, 10);
-    const suffix = el.dataset.suffix || '';
-    if(isNaN(target)) return;
-    const dur = 1100;
-    const start = performance.now();
-    function tick(now){
-      const p = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if(p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-
   if(!reduced && 'IntersectionObserver' in window){
-    document.querySelectorAll('[data-reveal]').forEach((el,i)=>{ el.style.transitionDelay = (i % 6) * 70 + 'ms'; });
     const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('in');
-          e.target.querySelectorAll('[data-count]').forEach(animateCountUp);
-          io.unobserve(e.target);
-        }
-      });
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
     }, {threshold:0.15});
     document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
   } else {
-    document.querySelectorAll('[data-reveal]').forEach(el=>{
-      el.classList.add('in');
-      el.querySelectorAll('[data-count]').forEach(n=>{ n.textContent = n.dataset.count + (n.dataset.suffix||''); });
-    });
+    document.querySelectorAll('[data-reveal]').forEach(el=>el.classList.add('in'));
   }
 
-  // Ripple feedback on primary interactive buttons
-  document.querySelectorAll('.btn-primary,.btn-secondary,.ledger-btn,.map-toggle-btn,.nav-cta,.calc-step-btn,.calc-opt,.filter-chip,.expand-btn,.copy-btn,.scrolltop-btn').forEach(btn=>{
-    btn.addEventListener('click', function(e){
-      const r = this.getBoundingClientRect();
-      const d = Math.max(r.width, r.height);
-      const span = document.createElement('span');
-      span.className = 'ripple-el';
-      span.style.width = span.style.height = d + 'px';
-      span.style.left = (e.clientX - r.left - d/2) + 'px';
-      span.style.top = (e.clientY - r.top - d/2) + 'px';
-      this.appendChild(span);
-      setTimeout(()=>span.remove(), 650);
-    });
-  });
-
-  // ===== Mobile drawer menu =====
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileDrawer = document.getElementById('mobileDrawer');
-  const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
-  const closeMobileDrawer = document.getElementById('closeMobileDrawer');
-  const mobileResumeBtn = document.getElementById('mobileResumeBtn');
-
-  function openDrawer(){
-    mobileDrawer.classList.add('open');
-    mobileDrawerOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeDrawer(){
-    mobileDrawer.classList.remove('open');
-    mobileDrawerOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  mobileMenuBtn?.addEventListener('click', openDrawer);
-  closeMobileDrawer?.addEventListener('click', closeDrawer);
-  mobileDrawerOverlay?.addEventListener('click', closeDrawer);
-  document.querySelectorAll('.mobile-navlink').forEach(a=>a.addEventListener('click', closeDrawer));
-  mobileResumeBtn?.addEventListener('click', ()=>{ closeDrawer(); openResume(); });
-
-  // ===== 3D tilt on hover (desktop / hover-capable devices only) =====
-  function apply3DTilt(selector, intensity){
-    if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-    document.querySelectorAll(selector).forEach(el=>{
-      el.addEventListener('mousemove', e=>{
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transition = 'transform .06s linear';
-        el.style.transform = `perspective(1000px) rotateY(${x*intensity}deg) rotateX(${-y*intensity}deg) translateZ(6px)`;
-      });
-      el.addEventListener('mouseleave', ()=>{
-        el.style.transition = 'transform .6s cubic-bezier(.16,.84,.44,1)';
-        el.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) translateZ(0)';
-      });
-    });
-  }
-  apply3DTilt('.module-card', 4);
-  apply3DTilt('#tiltLedger', 7);
-  apply3DTilt('.calc-card', 4);
-  apply3DTilt('.contact-card', 5);
-  apply3DTilt('.profile-card', 5);
-  apply3DTilt('.facts', 3);
-
-  // POP module demo widget — geo_localize_location() on a real OpenStreetMap map
+  // Ledger demo widget — duplicate invoice line bug fix
   const upgradeBtn = document.getElementById('upgradeBtn');
-  const citySelect = document.getElementById('citySelect');
-  const latVal = document.getElementById('latVal');
-  const lngVal = document.getElementById('lngVal');
-  const dateVal = document.getElementById('dateVal');
+  const line2Row = document.getElementById('line2Row');
+  const line1 = document.getElementById('line1');
+  const alterVal = document.getElementById('alterVal');
+  const totalVal = document.getElementById('totalVal');
   const statusText = document.getElementById('statusText');
   const ledgerStatus = document.getElementById('ledgerStatus');
-
-  const CITY_DATA = {
-    lahore:     { lat: 31.5497, lng: 74.3436, label: 'Lahore' },
-    islamabad:  { lat: 33.6844, lng: 73.0479, label: 'Islamabad' },
-    faisalabad: { lat: 31.4504, lng: 73.1350, label: 'Faisalabad' },
-    multan:     { lat: 30.1575, lng: 71.5249, label: 'Multan' },
-    sialkot:    { lat: 32.4945, lng: 74.5229, label: 'Sialkot' },
-  };
-
-  let localized = false;
-  const cityMarkers = {};
-
-  function fmtDeg(v, posLabel, negLabel){
-    return Math.abs(v).toFixed(4) + '° ' + (v >= 0 ? posLabel : negLabel);
-  }
-
-  function buildKknIcon(selected){
-    return L.divIcon({
-      className: '',
-      html: `<div class="kkn-marker${selected ? ' selected' : ''}"><span class="ring"></span><span class="core"></span></div>`,
-      iconSize: [0, 0],
-    });
-  }
-
-  const popMap = L.map('popRealMap', {
-    zoomControl: true,
-    scrollWheelZoom: false,
-    attributionControl: true,
-  }).setView([31.55, 73.0], 6);
-
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
-    subdomains: 'abcd',
-    maxZoom: 19,
-  }).addTo(popMap);
-
-  Object.entries(CITY_DATA).forEach(([key, city])=>{
-    const marker = L.marker([city.lat, city.lng], { icon: buildKknIcon(false) }).addTo(popMap);
-    marker.bindPopup(`<div class="kkn-popup"><b>${city.label}</b><br>${fmtDeg(city.lat,'N','S')}, ${fmtDeg(city.lng,'E','W')}</div>`, { className: 'kkn-popup' });
-    marker.on('click', ()=>{ citySelect.value = key; highlightSelectedDot(); resetLocalization(); });
-    cityMarkers[key] = marker;
-  });
-
-  function highlightSelectedDot(){
-    const key = citySelect.value;
-    Object.entries(cityMarkers).forEach(([k, marker])=>{
-      marker.setIcon(buildKknIcon(k === key));
-    });
-  }
-
-  function resetLocalization(){
-    localized = false;
-    latVal.textContent = '—';
-    lngVal.textContent = '—';
-    dateVal.textContent = '—';
-    statusText.textContent = 'not localized';
-    ledgerStatus.style.color = 'var(--amber)';
-    ledgerStatus.querySelector('.d').style.background = 'var(--amber)';
-    upgradeBtn.textContent = 'Geo-Localize This POP →';
-  }
-
-  citySelect.addEventListener('change', ()=>{
-    highlightSelectedDot();
-    resetLocalization();
-    const city = CITY_DATA[citySelect.value];
-    popMap.flyTo([city.lat, city.lng], 7, { duration: 1.1 });
-  });
+  let fixed = false;
 
   upgradeBtn.addEventListener('click', ()=>{
-    const city = CITY_DATA[citySelect.value];
-    if(localized){
-      resetLocalization();
-      popMap.flyTo([31.55, 73.0], 6, { duration: 1 });
-      cityMarkers[citySelect.value].closePopup();
-      return;
-    }
-    localized = true;
-    popMap.flyTo([city.lat, city.lng], 9, { duration: 1.3 });
-    setTimeout(()=>cityMarkers[citySelect.value].openPopup(), 900);
+    fixed = !fixed;
+    [line1, alterVal, totalVal, statusText].forEach(f=>f.classList.add('changed'));
 
-    latVal.textContent = fmtDeg(city.lat, 'N', 'S');
-    lngVal.textContent = fmtDeg(city.lng, 'E', 'W');
-    dateVal.textContent = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-    statusText.textContent = 'localized';
-    ledgerStatus.style.color = 'var(--teal)';
-    ledgerStatus.querySelector('.d').style.background = 'var(--teal)';
-    upgradeBtn.textContent = 'Reset →';
-  });
+    setTimeout(()=>{
+      if(fixed){
+        line2Row.style.display = 'none';
+        line1.textContent = 'Basic Plan — Rs. 2,500';
+        alterVal.textContent = '2 (merged into 1 line)';
+        totalVal.textContent = 'Rs. 2,500';
+        statusText.textContent = 'resolved';
+        ledgerStatus.style.color = 'var(--teal)';
+        ledgerStatus.querySelector('.d').style.background = 'var(--teal)';
+        upgradeBtn.textContent = 'Revert → Show Original Bug';
+      } else {
+        line2Row.style.display = 'flex';
+        line1.textContent = 'Basic Plan — Rs. 2,500';
+        alterVal.textContent = '2';
+        totalVal.textContent = 'Rs. 5,000';
+        statusText.textContent = 'duplicate detected';
+        ledgerStatus.style.color = 'var(--amber)';
+        ledgerStatus.querySelector('.d').style.background = 'var(--amber)';
+        upgradeBtn.textContent = 'Run Fix → Dedupe Invoice Lines';
+      }
+    }, 180);
 
-  highlightSelectedDot();
-  setTimeout(()=>popMap.invalidateSize(), 400);
-  window.addEventListener('load', ()=>popMap.invalidateSize());
-
-  // ===== Module search + tag filter =====
-  const moduleSearch = document.getElementById('moduleSearch');
-  const filterChips = document.querySelectorAll('.filter-chip');
-  const moduleCards = document.querySelectorAll('#modules .module-card');
-  const moduleCount = document.getElementById('moduleCount');
-  const noModulesMsg = document.getElementById('noModulesMsg');
-  let activeFilter = 'all';
-
-  function applyModuleFilter(){
-    const q = moduleSearch.value.trim().toLowerCase();
-    let shown = 0;
-    moduleCards.forEach(card=>{
-      const tags = (card.dataset.tags || '').toLowerCase();
-      const searchable = (card.dataset.search || '') + ' ' + card.querySelector('.m-name').textContent.toLowerCase();
-      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
-      const matchesSearch = !q || searchable.toLowerCase().includes(q);
-      const visible = matchesFilter && matchesSearch;
-      card.classList.toggle('hidden-card', !visible);
-      if(visible) shown++;
-    });
-    moduleCount.textContent = `Showing ${shown} of ${moduleCards.length} modules`;
-    noModulesMsg.style.display = shown === 0 ? 'block' : 'none';
-  }
-
-  moduleSearch.addEventListener('input', applyModuleFilter);
-  filterChips.forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      filterChips.forEach(c=>c.classList.remove('active'));
-      chip.classList.add('active');
-      activeFilter = chip.dataset.filter;
-      applyModuleFilter();
-    });
-  });
-  applyModuleFilter();
-
-  // ===== Module expand/collapse detail =====
-  document.querySelectorAll('.expand-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const target = document.getElementById(btn.dataset.target);
-      const isOpen = target.classList.toggle('open');
-      btn.classList.toggle('open', isOpen);
-      btn.innerHTML = (isOpen ? 'Hide detail' : 'Technical detail') + ' <span class="chev">▾</span>';
-    });
-  });
-
-  // ===== Copy email + toast =====
-  const toast = document.getElementById('toast');
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'), 2200);
-  }
-  document.getElementById('copyEmailBtn')?.addEventListener('click', function(){
-    const email = 'daudamjadofficial@gmail.com';
-    navigator.clipboard?.writeText(email).then(()=>{
-      this.textContent = 'Copied ✓';
-      this.classList.add('copied');
-      showToast('Email address copied to clipboard');
-      setTimeout(()=>{ this.textContent = 'Copy address'; this.classList.remove('copied'); }, 1800);
-    }).catch(()=>{ showToast(email); });
+    setTimeout(()=>{
+      [line1, alterVal, totalVal, statusText].forEach(f=>f.classList.remove('changed'));
+    }, 1400);
   });
 </script>
 
@@ -1937,7 +956,7 @@
     </div>
     <div class="resume-doc" id="resumeDoc">
       <div class="rd-head">
-        <img src="profile.jpg" alt="Daud Amjad" class="rd-photo" onerror="this.style.display='none'">
+        <img src="profile.jpg" alt="Daud Amjad" class="rd-photo">
         <div>
           <div class="rd-name">Daud Amjad</div>
           <div class="rd-title">Odoo 19 Developer | Software Developer | ERP Customization Specialist</div>
@@ -1997,22 +1016,8 @@
       <div class="rd-section">
         <div class="rd-section-title">Projects</div>
         <div class="rd-entry">
-          <div class="rd-entry-top"><b>Wander Hub AI — Intelligent Travel Planning System</b><span>BSCS Final Year Project — UCP</span></div>
-          <div class="rd-entry-sub">Role: Documentation, Frontend, AI Model Training · Advisor: Mr. Jawad Hassan</div>
-          <ul>
-            <li>AI-powered tourism platform for Pakistan — KNN/K-Means package recommendations, NLP chatbot, speech-to-text voice input, and multilingual translation with text-to-speech.</li>
-            <li>Live weather forecasting (Open-Meteo), currency conversion, custom package requests, and Hajj &amp; Umrah packages.</li>
-            <li>Role-based User, Travel Guide, and Admin dashboards with booking, chat, and payment workflows.</li>
-            <li>Built with Python (Flask) for AI, Node.js for auth/backend, HTML/Tailwind/JS frontend, and MySQL.</li>
-          </ul>
-        </div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Mian Amjad Garments — Business Management System</b><span>Client Project · Live</span></div>
-          <div class="rd-entry-sub">mian-amjad-garments-erp.vercel.app</div>
-          <ul>
-            <li>Solo-built inventory, billing, and customer ledger system for a real garments/textile client, in active use.</li>
-            <li>Role-based Admin/Customer portals, per-inch made-to-measure pricing calculator, and printable branded invoicing.</li>
-          </ul>
+          <div class="rd-entry-top"><b>Wander Hub AI — Intelligent Travel Planning System</b></div>
+          <ul><li>AI-powered travel recommendation platform for Pakistan &amp; Saudi Arabia with chatbot support, multilingual translation, voice generation, real-time weather updates, and currency conversion.</li></ul>
         </div>
       </div>
 
@@ -2064,7 +1069,7 @@
   let complexity = 1;
   let migration = 0;
 
-  const BASE_PER_MODULE = 35000;
+  const BASE_PER_MODULE = 35000; // Rs, illustrative base rate per simple module
   const MIGRATION_FLAT = 40000;
 
   function formatRs(n){
@@ -2075,8 +1080,6 @@
     const low = modCount * BASE_PER_MODULE * complexity * (migration ? 1.15 : 1) + (migration ? MIGRATION_FLAT * 0.8 : 0);
     const high = low * 1.4;
     calcCost.textContent = formatRs(low) + ' – ' + formatRs(high);
-    calcCost.classList.add('bump');
-    setTimeout(()=>calcCost.classList.remove('bump'), 250);
 
     const weeksLow = Math.max(1, Math.round(modCount * 0.8 * complexity));
     const weeksHigh = weeksLow + Math.round(modCount * 0.5) + (migration ? 1 : 0);
@@ -2105,15 +1108,6 @@
   });
 
   recalc();
-
-  // Netops coverage map toggle
-  function toggleNetopsMap(){
-    const wrap = document.getElementById('netopsMapWrap');
-    const btn = document.getElementById('netopsMapBtn');
-    const isOpen = wrap.classList.toggle('open');
-    btn.classList.toggle('open', isOpen);
-    btn.textContent = isOpen ? 'Hide Coverage Map ▴' : 'View Coverage Map ▾';
-  }
 </script>
 
 </body>
