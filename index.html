@@ -2,1113 +2,909 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daud Amjad — Odoo 19 Developer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daud Amjad — Software Engineer | Odoo ERP &amp; AI/ML</title>
+<meta name="description" content="Daud Amjad — Software Engineer and Team Lead. Custom Odoo 19 ERP development, Odoo 17→19 migration, and AI/ML applications with Python. Based in Lahore, Pakistan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script>
+(function(){var t='light';try{if(localStorage.getItem('theme')==='dark'){t='dark'}}catch(e){}document.documentElement.setAttribute('data-theme',t)})();
+</script>
 <style>
-  :root{
-    --bg:#0A0F1C;
-    --bg-elevated:#0F1526;
-    --surface:#131C30;
-    --surface-2:#0D1424;
-    --border:#213050;
-    --border-soft:#182338;
-    --text:#E9EDF4;
-    --text-dim:#93A2BC;
-    --text-faint:#57668A;
-    --teal:#42D9C4;
-    --amber:#E7A954;
-    --violet:#9184F2;
-    --radius:10px;
-    --mono:'IBM Plex Mono', monospace;
-    --display:'Space Grotesk', sans-serif;
-    --body:'IBM Plex Sans', sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--body);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:inherit;text-decoration:none;}
-  ::selection{background:var(--teal);color:#04120F;}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+:root{
+  --navy:#0A2463;
+  --blue:#1F5FBF;
+  --blue-soft:#E8F0FC;
+  --ink:#111827;
+  --text:#374151;
+  --muted:#6B7280;
+  --line:#E2E8F0;
+  --bg:#F6F8FC;
+  --card:#FFFFFF;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(10,36,99,.05),0 6px 20px rgba(10,36,99,.06);
+  --surface:#FFFFFF; --nav-bg:rgba(255,255,255,.92); --navy-bg:#0A2463; --border-in:#C9D5EA;
+  --contact-bg:#0A2463; --hero-top:#FFFFFF; --blob1:#CFE0FB; --blob2:#DDEBFF; --hover-line:#BCD0F0;
+  --ok-bg:#E7F6EE; --ok-text:#14663B;
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  --navy:#E6EEFF; --blue:#6FA3FF; --blue-soft:#17294F; --ink:#EEF2FA; --text:#B9C5DC; --muted:#8C9AB5;
+  --line:#25324E; --bg:#0B1220; --card:#111B30; --surface:#0E1628; --nav-bg:rgba(11,18,32,.88);
+  --navy-bg:#2B5CC4; --border-in:#2D3D60; --contact-bg:#08122B; --hero-top:#0E1628;
+  --blob1:#1B3A7A; --blob2:#14306A; --hover-line:#35538F; --ok-bg:#12301F; --ok-text:#6EE7A0;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+section{padding:84px 0}
+.alt{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 
-  /* background texture */
-  .grid-bg{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    background-image:
-      linear-gradient(rgba(66,217,196,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(66,217,196,0.035) 1px, transparent 1px);
-    background-size:64px 64px;
-    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
-  }
+/* NAV */
+header.nav{position:sticky;top:0;z-index:50;background:var(--nav-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{font-weight:800;color:var(--navy);font-size:18px;letter-spacing:-.01em}
+.brand span{color:var(--blue)}
+.links{display:flex;align-items:center;gap:6px}
+.links a{color:var(--text);font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px}
+.links a:hover,.links a.active{background:var(--blue-soft);color:var(--navy);text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 14px 'Inter',sans-serif;padding:11px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--navy-bg);color:#fff}
+.btn-primary:hover{background:var(--blue);text-decoration:none}
+.btn-ghost{background:var(--card);color:var(--navy);border-color:var(--border-in)}
+.btn-ghost:hover{border-color:var(--blue);text-decoration:none}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:40px;height:40px;font-size:18px;color:var(--navy);cursor:pointer}
 
-  /* NAV */
-  header{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    display:flex;justify-content:center;
-    padding:18px 24px;
-  }
-  nav{
-    display:flex;align-items:center;gap:6px;
-    background:rgba(15,21,38,0.82);
-    backdrop-filter:blur(14px);
-    border:1px solid var(--border);
-    border-radius:100px;
-    padding:8px 8px 8px 18px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.35);
-    max-width:100%;
-  }
-  .brand{
-    display:flex;align-items:center;gap:8px;
-    font-family:var(--display);font-weight:700;font-size:15px;
-    padding-right:14px;margin-right:6px;
-    border-right:1px solid var(--border-soft);
-    white-space:nowrap;
-  }
-  .brand .dot{
-    width:7px;height:7px;border-radius:50%;background:var(--teal);
-    box-shadow:0 0 0 0 rgba(66,217,196,0.6);
-    animation:pulse 2.4s infinite;
-  }
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(66,217,196,0.55);}
-    70%{box-shadow:0 0 0 7px rgba(66,217,196,0);}
-    100%{box-shadow:0 0 0 0 rgba(66,217,196,0);}
-  }
-  .navlinks{display:flex;gap:2px;}
-  .navlinks a{
-    font-size:13.5px;color:var(--text-dim);padding:9px 13px;border-radius:100px;
-    transition:all .18s ease;
-  }
-  .navlinks a:hover, .navlinks a:focus-visible{color:var(--text);background:var(--surface);}
-  .navlinks a.active{color:var(--bg);background:var(--teal);}
-  .nav-cta{
-    margin-left:8px;
-    background:linear-gradient(135deg, var(--violet), #6E62D9);
-    color:#fff;font-size:13.5px;font-weight:600;
-    padding:9px 16px;border-radius:100px;white-space:nowrap;
-    transition:filter .18s ease;
-  }
-  .nav-cta:hover{filter:brightness(1.12);}
-  button.nav-cta{border:none;cursor:pointer;font-family:var(--body);}
-  @media (max-width:820px){
-    .navlinks{display:none;}
-    .brand{border-right:none;padding-right:0;margin-right:0;}
-  }
+/* HERO */
+.hero{padding:72px 0 64px;background:linear-gradient(180deg,var(--hero-top) 0%,var(--bg) 100%)}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:56px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--ok-bg);color:var(--ok-text);font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-bottom:22px}
+.pill i{width:8px;height:8px;border-radius:50%;background:#1FA45A;display:block}
+h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.1;color:var(--navy);letter-spacing:-.025em;font-weight:800}
+h1 em{font-style:normal;color:var(--blue)}
+.hero p.lead{font-size:18px;color:var(--text);margin:22px 0 30px;max-width:560px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+.stat b{display:block;font-size:26px;color:var(--navy);font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:13px;color:var(--muted)}
+.profile{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:26px;text-align:center}
+.avatar{width:168px;height:168px;border-radius:50%;margin:0 auto 18px;object-fit:cover;border:4px solid var(--blue-soft);background:var(--blue-soft)}
+.avatar-fallback{width:168px;height:168px;border-radius:50%;margin:0 auto 18px;background:var(--navy-bg);color:#fff;font-weight:800;font-size:54px;display:none;align-items:center;justify-content:center}
+.profile h3{color:var(--navy);font-size:20px}
+.profile .role{color:var(--muted);font-size:14px;margin-bottom:18px}
+.facts{text-align:left;border-top:1px solid var(--line);padding-top:14px}
+.fact{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.fact:last-child{border:none}
+.fact span:first-child{color:var(--muted)}
+.fact span:last-child{color:var(--ink);font-weight:500;text-align:right}
 
-  section{position:relative;z-index:1;padding:120px 0 40px;}
-  .eyebrow{
-    font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--teal);display:flex;align-items:center;gap:10px;margin-bottom:18px;
-  }
-  .eyebrow::before{content:'';width:18px;height:1px;background:var(--teal);}
-  h1,h2,h3{font-family:var(--display);letter-spacing:-0.01em;}
-  .rule{height:1px;background:var(--border-soft);margin:28px 0;border:none;}
+/* SECTION HEADS */
+.eyebrow{font:500 12.5px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+h2{font-size:clamp(1.7rem,3.4vw,2.35rem);color:var(--navy);letter-spacing:-.02em;line-height:1.2;font-weight:800;margin-bottom:12px}
+.sub{max-width:680px;color:var(--muted);margin-bottom:38px}
 
-  /* HERO */
-  #home{padding-top:170px;min-height:92vh;}
-  .hero-grid{
-    display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;
-  }
-  .hero-tag{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--mono);font-size:12px;color:var(--amber);
-    background:rgba(231,169,84,0.09);border:1px solid rgba(231,169,84,0.28);
-    padding:6px 12px;border-radius:100px;margin-bottom:26px;
-  }
-  h1.headline{
-    font-size:clamp(2.3rem, 5.2vw, 3.9rem);
-    font-weight:700;line-height:1.08;margin-bottom:24px;
-  }
-  h1.headline .accent{color:var(--teal);}
-  h1.headline .accent2{color:var(--violet);}
-  .hero-sub{
-    font-size:17px;color:var(--text-dim);max-width:540px;margin-bottom:34px;
-  }
-  .hero-sub b{color:var(--text);font-weight:600;}
-  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
-  .btn-primary{
-    background:var(--teal);color:#04211D;font-weight:600;font-size:14.5px;
-    padding:13px 24px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;
-    transition:transform .18s ease, filter .18s ease;
-  }
-  .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.08);}
-  .btn-secondary{
-    border:1px solid var(--border);color:var(--text);font-weight:500;font-size:14.5px;
-    padding:13px 22px;border-radius:8px;transition:all .18s ease;
-  }
-  .btn-secondary:hover{border-color:var(--teal);color:var(--teal);}
-  .hero-stats{
-    display:flex;gap:36px;flex-wrap:wrap;padding-top:28px;border-top:1px solid var(--border-soft);
-  }
-  .stat b{
-    display:block;font-family:var(--display);font-size:1.9rem;font-weight:700;
-  }
-  .stat span{font-size:12px;color:var(--text-faint);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;}
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:48px}
+.about-grid p{margin-bottom:16px}
+.three{display:grid;gap:14px}
+.mini{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:10px;padding:14px 18px}
+.mini b{color:var(--navy);display:block;font-size:15px}
+.mini span{font-size:14px;color:var(--muted)}
 
-  /* LEDGER WIDGET — signature element */
-  .ledger{
-    background:var(--surface);border:1px solid var(--border);border-radius:14px;
-    overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
-  }
-  .ledger-top{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 18px;border-bottom:1px solid var(--border-soft);background:var(--surface-2);
-  }
-  .ledger-top .path{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
-  .ledger-status{
-    display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
-    color:var(--teal);text-transform:uppercase;letter-spacing:.05em;
-  }
-  .ledger-status .d{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
-  .ledger-body{padding:20px 18px 10px;}
-  .l-row{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:11px 0;border-bottom:1px dashed var(--border-soft);font-size:13.5px;
-  }
-  .l-row:last-child{border-bottom:none;}
-  .l-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;}
-  .l-row .v{font-family:var(--mono);font-weight:500;font-size:14px;transition:color .3s ease;}
-  .l-row .v.changed{color:var(--amber);}
-  .ledger-foot{padding:14px 18px;border-top:1px solid var(--border-soft);background:var(--surface-2);}
-  .ledger-btn{
-    width:100%;background:var(--violet);color:#fff;border:none;font-family:var(--body);
-    font-weight:600;font-size:13.5px;padding:12px;border-radius:8px;cursor:pointer;
-    transition:filter .18s ease, transform .18s ease;
-  }
-  .ledger-btn:hover{filter:brightness(1.1);}
-  .ledger-btn:active{transform:scale(0.98);}
-  .ledger-note{font-family:var(--mono);font-size:11px;color:var(--text-faint);margin-top:10px;text-align:center;}
+/* TIMELINE */
+.timeline{position:relative;padding-left:30px}
+.timeline:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.job{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:20px;box-shadow:var(--shadow)}
+.job:before{content:"";position:absolute;left:-30px;top:30px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--blue)}
+.job-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.job h3{color:var(--navy);font-size:18px}
+.job .org{color:var(--muted);font-size:14.5px}
+.date{font:500 13px 'JetBrains Mono',monospace;color:var(--blue);background:var(--blue-soft);padding:4px 10px;border-radius:6px;height:fit-content;white-space:nowrap}
+.job ul{margin:14px 0 0 18px;font-size:15px}
+.job li{margin-bottom:6px}
+.job li::marker{color:var(--blue)}
 
-  @media (max-width:900px){
-    .hero-grid{grid-template-columns:1fr;}
-  }
+/* SKILLS */
+.skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.skill{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.skill h3{font-size:15px;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.skill h3 i{font-style:normal;width:30px;height:30px;border-radius:8px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:13px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--line);padding:4px 11px;border-radius:99px}
 
-  /* ABOUT */
-  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:start;}
-  .about-lead{font-size:1.5rem;font-weight:500;line-height:1.4;margin-bottom:26px;font-family:var(--display);}
-  .about-lead .hl{color:var(--teal);}
-  .about-body{color:var(--text-dim);font-size:15.5px;margin-bottom:14px;max-width:560px;}
-  .facts{
-    background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-  }
-  .facts-head{
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--text-faint);padding:16px 20px;border-bottom:1px solid var(--border-soft);
-  }
-  .fact-row{
-    display:flex;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border-soft);
-    font-size:13.5px;
-  }
-  .fact-row:last-child{border-bottom:none;}
-  .fact-row .k{color:var(--text-faint);}
-  .fact-row .v{font-weight:600;text-align:right;}
-  .profile-card{
-    display:flex;align-items:center;gap:16px;
-    background:var(--surface);border:1px solid var(--border);border-radius:12px;
-    padding:18px;margin-bottom:18px;
-  }
-  .profile-photo{
-    width:72px;height:72px;border-radius:50%;object-fit:cover;
-    border:2px solid var(--teal);flex-shrink:0;
-  }
-  .profile-name{font-family:var(--display);font-weight:700;font-size:16px;}
-  .profile-role{color:var(--text-dim);font-size:12.5px;margin-top:2px;}
-  .profile-status{
-    display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
-    color:var(--teal);margin-top:8px;text-transform:uppercase;letter-spacing:.04em;
-  }
-  .profile-status .d{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
-  @media (max-width:900px){.about-grid{grid-template-columns:1fr;}}
+/* MODULES */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px}
+.search{flex:1;min-width:240px;padding:11px 16px;border:1px solid var(--border-in);border-radius:10px;font:15px 'Inter',sans-serif;background:var(--card);color:var(--ink)}
+.search:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
+.filters{display:flex;gap:7px;flex-wrap:wrap}
+.f{font:600 13px 'Inter',sans-serif;padding:8px 14px;border-radius:99px;border:1px solid var(--border-in);background:var(--card);color:var(--text);cursor:pointer}
+.f.on{background:var(--navy-bg);color:#fff;border-color:var(--navy-bg)}
+.count{font-size:13px;color:var(--muted);margin-bottom:18px}
+.mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.card.hide{display:none}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.mname{font:500 14px 'JetBrains Mono',monospace;color:var(--navy);word-break:break-word}
+.badge{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.badge.live{background:var(--ok-bg);color:var(--ok-text)}
+.card p{font-size:14.5px;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-size:12px;color:var(--blue);background:var(--blue-soft);padding:3px 10px;border-radius:6px;font-weight:500}
+.more{background:none;border:none;color:var(--blue);font:600 13.5px 'Inter',sans-serif;cursor:pointer;padding:0}
+.detail{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.detail.open{display:block}
+.detail ul{margin-left:18px;font-size:14px}
+.detail li{margin-bottom:7px}
+code{font:12.5px 'JetBrains Mono',monospace;background:var(--bg);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--navy)}
+.empty{display:none;color:var(--muted);padding:20px 0}
 
-  /* TOOLKIT */
-  .tk-cat{margin-bottom:34px;}
-  .tk-cat-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;}
-  .tk-num{font-family:var(--mono);color:var(--teal);font-size:13px;}
-  .tk-name{font-size:1.2rem;font-weight:600;}
-  .chips{display:flex;flex-wrap:wrap;gap:10px;}
-  .chip{
-    font-family:var(--mono);font-size:12.5px;color:var(--text-dim);
-    border:1px solid var(--border);padding:8px 14px;border-radius:8px;background:var(--surface);
-    transition:all .18s ease;
-  }
-  .chip:hover{border-color:var(--teal);color:var(--text);}
+/* PROJECTS */
+.proj{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:32px;margin-bottom:24px}
+.proj-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.proj h3{font-size:22px;color:var(--navy)}
+.proj .kicker{font-size:13.5px;color:var(--muted)}
+.proj-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:20px 0}
+.proj h4{font:600 12.5px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.proj ul{margin-left:18px;font-size:14.5px}
+.proj li{margin-bottom:7px}
+.proj li::marker{color:var(--blue)}
+.live-link{display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:14px;background:var(--blue-soft);padding:8px 14px;border-radius:8px;margin:8px 0}
 
-  /* MODULE REGISTRY */
-  .module-card{
-    border:1px solid var(--border);border-radius:12px;background:var(--surface);
-    padding:26px 26px 22px;margin-bottom:18px;transition:border-color .2s ease;
-  }
-  .module-card:hover{border-color:var(--border);}
-  .m-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:12px;}
-  .m-name{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--text);}
-  .m-name .path-sep{color:var(--text-faint);font-weight:400;}
-  .m-badges{display:flex;gap:8px;flex-wrap:wrap;}
-  .badge{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
-    padding:4px 9px;border-radius:5px;font-weight:600;
-  }
-  .badge.prod{background:rgba(66,217,196,0.12);color:var(--teal);border:1px solid rgba(66,217,196,0.3);}
-  .badge.ver{background:rgba(255,255,255,0.05);color:var(--text-faint);border:1px solid var(--border);}
-  .m-desc{color:var(--text-dim);font-size:14.5px;margin-bottom:16px;max-width:720px;}
-  .m-tags{display:flex;gap:8px;flex-wrap:wrap;}
-  .m-tag{font-size:11.5px;font-family:var(--mono);color:var(--text-faint);padding:4px 10px;border:1px solid var(--border-soft);border-radius:100px;}
-  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
-  .proj-block-head{font-weight:600;font-size:14px;margin-bottom:10px;color:var(--text);}
-  .proj-list{padding-left:18px;color:var(--text-dim);font-size:13.5px;}
-  .proj-list li{margin-bottom:8px;}
-  @media (max-width:800px){.proj-grid{grid-template-columns:1fr;gap:20px;}}
+/* EDU / CERT */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.col-title{font-size:13px;font:600 13px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;box-shadow:var(--shadow)}
+.item h3{font-size:16px;color:var(--navy)}
+.item .meta{font-size:14px;color:var(--muted)}
+.item .when{font:500 12.5px 'JetBrains Mono',monospace;color:var(--blue);margin-bottom:4px}
+.cert-hero{border-left:4px solid var(--blue)}
 
-  /* BUSINESS CALCULATOR */
-  .calc-card{
-    background:var(--surface);border:1px solid var(--border);border-radius:14px;
-    padding:32px;
-  }
-  .calc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;}
-  .calc-field{margin-bottom:26px;}
-  .calc-field:last-child{margin-bottom:0;}
-  .calc-label{
-    display:block;font-family:var(--mono);font-size:11.5px;text-transform:uppercase;
-    letter-spacing:.06em;color:var(--text-faint);margin-bottom:10px;
-  }
-  .calc-stepper{display:flex;align-items:center;gap:18px;}
-  .calc-step-btn{
-    width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);
-    color:var(--text);font-size:18px;cursor:pointer;transition:all .18s ease;
-  }
-  .calc-step-btn:hover{border-color:var(--teal);color:var(--teal);}
-  .calc-step-val{font-family:var(--display);font-size:1.6rem;font-weight:700;min-width:28px;text-align:center;}
-  .calc-toggle{display:flex;gap:8px;flex-wrap:wrap;}
-  .calc-opt{
-    font-size:13px;font-family:var(--body);color:var(--text-dim);background:var(--surface-2);
-    border:1px solid var(--border);padding:9px 16px;border-radius:8px;cursor:pointer;transition:all .18s ease;
-  }
-  .calc-opt.active{background:var(--violet);color:#fff;border-color:var(--violet);}
-  .calc-opt:hover:not(.active){border-color:var(--teal);color:var(--text);}
-  .calc-result{
-    background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;padding:26px;
-  }
-  .calc-result-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);}
-  .calc-result-value{font-family:var(--display);font-size:1.9rem;font-weight:700;color:var(--teal);margin-top:8px;}
-  .calc-result-sub{color:var(--text-dim);font-size:13px;margin-top:4px;}
-  .calc-note{color:var(--text-faint);font-size:12px;line-height:1.5;}
-  @media (max-width:800px){
-    .calc-grid{grid-template-columns:1fr;gap:28px;}
-    .calc-card{padding:24px;}
-  }
+/* CONTACT */
+.contact{background:var(--contact-bg);color:#DCE6FA}
+.contact h2{color:#fff}
+.contact .eyebrow{color:#9DBBF0}
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.contact p{margin-bottom:22px}
+.c-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:8px 24px}
+.c-row{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:15px}
+.c-row:last-child{border:none}
+.c-row span:first-child{color:#9DBBF0}
+.c-row a{color:#fff}
+.btn-light{background:#fff;color:#0A2463}
+.btn-light:hover{background:var(--blue-soft);text-decoration:none}
+.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.btn-outline:hover{border-color:#fff;text-decoration:none}
+footer{background:#071A4A;color:#8DA2CF;text-align:center;font-size:13.5px;padding:24px}
 
-  /* PATH: experience + education */
-  .path-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
-  .path-col-head{
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--text-faint);margin-bottom:22px;
-  }
-  .path-item{padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid var(--border-soft);}
-  .path-item:last-child{border:none;margin:0;padding:0;}
-  .path-date{font-family:var(--mono);color:var(--teal);font-size:12.5px;margin-bottom:6px;display:block;}
-  .path-title{font-weight:600;font-size:16px;margin-bottom:2px;}
-  .path-sub{color:var(--text-faint);font-size:13px;margin-bottom:10px;}
-  .path-item ul{padding-left:18px;color:var(--text-dim);font-size:13.5px;}
-  .path-item li{margin-bottom:5px;}
-  .cert-strip{
-    margin-top:10px;display:flex;flex-direction:column;gap:10px;
-  }
-  .cert-row{
-    display:flex;justify-content:space-between;align-items:center;gap:12px;
-    background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;
-  }
-  .cert-row .name{font-weight:600;}
-  .cert-row .issuer{color:var(--text-faint);font-family:var(--mono);font-size:11.5px;}
-  @media (max-width:900px){.path-grid{grid-template-columns:1fr;}}
+/* RESUME OVERLAY */
+#resumeOverlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,20,50,.72);overflow:auto;padding:24px 12px}
+#resumeOverlay.open{display:block}
+.rbar{max-width:794px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:#fff;font-size:14px}
+.rbar .btns{display:flex;gap:10px;flex-wrap:wrap}
+.rbar button,.rbar a{font:600 13.5px 'Inter',sans-serif;padding:9px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer}
+.rbar .solid{background:#fff;color:#0A2463;border-color:#fff}
+.rbar a{text-decoration:none}
 
-  /* CONTACT */
-  #contact{padding-bottom:0;}
-  .contact-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;align-items:start;}
-  .contact-headline{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;margin-bottom:18px;}
-  .contact-headline .dim{color:var(--text-faint);}
-  .contact-email{
-    font-family:var(--display);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:600;color:var(--teal);
-    display:inline-flex;align-items:center;gap:10px;margin:18px 0 26px;word-break:break-all;
-  }
-  .contact-card{
-    background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;
-  }
-  .cc-row{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border-soft);font-size:13.5px;}
-  .cc-row:last-child{border:none;}
-  .cc-row .k{color:var(--text-faint);font-family:var(--mono);font-size:11px;text-transform:uppercase;}
-  .cc-row .v{font-weight:600;text-align:right;}
-  .cc-available{display:flex;align-items:center;gap:7px;}
-  .cc-available .d{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2.4s infinite;}
+/* CV SHEET — mirrors the LaTeX resume (A4, one page) */
+.cv{width:210mm;min-height:297mm;margin:0 auto;background:#fff;color:#111;
+  padding:5mm 8.5mm 4mm;font-family:'Latin Modern Roman','CMU Serif',Georgia,'Times New Roman',serif;font-size:8.3pt;line-height:1.28;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.cv a{color:inherit;text-decoration:none}
+.cv-head{text-align:center}
+.cv-name{font-size:21pt;font-weight:700;color:#0A2463;letter-spacing:.01em;line-height:1.15}
+.cv-tag{font-size:9pt;font-weight:700;color:#1F5FBF;margin-top:1.5mm}
+.cv-contact{font-size:8pt;color:#333;margin-top:1.6mm}
+.cv-contact span{margin:0 2.2mm}
+.cv-rule{border:0;border-top:1.2pt solid #0A2463;margin:2.2mm 0 0}
+.cv h5{font-size:10pt;font-weight:700;color:#0A2463;text-transform:uppercase;letter-spacing:.01em;margin:2.1mm 0 1.2mm;padding-bottom:.4mm;border-bottom:.6pt solid #1F5FBF}
+.cv p{font-size:8.3pt}
+.cv .row{display:flex;justify-content:space-between;gap:4mm}
+.cv .row b{color:#0A2463;font-size:9pt}
+.cv .row i{color:#333;font-size:8.3pt}
+.cv .row .r{font-weight:700;color:#0A2463;font-size:9pt;font-style:normal;white-space:nowrap}
+.cv .row .r2{font-style:italic;color:#333;font-size:8.3pt;white-space:nowrap}
+.cv ul{list-style:none;margin:.6mm 0 1.4mm}
+.cv li{position:relative;padding-left:3.6mm;margin-bottom:.2mm;font-size:8.3pt}
+.cv li:before{content:"\2022";position:absolute;left:.6mm;color:#1F5FBF}
+.cv table{width:100%;border-collapse:collapse;font-size:8.3pt}
+.cv td{vertical-align:top;padding:.45mm 0}
+.cv td:first-child{width:30mm;font-weight:700;color:#0A2463}
+.cv .gap{margin-top:1.2mm}
 
-  footer{
-    margin-top:80px;border-top:1px solid var(--border-soft);padding:40px 0;
-    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
-  }
-  .footer-name{font-family:var(--display);font-weight:700;font-size:1.1rem;}
-  .footer-meta{color:var(--text-faint);font-size:12.5px;font-family:var(--mono);}
-  .footer-links{display:flex;gap:20px;font-size:13px;color:var(--text-dim);}
-  .footer-links a:hover{color:var(--teal);}
+/* PRINT: always print the CV, exactly one A4 page */
+@page{size:A4;margin:0}
+@media print{
+  html,body{background:#fff !important}
+  body > *:not(#resumeOverlay){display:none !important}
+  #resumeOverlay{display:block !important;position:static !important;background:#fff !important;padding:0 !important;overflow:visible !important}
+  .rbar{display:none !important}
+  .cv{box-shadow:none !important;margin:0 !important;width:210mm;height:296mm;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 
-  /* RESUME MODAL */
-  .modal-overlay{
-    position:fixed;inset:0;z-index:1000;background:rgba(4,7,14,0.78);backdrop-filter:blur(4px);
-    display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;
-  }
-  .modal-overlay.open{display:flex;}
-  .resume-modal{
-    background:var(--surface);border:1px solid var(--border);border-radius:14px;
-    max-width:760px;width:100%;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);
-    animation:modalIn .28s ease;
-  }
-  @keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.98);}to{opacity:1;transform:none;}}
-  .resume-modal-bar{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:14px 20px;border-bottom:1px solid var(--border-soft);background:var(--surface-2);
-    position:sticky;top:0;z-index:2;
-  }
-  .resume-modal-label{font-family:var(--mono);font-size:12px;color:var(--text-faint);}
-  .resume-print-btn{
-    background:var(--teal);color:#04211D;border:none;font-weight:600;font-size:12.5px;
-    padding:8px 14px;border-radius:7px;cursor:pointer;font-family:var(--body);
-  }
-  .resume-close-btn{
-    background:transparent;border:1px solid var(--border);color:var(--text-dim);
-    width:32px;height:32px;border-radius:7px;cursor:pointer;font-size:14px;
-  }
-  .resume-close-btn:hover{color:var(--text);border-color:var(--teal);}
-  .resume-doc{padding:32px 34px 40px;color:var(--text);background:var(--bg-elevated);}
-  .rd-head{display:flex;gap:18px;align-items:center;margin-bottom:26px;padding-bottom:22px;border-bottom:2px solid var(--border);}
-  .rd-photo{width:78px;height:78px;border-radius:12px;object-fit:cover;border:2px solid var(--teal);flex-shrink:0;}
-  .rd-name{font-family:var(--display);font-size:1.5rem;font-weight:700;}
-  .rd-title{color:var(--teal);font-size:13.5px;margin-top:4px;font-weight:500;}
-  .rd-contact{color:var(--text-faint);font-size:12px;font-family:var(--mono);margin-top:8px;}
-  .rd-section{margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--border-soft);}
-  .rd-section-title{
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--amber);margin-bottom:12px;
-  }
-  .resume-doc p{color:var(--text-dim);font-size:13.5px;}
-  .rd-entry{margin-bottom:14px;}
-  .rd-entry:last-child{margin-bottom:0;}
-  .rd-entry-top{display:flex;justify-content:space-between;font-size:14px;gap:10px;flex-wrap:wrap;}
-  .rd-entry-top span{color:var(--text-faint);font-family:var(--mono);font-size:12px;white-space:nowrap;}
-  .rd-entry-sub{color:var(--text-faint);font-size:12.5px;margin:3px 0 8px;}
-  .resume-doc ul{padding-left:18px;color:var(--text-dim);font-size:13px;}
-  .resume-doc li{margin-bottom:4px;}
-  .rd-skill-row{font-size:13px;color:var(--text-dim);margin-bottom:8px;}
-  .rd-skill-row b{color:var(--text);}
-  @media (max-width:600px){
-    .rd-head{flex-direction:column;align-items:flex-start;}
-    .resume-doc{padding:24px 20px 32px;}
-  }
-  @media print{
-    @page{ size:A4; margin:10mm 12mm; }
-    html, body{ background:#fff !important; }
-    body > *:not(#resumeOverlay){ display:none !important; }
-    #resumeOverlay{
-      position:static !important; display:block !important; background:none !important;
-      backdrop-filter:none !important; padding:0 !important; overflow:visible !important; inset:auto !important;
-    }
-    .resume-modal{
-      position:static !important; max-width:100% !important; width:100% !important;
-      box-shadow:none !important; border:none !important; border-radius:0 !important; animation:none !important;
-    }
-    .resume-modal-bar{ display:none !important; }
-    .resume-doc{
-      background:#fff !important; color:#111 !important; padding:0 !important;
-    }
-    .rd-head{ border-bottom:1.5px solid #333 !important; margin-bottom:12px; padding-bottom:10px; }
-    .rd-photo{ width:56px !important; height:56px !important; border-color:#333 !important; }
-    .rd-name{ font-size:19px !important; color:#000 !important; }
-    .rd-title{ color:#333 !important; font-size:11.5px !important; }
-    .rd-contact{ color:#444 !important; font-size:10px !important; }
-    .rd-section{ margin-bottom:9px !important; padding-bottom:8px !important; border-bottom:1px solid #ccc !important; page-break-inside:avoid; }
-    .rd-section-title{ color:#000 !important; font-size:10px !important; margin-bottom:6px !important; font-weight:700; }
-    .resume-doc p{ color:#222 !important; font-size:10.5px !important; line-height:1.35; }
-    .rd-entry{ margin-bottom:6px !important; }
-    .rd-entry-top{ font-size:11px !important; }
-    .rd-entry-top span{ color:#444 !important; font-size:9.5px !important; }
-    .rd-entry-sub{ color:#444 !important; font-size:10px !important; margin:1px 0 4px !important; }
-    .resume-doc ul{ color:#222 !important; font-size:10px !important; padding-left:15px; }
-    .resume-doc li{ margin-bottom:2px !important; }
-    .rd-skill-row{ color:#222 !important; font-size:10px !important; margin-bottom:4px !important; }
-    .rd-skill-row b{ color:#000 !important; }
-  }
 
-  [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
-  [data-reveal].in{opacity:1;transform:translateY(0);}
-  @media (prefers-reduced-motion: reduce){
-    [data-reveal]{opacity:1;transform:none;transition:none;}
-    .brand .dot, .ledger-status .d, .cc-available .d{animation:none;}
-  }
+/* ===== ANIMATIONS ===== */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--navy),var(--blue),#5B9BFF);z-index:200;transition:width .1s linear}
+header.nav{transition:box-shadow .25s,background .25s}
+header.nav.scrolled{box-shadow:0 6px 24px rgba(10,36,99,.08)}
+.hero{position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;z-index:0;pointer-events:none}
+.hero:before{width:380px;height:380px;background:var(--blob1);top:-120px;right:-60px;animation:drift 14s ease-in-out infinite alternate}
+.hero:after{width:300px;height:300px;background:var(--blob2);bottom:-120px;left:-80px;animation:drift 18s ease-in-out infinite alternate-reverse}
+.hero .wrap{position:relative;z-index:1}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.15)}}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:none}}
+.hero-grid > div > *{opacity:0;animation:rise .8s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-grid > div > :nth-child(1){animation-delay:.1s}
+.hero-grid > div > :nth-child(2){animation-delay:.25s}
+.hero-grid > div > :nth-child(3){animation-delay:.4s}
+.hero-grid > div > :nth-child(4){animation-delay:.55s}
+.hero-grid > div > :nth-child(5){animation-delay:.7s}
+.hero-grid > div > :nth-child(6){animation-delay:.85s}
+.profile{opacity:0;animation:pop .9s .35s cubic-bezier(.2,.7,.2,1) forwards;transition:transform .2s ease-out,box-shadow .3s;will-change:transform}
+.profile:hover{box-shadow:0 18px 50px rgba(10,36,99,.16)}
+.avatar{animation:float 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.pill i{animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,164,90,.55)}70%{box-shadow:0 0 0 9px rgba(31,164,90,0)}100%{box-shadow:0 0 0 0 rgba(31,164,90,0)}}
+h1 em{background:linear-gradient(90deg,var(--blue),#5B9BFF,var(--blue));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.typed-line{font:500 15px 'JetBrains Mono',monospace;color:var(--muted);margin:-8px 0 26px;min-height:24px}
+.typed-line b{color:var(--blue);font-weight:500}
+.caret{display:inline-block;width:2px;height:1.05em;background:var(--blue);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.timeline:before{transform-origin:top;transform:scaleY(0);transition:transform 1.4s ease-out}
+.timeline.in:before{transform:scaleY(1)}
+.job:before{transition:transform .5s cubic-bezier(.3,1.6,.5,1) .2s;transform:scale(0)}
+.job.in:before{transform:scale(1)}
+
+/* hover polish */
+.card,.skill,.item,.mini,.job,.proj{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,opacity .7s cubic-bezier(.2,.7,.2,1)}
+.card:hover,.skill:hover,.item:hover,.job:hover,.proj:hover{transform:translateY(-5px);box-shadow:0 14px 34px rgba(10,36,99,.12);border-color:var(--hover-line)}
+.mini:hover{transform:translateX(6px);border-left-color:var(--navy)}
+.chip{transition:all .2s}
+.chip:hover{background:var(--navy-bg);color:#fff;border-color:var(--navy-bg);transform:translateY(-2px)}
+.tag{transition:all .2s}.tag:hover{background:var(--blue);color:#fff}
+.btn{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(10,36,99,.18)}
+.btn:after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .6s}
+.btn:hover:after{left:130%}
+.links a{position:relative}
+.links a:not(.active):after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;background:var(--blue);transform:scaleX(0);transition:transform .25s}
+.links a:not(.active):hover:after{transform:scaleX(1)}
+.detail{animation:none}
+.detail.open{animation:rise .35s ease}
+.card.show-anim{animation:pop .45s ease both}
+.live-link{transition:transform .2s}.live-link:hover{transform:translateX(4px);text-decoration:none}
+.to-top{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border-radius:50%;border:none;background:var(--navy-bg);color:#fff;font-size:18px;cursor:pointer;opacity:0;transform:translateY(16px);pointer-events:none;transition:.3s;box-shadow:0 8px 20px rgba(10,36,99,.3);z-index:60}
+.to-top.on{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{background:var(--blue)}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none !important;transition:none !important}
+  .reveal,.hero-grid > div > *,.profile{opacity:1 !important;transform:none !important}
+  .timeline:before,.job:before{transform:none !important}
+}
+@media print{#progress,.to-top{display:none !important}}
+
+/* THEME TOGGLE */
+.theme-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border-in);background:var(--card);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:10px;position:relative;overflow:hidden;transition:transform .25s,border-color .2s,background .3s}
+.theme-btn:hover{transform:rotate(18deg) scale(1.06);border-color:var(--blue)}
+.theme-btn svg{position:absolute;width:19px;height:19px;transition:transform .5s cubic-bezier(.3,1.4,.5,1),opacity .3s}
+.theme-btn .sun{transform:translateY(32px) rotate(-90deg);opacity:0}
+.theme-btn .moon{transform:none;opacity:1}
+html[data-theme="dark"] .theme-btn .sun{transform:none;opacity:1}
+html[data-theme="dark"] .theme-btn .moon{transform:translateY(-32px) rotate(90deg);opacity:0}
+html.theme-anim *,html.theme-anim *:before,html.theme-anim *:after{transition:background-color .4s ease,color .4s ease,border-color .4s ease,box-shadow .4s ease !important}
+html[data-theme="dark"] .avatar{border-color:#223255}
+html[data-theme="dark"] .hero:before,html[data-theme="dark"] .hero:after{opacity:.4}
+html[data-theme="dark"] .job:before{border-color:var(--blue)}
+html[data-theme="dark"] .search::placeholder{color:#6F7E9B}
+@media print{.theme-btn{display:none !important}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-grid,.about-grid,.proj-cols,.two,.contact-grid{grid-template-columns:1fr}
+  .skill-grid{grid-template-columns:1fr 1fr}
+  .mod-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .links{display:none;position:absolute;top:68px;left:0;right:0;background:var(--card);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:10px 24px}
+  .links.open{display:flex}
+  .menu-btn{display:block}
+  section{padding:60px 0}
+  .skill-grid{grid-template-columns:1fr}
+  .cv{transform-origin:top left}
+}
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
+<div id="progress"></div>
 
-<header>
-  <nav>
-    <div class="brand"><span class="dot"></span>DA.</div>
-    <div class="navlinks">
-      <a href="#home" class="navlink active">Home</a>
-      <a href="#about" class="navlink">About</a>
-      <a href="#toolkit" class="navlink">Toolkit</a>
-      <a href="#modules" class="navlink">Modules</a>
-      <a href="#projects" class="navlink">Projects</a>
-      <a href="#path" class="navlink">Path</a>
-      <a href="#estimate" class="navlink">Estimate</a>
-      <a href="#contact" class="navlink">Contact</a>
-    </div>
-    <button class="nav-cta" id="openResumeBtn" type="button">Résumé ↗</button>
-  </nav>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#home">Daud Amjad<span>.</span></a>
+    <nav class="links" id="links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#modules">Odoo Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+      <button class="btn btn-primary" id="openResume" type="button" style="margin-left:8px">Résumé</button>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">☰</button>
+  </div>
 </header>
 
-<main class="wrap">
-
-  <!-- HERO -->
-  <section id="home">
-    <div class="hero-grid">
-      <div data-reveal>
-        <div class="hero-tag">● PRODUCTION ERP · KK NETWORKS (ISP / TELECOM)</div>
-        <h1 class="headline">Odoo 19 development that<span class="accent"> holds up</span> once it hits <span class="accent2">production.</span></h1>
-        <p class="hero-sub">I'm <b>Daud Amjad</b> — an Odoo 19 Developer who builds and maintains the CRM, subscription billing, accounting, and network-operations modules running a live telecom business. I write the Python and XML that make a workflow behave the way the business needs — then I'm the one who finds out why it didn't.</p>
-        <div class="hero-ctas">
-          <a href="#modules" class="btn-primary">See the modules →</a>
-          <a href="#contact" class="btn-secondary">Get in touch</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat"><b>15+</b><span>Modules Maintained</span></div>
-          <div class="stat"><b>17→19</b><span>Odoo Migration Led</span></div>
-          <div class="stat"><b>2</b><span>Live Environments</span></div>
-          <div class="stat"><b>2026</b><span>CS Graduate</span></div>
-        </div>
+<main>
+<!-- HERO -->
+<section class="hero" id="home" style="padding-top:64px">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="pill"><i></i>Open to opportunities</div>
+      <h1>Software Engineer building <em>ERP systems</em> and <em>AI-powered</em> applications.</h1>
+      <p class="lead">Team Lead at KK Networks. I develop and maintain custom Odoo 19 modules for a live telecom business, and build AI/ML solutions in Python — from KNN/K-Means recommendation engines to NLP chatbots.</p>
+      <div class="typed-line">I work on: <b id="typed"></b><span class="caret"></span></div>
+      <div class="cta">
+        <a class="btn btn-primary" href="#projects">View projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        <button class="btn btn-ghost" type="button" id="openResume2">View résumé</button>
       </div>
-
-      <div data-reveal>
-        <div class="ledger">
-          <div class="ledger-top">
-            <span class="path">account.move.line — invoice #INV/2026/0417</span>
-            <span class="ledger-status" id="ledgerStatus" style="color:var(--amber);"><span class="d" style="background:var(--amber);"></span><span id="statusText">duplicate detected</span></span>
-          </div>
-          <div class="ledger-body" id="ledgerBody">
-            <div class="l-row"><span class="k">Line 1</span><span class="v" id="line1">Basic Plan — Rs. 2,500</span></div>
-            <div class="l-row" id="line2Row"><span class="k">Line 2</span><span class="v" id="line2">Basic Plan — Rs. 2,500 <span style="color:var(--amber);">(orphaned)</span></span></div>
-            <div class="l-row"><span class="k">Alterations this month</span><span class="v" id="alterVal">2</span></div>
-            <div class="l-row"><span class="k">Invoice Total</span><span class="v" id="totalVal">Rs. 5,000</span></div>
-          </div>
-          <div class="ledger-foot">
-            <button class="ledger-btn" id="upgradeBtn">Run Fix → Dedupe Invoice Lines</button>
-            <div class="ledger-note">Real bug: multiple same-month alterations were writing a fresh invoice line each time instead of updating the existing one.</div>
-          </div>
-        </div>
+      <div class="stats">
+        <div class="stat"><b data-count="3" data-suffix="+">3+</b><span>Years of experience</span></div>
+        <div class="stat"><b data-count="25" data-suffix="+">25+</b><span>Odoo modules maintained</span></div>
+        <div class="stat"><b>17→19</b><span>Odoo migration led</span></div>
+        <div class="stat"><b data-count="3.63" data-dec="2">3.63</b><span>CGPA, BS Computer Science</span></div>
       </div>
     </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="eyebrow">( 01 ) — About</div>
-    <div class="about-grid">
-      <div data-reveal>
-        <p class="about-lead">I like the parts most developers avoid — <span class="hl">production incidents, migration edge cases, and workflows that only break for one customer.</span></p>
-        <p class="about-body">At KK Networks I own a stack of interconnected Odoo 19 modules covering CRM, subscription billing, accounting, HR, and infrastructure/utility tracking for the company's Point-of-Presence network. Most of my week is split between two things: writing the business logic a module is supposed to have, and debugging why the version already in production doesn't have it — a stale install, a cache-only bug that never shows up locally, a computed field silently not recomputing.</p>
-        <p class="about-body">I led the module-side of KK Networks' Odoo 17 → 19 migration: view syntax renames, removed API methods, and workflow changes that broke silently until someone tried to use them. I also administer the Linux servers and Git deployment pipeline the modules run on, so I'm usually the person closing the loop from bug report to fix in production.</p>
-        <hr class="rule">
-        <div class="tk-cat">
-          <div class="tk-cat-head"><span class="tk-num">01</span><span class="tk-name">Build</span></div>
-          <p class="about-body" style="margin:0;">Custom Odoo 19 modules — models, views, security groups, server actions, wizards.</p>
-        </div>
-        <div class="tk-cat">
-          <div class="tk-cat-head"><span class="tk-num">02</span><span class="tk-name">Migrate</span></div>
-          <p class="about-body" style="margin:0;">Odoo 17 → 19 upgrades — resolving breaking API, view, and workflow changes.</p>
-        </div>
-        <div class="tk-cat" style="margin-bottom:0;">
-          <div class="tk-cat-head"><span class="tk-num">03</span><span class="tk-name">Debug</span></div>
-          <p class="about-body" style="margin:0;">Production-only issues via Odoo logs, tracebacks, Odoo shell, and PostgreSQL queries.</p>
-        </div>
+    <aside class="profile">
+      <img class="avatar" src="profile.jpg" alt="Daud Amjad" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="avatar-fallback">DA</div>
+      <h3>Daud Amjad</h3>
+      <div class="role">Software Engineer — Team Lead</div>
+      <div class="facts">
+        <div class="fact"><span>Company</span><span>KK Networks (PVT) Ltd</span></div>
+        <div class="fact"><span>Focus</span><span>Odoo ERP · AI/ML</span></div>
+        <div class="fact"><span>Based in</span><span>Lahore, Pakistan</span></div>
+        <div class="fact"><span>Education</span><span>BS CS, UCP (2026)</span></div>
+        <div class="fact"><span>Certified</span><span>Odoo Technical Academy</span></div>
       </div>
+    </aside>
+  </div>
+</section>
 
-      <div data-reveal>
-        <div class="profile-card">
-          <img src="profile.jpg" alt="Daud Amjad" class="profile-photo">
-          <div class="profile-info">
-            <div class="profile-name">Daud Amjad</div>
-            <div class="profile-role">Odoo 19 Developer — Team Lead</div>
-            <div class="profile-status"><span class="d"></span>Open to opportunities</div>
-          </div>
-        </div>
-        <div class="facts">
-          <div class="facts-head">Quick Facts</div>
-          <div class="fact-row"><span class="k">Role</span><span class="v">Associate Software Engineer — Team Lead</span></div>
-          <div class="fact-row"><span class="k">Focus</span><span class="v">Odoo 19 ERP Customization</span></div>
-          <div class="fact-row"><span class="k">Company</span><span class="v">KK Networks (PVT) Ltd</span></div>
-          <div class="fact-row"><span class="k">Based</span><span class="v">Lahore, Pakistan</span></div>
-          <div class="fact-row"><span class="k">Education</span><span class="v">BS Computer Science — UCP, 2026</span></div>
-          <div class="fact-row"><span class="k">Languages</span><span class="v">Urdu, English, Punjabi</span></div>
-        </div>
+<!-- ABOUT -->
+<section class="alt" id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow">About</div>
+      <h2>Production-grade software, from ERP workflows to machine learning.</h2>
+      <p>I'm a Software Engineer and Team Lead with 3+ years of experience building production software across ERP systems, full-stack applications, and AI/ML solutions.</p>
+      <p>At KK Networks I lead a team that owns a stack of interconnected custom Odoo 19 modules — CRM, subscription billing, accounting, HR, and infrastructure/utility (POP) tracking. I led the company's Odoo 17 → 19 migration and I'm the person who traces production issues from a bug report to a root-cause fix.</p>
+      <p>Outside of ERP, I built Wander Hub AI, my final-year project: an AI-powered travel recommendation platform using KNN/K-Means, an NLP chatbot, multilingual translation, and voice generation. I completed the Odoo Technical Academy in October 2026.</p>
+    </div>
+    <div class="three">
+      <div class="mini"><b>Build</b><span>Custom Odoo 19 modules — models, views, security groups, wizards, QWeb reports and approval workflows.</span></div>
+      <div class="mini"><b>Migrate &amp; maintain</b><span>Odoo 17 → 19 upgrades, resolving breaking API, view and workflow changes.</span></div>
+      <div class="mini"><b>Debug</b><span>Production issues via Odoo logs, tracebacks, Odoo shell and PostgreSQL queries.</span></div>
+      <div class="mini"><b>Apply AI/ML</b><span>Recommendation systems, NLP chatbots, speech and translation features in Python.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="eyebrow">Experience</div>
+    <h2>Where I've worked.</h2>
+    <p class="sub">Three years of combined in-house and freelance work, plus earlier internship and sales roles.</p>
+    <div class="timeline">
+      <div class="job">
+        <div class="job-top"><div><h3>Software Engineer — Team Lead</h3><div class="org">KK Networks (PVT) Ltd — Lahore</div></div><span class="date">Aug 2025 — Present</span></div>
+        <ul>
+          <li>Lead a development team and own the design, development, and maintenance of interconnected <b>custom Odoo 19 modules</b> covering CRM, Subscription Billing, Accounting, HR, and Infrastructure/Utility (POP) tracking for a live telecom business.</li>
+          <li>Led the <b>Odoo 17–19 migration</b> of core modules, resolving breaking API changes, view syntax renames, and workflow regressions.</li>
+          <li>Configure <b>access rights, record rules, and security groups</b>; build <b>QWeb PDF reports</b>, XML views, dashboards, wizards, and automated approval workflows.</li>
+          <li>Debug production issues using Odoo logs, Python tracebacks, Odoo shell, and <b>PostgreSQL queries</b>; deliver root-cause fixes with minimal downtime.</li>
+          <li>Administer <b>Linux Ubuntu</b> ERP servers and manage code with <b>Git &amp; GitHub</b> using structured branching and deployment practices.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-top"><div><h3>Freelance Software &amp; Odoo Developer</h3><div class="org">Self-Employed</div></div><span class="date">Aug 2023 — Aug 2025</span></div>
+        <ul>
+          <li>Delivered <b>custom Odoo module development</b> and ERP customization for multiple clients across CRM, Sales, Inventory, and Accounting, from requirements gathering to deployment.</li>
+          <li>Built XML views, QWeb reports, wizards, and automated workflows, with role-based access rights and record rules.</li>
+          <li>Managed end-to-end Odoo deployment and maintenance on Linux servers, including installation, upgrades, and PostgreSQL troubleshooting.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-top"><div><h3>Summer Intern</h3><div class="org">National Highway Authority (NHA) — Lahore</div></div><span class="date">Apr 2024 — May 2024</span></div>
+        <ul><li>Supported documentation, compliance reporting, meeting briefs, data entry, and internal administrative coordination.</li></ul>
+      </div>
+      <div class="job" style="margin-bottom:0">
+        <div class="job-top"><div><h3>Sales Executive</h3><div class="org">VNOXTEL LLC</div></div><span class="date">Jul 2022 — Aug 2023</span></div>
+        <ul><li>Handled client communication, lead generation, and sales coordination; consistently met targets through negotiation and follow-up.</li></ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- TOOLKIT -->
-  <section id="toolkit">
-    <div class="eyebrow">( 02 ) — Capabilities</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:36px;">The stack behind the ERP.</h2>
+<!-- SKILLS -->
+<section class="alt" id="skills">
+  <div class="wrap">
+    <div class="eyebrow">Skills</div>
+    <h2>Technical skills.</h2>
+    <p class="sub">The tools and domains I work with day to day.</p>
+    <div class="skill-grid">
+      <div class="skill"><h3><i>🤖</i>AI / ML</h3><div class="chips">
+        <span class="chip">Machine Learning (KNN, K-Means)</span><span class="chip">Recommendation Systems</span><span class="chip">NLP</span><span class="chip">Chatbot Development</span><span class="chip">Text-to-Speech / Voice</span><span class="chip">Multilingual Translation</span><span class="chip">scikit-learn</span></div></div>
+      <div class="skill"><h3><i>🏢</i>ERP &amp; Odoo</h3><div class="chips">
+        <span class="chip">Odoo 19</span><span class="chip">17→19 Migration</span><span class="chip">Custom Modules</span><span class="chip">QWeb Reports</span><span class="chip">XML Views</span><span class="chip">Wizards &amp; Dashboards</span><span class="chip">Approval Workflows</span><span class="chip">Access Rights</span><span class="chip">Record Rules</span></div></div>
+      <div class="skill"><h3><i>💻</i>Programming</h3><div class="chips">
+        <span class="chip">Python</span><span class="chip">JavaScript</span><span class="chip">SQL</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">XML</span><span class="chip">HTML / CSS</span><span class="chip">Bootstrap</span><span class="chip">C++</span><span class="chip">PHP</span></div></div>
+      <div class="skill"><h3><i>🛠</i>Tools &amp; Cloud</h3><div class="chips">
+        <span class="chip">Git / GitHub</span><span class="chip">Linux Ubuntu</span><span class="chip">Odoo Shell</span><span class="chip">VS Code</span><span class="chip">PyCharm</span><span class="chip">pgAdmin 4</span><span class="chip">VMware</span><span class="chip">VirtualBox</span><span class="chip">AWS</span><span class="chip">Figma</span><span class="chip">Canva</span></div></div>
+      <div class="skill"><h3><i>📊</i>Business Domains</h3><div class="chips">
+        <span class="chip">CRM</span><span class="chip">Subscription Billing</span><span class="chip">Accounting</span><span class="chip">Inventory</span><span class="chip">HR</span><span class="chip">Utility Billing</span><span class="chip">Network Operations (POP)</span></div></div>
+      <div class="skill"><h3><i>🤝</i>Professional</h3><div class="chips">
+        <span class="chip">Team Leadership</span><span class="chip">Business Process Analysis</span><span class="chip">Technical Documentation</span><span class="chip">User Training</span></div></div>
+    </div>
+  </div>
+</section>
 
-    <div class="tk-cat" data-reveal>
-      <div class="tk-cat-head"><span class="tk-num">01</span><span class="tk-name">Languages &amp; Backend</span></div>
-      <div class="chips">
-        <span class="chip">Python</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span>
-        <span class="chip">XML</span><span class="chip">JavaScript</span><span class="chip">HTML / CSS</span>
-        <span class="chip">SQL</span><span class="chip">PHP</span><span class="chip">C++</span>
+<!-- ODOO MODULES -->
+<section id="modules">
+  <div class="wrap">
+    <div class="eyebrow">Odoo Work</div>
+    <h2>Modules I've built and keep running.</h2>
+    <p class="sub">A working slice of the custom Odoo 19 suite deployed at KK Networks. Filter by domain, or expand a card for technical detail.</p>
+
+    <div class="toolbar">
+      <input class="search" id="search" type="text" placeholder="Search modules — e.g. billing, invoice, approval">
+      <div class="filters" id="filters">
+        <button class="f on" data-f="all" type="button">All</button>
+        <button class="f" data-f="billing" type="button">Billing</button>
+        <button class="f" data-f="crm" type="button">CRM</button>
+        <button class="f" data-f="accounting" type="button">Accounting</button>
+        <button class="f" data-f="hr" type="button">HR</button>
+        <button class="f" data-f="infra" type="button">Infra</button>
       </div>
     </div>
-    <div class="tk-cat" data-reveal>
-      <div class="tk-cat-head"><span class="tk-num">02</span><span class="tk-name">Odoo &amp; ERP</span></div>
-      <div class="chips">
-        <span class="chip">Odoo 19</span><span class="chip">17→19 Migration</span><span class="chip">Custom Modules</span>
-        <span class="chip">QWeb Reports</span><span class="chip">Access Rights &amp; Record Rules</span>
-        <span class="chip">Security Groups</span><span class="chip">Server Actions</span><span class="chip">Wizards</span>
-      </div>
+    <div class="count" id="count"></div>
+
+    <div class="mod-grid" id="modGrid">
+      <article class="card" data-tags="billing accounting" data-s="services fixed subscription approval kanban notifications">
+        <div class="card-top"><div class="mname">services_fixed</div><span class="badge live">In production · v19</span></div>
+        <p>Stage-based approval workflows for IP Lead, Termination, IP Change Request, and Upgrade/Downgrade requests — per-stage approvers by user or department, Kanban pipelines, and stage-wise email notifications.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Approval Workflows</span><span class="tag">QWeb Email</span><span class="tag">Kanban</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Fixed a same-day double-approval on Upgrade/Downgrade that produced a 2-day sliver invoice line, traced to alter-subscription logic recomputing off the wrong active line.</li>
+          <li>Moved termination inventory sourcing from <code>stock.quant</code> to full <code>stock.move</code> history, since quants missed service/consumable products.</li>
+          <li>Added deduplicated stage-wise email dispatch across all four workflow models.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="billing accounting" data-s="sales subscription enhancement update proration mrr invoice cron">
+        <div class="card-top"><div class="mname">sales_subscription_enhancement</div><span class="badge live">In production · v19</span></div>
+        <p>The subscription billing engine — Alter Subscription approvals write correct old/new quantity, price, and dates to invoice lines and history; cross-month proration and recurring invoice generation advance from the actual last invoice date.</p>
+        <div class="tags"><span class="tag">Subscription Logic</span><span class="tag">Invoicing</span><span class="tag">Cron Jobs</span><span class="tag">Proration</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Fixed a missing <code>partner_id</code> filter that let invoice matching pick up the wrong customer's line.</li>
+          <li>Resolved a race condition between two compute methods that produced Rs. 0 invoice amounts.</li>
+          <li>Added a fix to correctly compensate the MRR baseline when a subscription is reopened.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="accounting" data-s="accounting enhancements invoice design tax pra ait qweb">
+        <div class="card-top"><div class="mname">kkn_invoice_design</div><span class="badge live">In production · v19</span></div>
+        <p>Invoice PDF templates that report the tax-inclusive total and correctly expand grouped taxes (PRA 19.5%, AIT 15%) into individual line-item columns for accounting review.</p>
+        <div class="tags"><span class="tag">QWeb PDF</span><span class="tag">Accounting</span><span class="tag">Tax Reporting</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Rebuilt the QWeb report to break out grouped taxes into named columns instead of one lumped figure.</li>
+          <li>Recurring bills module: working clone/delete logic for posted bills, corrected view domains, and rebuilt access permissions.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="infra" data-s="pop utility electricity gas water telephone fuel dashboard custodian">
+        <div class="card-top"><div class="mname">pop / utility suite</div><span class="badge live">In production · v19</span></div>
+        <p>Point-of-Presence infrastructure tracking with live smart-button counters across six utility modules — electricity, gas, water, telephone, fuel — plus stage-based custodian permissions.</p>
+        <div class="tags"><span class="tag">Infra Tracking</span><span class="tag">Dashboards</span><span class="tag">Computed Fields</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Fixed multi-stage approval button visibility by checking the actual current stage's custodian.</li>
+          <li>Switched <code>is_stage_custodian</code> to <code>store=False</code> so it recomputes on every form load.</li>
+          <li>Standardized date fields to <code>DD/MM/YYYY</code> and resolved a <code>ValueError</code> from writing formatted strings into a date field.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="crm" data-s="crm kkn lead pipeline stage custodian notification">
+        <div class="card-top"><div class="mname">kkn_crm_19</div><span class="badge live">In production · v19</span></div>
+        <p>The company's CRM pipeline — lead stages, custodian-based approval routing, and the stage-wise email notification pattern that the other approval workflows at KK Networks are modeled on.</p>
+        <div class="tags"><span class="tag">CRM</span><span class="tag">Lead Pipeline</span><span class="tag">Notifications</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Established the per-stage subject/body template pattern, later reused across four other workflow modules.</li>
+          <li>Custodian-routing logic became the reference implementation for <code>services_fixed</code> and <code>netops</code>.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="hr" data-s="applicant portal candidate evaluation payroll onboarding education">
+        <div class="card-top"><div class="mname">kkn_applicant_portal</div><span class="badge live">In production · v19</span></div>
+        <p>HR &amp; hiring — an applicant portal with certification tracking on employee records, salary structure configuration for onboarded staff, and a rebuilt, fully paginated candidate evaluation PDF report.</p>
+        <div class="tags"><span class="tag">HR</span><span class="tag">Payroll Setup</span><span class="tag">QWeb Reports</span></div>
+        <button class="more" type="button">Technical detail ▾</button>
+        <div class="detail"><ul>
+          <li>Fixed the education print template where degree titles rendered in the wrong column.</li>
+          <li>Rebuilt pagination and footer repetition so multi-page evaluations print cleanly.</li>
+        </ul></div>
+      </article>
+
+      <article class="card" data-tags="infra" data-s="netops network operations multi company tufa">
+        <div class="card-top"><div class="mname">netops</div><span class="badge live">In production · v19</span></div>
+        <p>Network Operations — tracks infrastructure assets and service records across KK Networks' and Tufa Telecommunication's ISP network, using the same custodian and stage-approval structure as the other workflow modules.</p>
+        <div class="tags"><span class="tag">Netops</span><span class="tag">Infrastructure</span><span class="tag">Multi-Company</span></div>
+      </article>
     </div>
-    <div class="tk-cat" data-reveal>
-      <div class="tk-cat-head"><span class="tk-num">03</span><span class="tk-name">Infra &amp; Tools</span></div>
-      <div class="chips">
-        <span class="chip">Git / GitHub</span><span class="chip">Linux Ubuntu</span><span class="chip">Odoo Shell</span>
-        <span class="chip">pgAdmin 4</span><span class="chip">VMware / VirtualBox</span><span class="chip">AWS</span>
-        <span class="chip">VS Code</span><span class="chip">PyCharm</span>
+    <p class="empty" id="empty">No modules match that search — try a different term or clear the filter.</p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="alt" id="projects">
+  <div class="wrap">
+    <div class="eyebrow">Projects</div>
+    <h2>Full-stack &amp; AI projects, built end to end.</h2>
+    <p class="sub">The Odoo work is the day job. Outside of it, this is what I build: an AI-powered platform for my degree, and a full business management system for a real client.</p>
+
+    <div class="proj">
+      <div class="proj-head"><div><h3>Wander Hub AI — Intelligent Travel Planning System</h3><div class="kicker">BSCS Final Year Project · University of Central Punjab · 2025 – 2026</div></div></div>
+      <p>An AI-powered tourism assistant for Pakistan and Saudi Arabia that makes trip planning simpler and more personal — smart package recommendations, an NLP chatbot, voice interaction, multilingual translation, real-time weather, and currency conversion in one platform for travelers, guides, and admins. Designed and built end to end.</p>
+      <div class="proj-cols">
+        <div><h4>What it does</h4><ul>
+          <li>KNN and K-Means models recommend travel packages by budget, destination, and travel mode (air/road).</li>
+          <li>NLP chatbot answers travel queries and helps shape itineraries.</li>
+          <li>Speech-to-text voice input, multilingual translation, and text-to-speech playback.</li>
+          <li>Live weather (Open-Meteo) and an instant currency converter for trip budgeting.</li>
+          <li>Custom package requests, Hajj &amp; Umrah packages, and guide booking with in-app chat.</li>
+        </ul></div>
+        <div><h4>Platform</h4><ul>
+          <li>Role-based dashboards for User, Travel Guide, and Admin.</li>
+          <li>Package browser (All / Air / Road) with filters, ratings, and cart.</li>
+          <li>AI Predictor — destination, budget, days, and transport in; ranked package matches out.</li>
+          <li>Admin panel for bookings, payments, package requests, and revenue analytics.</li>
+        </ul></div>
       </div>
-    </div>
-    <div class="tk-cat" data-reveal style="margin-bottom:0;">
-      <div class="tk-cat-head"><span class="tk-num">04</span><span class="tk-name">Business Domains</span></div>
-      <div class="chips">
-        <span class="chip">CRM</span><span class="chip">Subscription Billing</span><span class="chip">Accounting</span>
-        <span class="chip">Inventory</span><span class="chip">Utility Billing</span><span class="chip">POP Management</span>
-        <span class="chip">Approval Workflows</span><span class="chip">HR</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODULE REGISTRY -->
-  <section id="modules">
-    <div class="eyebrow">( 03 ) — Module Registry</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">Modules I've built and keep running.</h2>
-    <p class="about-body" style="margin-bottom:36px;">A working slice of the custom Odoo 19 suite deployed at KK Networks — each one still live in production.</p>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">services_fixed</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">Stage-based approval workflows for IP Lead, Termination, IP Change Request, and Upgrade/Downgrade requests — with per-stage approver configuration by user or department, Kanban pipelines, and stage-wise email notifications modeled on the company's CRM.</p>
-      <div class="m-tags"><span class="m-tag">Python</span><span class="m-tag">Approval Workflows</span><span class="m-tag">QWeb Email Templates</span><span class="m-tag">Kanban Views</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">sales_subscription_enhancement <span class="path-sep">/</span> update_sale_subscription</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">The subscription billing engine — Alter Subscription approvals write correct old/new quantity, price, and date values into invoice lines and subscription history, cross-month proration is handled correctly, and recurring invoice generation advances from the actual last invoice date instead of resetting.</p>
-      <div class="m-tags"><span class="m-tag">Subscription Logic</span><span class="m-tag">Invoicing</span><span class="m-tag">Cron Jobs</span><span class="m-tag">Proration</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">accouting_enhancements <span class="path-sep">/</span> kkn_invoice_design</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">Invoice PDF templates that report the tax-inclusive total instead of base price, and correctly expand grouped taxes — PRA 19.5%, AIT 15% — into individual line-item columns for accounting review.</p>
-      <div class="m-tags"><span class="m-tag">QWeb PDF</span><span class="m-tag">Accounting</span><span class="m-tag">Tax Reporting</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">pop <span class="path-sep">/</span> utility suite</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">Point-of-Presence infrastructure tracking with live smart-button counters across six utility modules — electricity, gas, water, telephone, fuel — plus stage-based custodian permissions and localized date handling.</p>
-      <div class="m-tags"><span class="m-tag">Infra Tracking</span><span class="m-tag">Dashboards</span><span class="m-tag">Computed Fields</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">kkn_crm_19</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">The company's CRM pipeline — lead stages, custodian-based approval routing, and the stage-wise email notification pattern that every other approval workflow at KK Networks (services, terminations, upgrades) is now modeled on.</p>
-      <div class="m-tags"><span class="m-tag">CRM</span><span class="m-tag">Lead Pipeline</span><span class="m-tag">Notifications</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">update_account_kkn_extend</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">Recurring bills and accounts module — clone and delete logic for posted bills, corrected view-button domains and date formatting, and access rights rebuilt from a broken <span class="m-tag" style="border:none;padding:0;">ir.model.access.csv</span> configuration.</p>
-      <div class="m-tags"><span class="m-tag">Accounts</span><span class="m-tag">Recurring Bills</span><span class="m-tag">Access Rights</span></div>
-    </div>
-
-    <div class="module-card" data-reveal>
-      <div class="m-top">
-        <div class="m-name">kkn_applicant_portal <span class="path-sep">/</span> kkn_candidate_evaluation_report</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">HR &amp; hiring — applicant portal with certification tracking on employee records, salary structure configuration for onboarded staff, and a candidate evaluation QWeb report rebuilt from a broken layout into a fully paginated, correctly footered PDF.</p>
-      <div class="m-tags"><span class="m-tag">HR</span><span class="m-tag">Payroll Setup</span><span class="m-tag">QWeb Reports</span></div>
-    </div>
-
-    <div class="module-card" data-reveal style="margin-bottom:0;">
-      <div class="m-top">
-        <div class="m-name">netops</div>
-        <div class="m-badges"><span class="badge prod">In Production</span><span class="badge ver">v19.0</span></div>
-      </div>
-      <p class="m-desc">Network Operations — tracks infrastructure assets and service records across KK Networks' and Tufa Telecommunication's ISP network, feeding the same custodian and stage-approval structure used across the other workflow modules.</p>
-      <div class="m-tags"><span class="m-tag">Netops</span><span class="m-tag">Infrastructure</span><span class="m-tag">Multi-Company</span></div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="eyebrow">( 04 ) — Academic Project</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">Final Year Project — built end to end.</h2>
-    <p class="about-body" style="margin-bottom:36px;">Outside the Odoo work, this is the project I led at university — a full-stack AI travel platform, taken from idea defence through to a tested, deployed final system.</p>
-
-    <div class="module-card" data-reveal style="margin-bottom:0;">
-      <div class="m-top">
-        <div class="m-name">Wander Hub AI</div>
-        <div class="m-badges"><span class="badge prod">BSCS Final Year Project</span><span class="badge ver">2025 – 2026</span></div>
-      </div>
-      <p class="m-desc">An AI-powered web platform for planning trips across Pakistan — built with a three-person team (Group S25BS053) under advisor Mr. Jawad Hassan. My role covered <b style="color:var(--text);">documentation, frontend development, and AI model training.</b></p>
-
-      <div class="rule" style="margin:20px 0;"></div>
-
-      <div class="proj-grid">
-        <div class="proj-block">
-          <div class="proj-block-head">What it does</div>
-          <ul class="proj-list">
-            <li>KNN and K-Means models recommend travel packages by budget, destination, and travel mode (air/road)</li>
-            <li>NLP chatbot answers travel questions and helps build itineraries in natural conversation</li>
-            <li>Voice input (speech-to-text) and multilingual text translation with text-to-speech playback</li>
-            <li>Live weather forecasting (Open-Meteo) and currency conversion for trip budgeting</li>
-            <li>Separate User, Travel Guide, and Admin dashboards with booking, chat, and payment workflows</li>
-          </ul>
-        </div>
-        <div class="proj-block">
-          <div class="proj-block-head">Layout &amp; pages</div>
-          <ul class="proj-list">
-            <li>Landing page with feature highlights and role-based login/signup</li>
-            <li>Package browser — All / Air / Road packages with filters, ratings, and cart</li>
-            <li>AI Predictor — budget/days/transport inputs → ranked package matches</li>
-            <li>Translator &amp; Chatbot panel, side by side</li>
-            <li>Guide panel (bookings + chat) and Admin panel (bookings, payments, package requests, analytics)</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="rule" style="margin:20px 0;"></div>
-      <div class="proj-block-head" style="margin-bottom:12px;">Stack &amp; skills applied</div>
-      <div class="m-tags" style="margin-bottom:0;">
-        <span class="m-tag">Python (Flask)</span><span class="m-tag">Node.js</span><span class="m-tag">HTML / CSS / JS</span>
-        <span class="m-tag">Tailwind CSS</span><span class="m-tag">KNN</span><span class="m-tag">K-Means Clustering</span>
-        <span class="m-tag">NLP</span><span class="m-tag">scikit-learn</span><span class="m-tag">AI Model Training</span>
-        <span class="m-tag">Open-Meteo API</span><span class="m-tag">Translation &amp; TTS API</span><span class="m-tag">MySQL</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- PATH -->
-  <section id="path">
-    <div class="eyebrow">( 05 ) — Experience &amp; Education</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:36px;">The path so far.</h2>
-
-    <div class="path-grid">
-      <div data-reveal>
-        <div class="path-col-head">Experience</div>
-
-        <div class="path-item">
-          <span class="path-date">Mar 2026 — Present</span>
-          <div class="path-title">Odoo Developer / Software Developer</div>
-          <div class="path-sub">KK Networks (PVT) Ltd — Lahore</div>
-          <ul>
-            <li>Design and maintain custom Odoo 19 modules across CRM, Sales, Inventory, Accounting, Subscription Management, Utility Billing, POP, and Approval Workflows.</li>
-            <li>Lead Odoo 17→19 migration; configure access rights, record rules, and security groups.</li>
-            <li>Debug production issues via logs, tracebacks, and PostgreSQL; deploy through Git/GitHub to Linux Ubuntu ERP servers.</li>
-          </ul>
-        </div>
-
-        <div class="path-item">
-          <span class="path-date">Apr 2024 — May 2024</span>
-          <div class="path-title">Summer Intern</div>
-          <div class="path-sub">National Highway Authority (NHA) — Lahore</div>
-          <ul>
-            <li>Supported documentation, compliance reporting, and internal administrative coordination.</li>
-          </ul>
-        </div>
-
-        <div class="path-item">
-          <span class="path-date">Jul 2022 — Aug 2023</span>
-          <div class="path-title">Sales Executive</div>
-          <div class="path-sub">VNOXTEL LLC</div>
-          <ul>
-            <li>Handled client communication, lead generation, and sales coordination — consistently met targets through negotiation and follow-up.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div data-reveal>
-        <div class="path-col-head">Education</div>
-
-        <div class="path-item">
-          <span class="path-date">2022 — 2026</span>
-          <div class="path-title">BS Computer Science</div>
-          <div class="path-sub">University of Central Punjab — Major: Software Development · Minor: Quality Assurance · CGPA 3.63/4.00</div>
-        </div>
-
-        <div class="path-item">
-          <span class="path-date">2020 — 2021</span>
-          <div class="path-title">Intermediate in ICS (Statistics)</div>
-          <div class="path-sub">Govt Shalimar Graduate College For Boys — Lahore · Grade A+ (97%)</div>
-        </div>
-
-        <div class="path-item" style="border:none;padding-bottom:0;margin-bottom:0;">
-          <span class="path-date">Certifications</span>
-          <div class="cert-strip">
-            <div class="cert-row">
-              <span class="name">AWS Academy Cloud Foundations</span>
-              <span class="issuer">AWS Academy · Jan 2025</span>
-            </div>
-            <div class="cert-row">
-              <span class="name">Full Stack Web Application Development</span>
-              <span class="issuer">UET Lahore · NCAI · Oct 2024</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ESTIMATE / BUSINESS CALCULATOR -->
-  <section id="estimate">
-    <div class="eyebrow">( 06 ) — Business Tool</div>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px;">What would your Odoo project cost?</h2>
-    <p class="about-body" style="margin-bottom:32px;max-width:640px;">A rough, transparent starting point — not a quote. Pick what you need and I'll follow up with an exact scope and price.</p>
-
-    <div class="calc-card" data-reveal>
-      <div class="calc-grid">
-        <div class="calc-controls">
-          <div class="calc-field">
-            <label class="calc-label">Modules needed</label>
-            <div class="calc-stepper">
-              <button type="button" class="calc-step-btn" id="modMinus">−</button>
-              <span class="calc-step-val" id="modCount">2</span>
-              <button type="button" class="calc-step-btn" id="modPlus">+</button>
-            </div>
-          </div>
-
-          <div class="calc-field">
-            <label class="calc-label">Complexity</label>
-            <div class="calc-toggle" id="complexityToggle">
-              <button type="button" class="calc-opt active" data-val="1">Simple</button>
-              <button type="button" class="calc-opt" data-val="2">Standard</button>
-              <button type="button" class="calc-opt" data-val="3.2">Complex</button>
-            </div>
-          </div>
-
-          <div class="calc-field">
-            <label class="calc-label">Odoo 17 → 19 migration needed?</label>
-            <div class="calc-toggle" id="migrationToggle">
-              <button type="button" class="calc-opt active" data-val="0">No</button>
-              <button type="button" class="calc-opt" data-val="1">Yes</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="calc-result">
-          <div class="calc-result-label">Estimated range</div>
-          <div class="calc-result-value" id="calcCost">Rs. 90,000 – 130,000</div>
-          <div class="calc-result-sub"><span id="calcWeeks">2–3</span> weeks, approx.</div>
-          <div class="rule" style="margin:18px 0;"></div>
-          <div class="calc-note">Estimate only — based on typical KK Networks module scope. Final pricing depends on real requirements after a short scoping call.</div>
-          <a href="#contact" class="btn-primary" style="margin-top:16px;width:100%;justify-content:center;">Get an exact quote →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="contact">
-    <div class="eyebrow">( 07 ) — Contact</div>
-    <div class="contact-grid">
-      <div data-reveal>
-        <h2 class="contact-headline">Have an Odoo problem?<br><span class="dim">Let's fix it.</span></h2>
-        <p class="about-body">Open to Odoo/ERP development roles, backend engineering positions, and freelance module or migration work.</p>
-        <a href="mailto:daudamjadofficial@gmail.com" class="contact-email">daudamjadofficial@gmail.com ↗</a>
-        <div class="hero-ctas">
-          <a href="https://linkedin.com/in/daud-amjad-0625113b1" target="_blank" class="btn-secondary">LinkedIn ↗</a>
-          <a href="mailto:daudamjadofficial@gmail.com" class="btn-primary">Email me →</a>
-        </div>
-      </div>
-      <div data-reveal>
-        <div class="contact-card">
-          <div class="cc-row"><span class="k">Phone / WhatsApp</span><span class="v">+92 309 4154183</span></div>
-          <div class="cc-row"><span class="k">Based in</span><span class="v">Lahore, Pakistan</span></div>
-          <div class="cc-row"><span class="k">LinkedIn</span><span class="v">/in/daud-amjad-0625113b1</span></div>
-          <div class="cc-row"><span class="k">Availability</span><span class="v cc-available"><span class="d"></span>Open to opportunities</span></div>
-        </div>
-      </div>
+      <div class="tags"><span class="tag">Python (Flask)</span><span class="tag">Node.js</span><span class="tag">scikit-learn</span><span class="tag">KNN</span><span class="tag">K-Means</span><span class="tag">NLP</span><span class="tag">MySQL</span><span class="tag">JWT Auth</span><span class="tag">Tailwind CSS</span><span class="tag">Open-Meteo API</span></div>
     </div>
 
-    <footer>
-      <div class="footer-name">Daud Amjad.</div>
-      <div class="footer-links">
-        <a href="#about">About</a><a href="#toolkit">Toolkit</a><a href="#modules">Modules</a><a href="#path">Path</a>
+    <div class="proj" style="margin-bottom:0">
+      <div class="proj-head"><div><h3>Mian Amjad Garments — Business Management System</h3><div class="kicker">Client project · Full-stack · Live in use</div></div></div>
+      <p>A full-stack inventory, billing, and ledger system for a garments/textile business, built solo — frontend, backend API, and business logic.</p>
+      <a class="live-link" href="https://mian-amjad-garments-erp.vercel.app/" target="_blank" rel="noopener">View live site ↗ mian-amjad-garments-erp.vercel.app</a>
+      <div class="proj-cols">
+        <div><h4>What it does</h4><ul>
+          <li>Role-based Admin and Customer portals behind a single login, with token authentication.</li>
+          <li>Multi-attribute inventory (product × color × size) with live stock-in / sold / current-stock tracking and valuation.</li>
+          <li>Custom per-inch pricing calculator for made-to-measure items.</li>
+          <li>Billing engine with percent/fixed discounts, GST, live invoice preview, and printable invoices.</li>
+        </ul></div>
+        <div><h4>Platform</h4><ul>
+          <li>Customer ledger with running balances, payments, and full transaction history.</li>
+          <li>Orders, purchase orders, and a reports dashboard (stock value, sales, receivables).</li>
+          <li>Customer-facing portal — My Orders, My Balance, New Order.</li>
+        </ul></div>
       </div>
-      <div class="footer-meta">© 2026 Daud Amjad — Odoo 19 Developer, Lahore</div>
-    </footer>
-  </section>
+      <div class="tags"><span class="tag">JavaScript (SPA)</span><span class="tag">REST API</span><span class="tag">Token Auth</span><span class="tag">Invoice Generation</span><span class="tag">Ledger &amp; Payments</span><span class="tag">Role-Based Access</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTS -->
+<section id="education">
+  <div class="wrap">
+    <div class="eyebrow">Education &amp; Certifications</div>
+    <h2>Learning, formally.</h2>
+    <p class="sub" style="margin-bottom:30px">Degree, intermediate studies, and professional certifications.</p>
+    <div class="two">
+      <div>
+        <div class="col-title">Education</div>
+        <div class="item"><div class="when">Mar 2022 — Feb 2026</div><h3>BS Computer Science</h3><div class="meta">University of Central Punjab — Lahore<br>Major: Software Development · Minor: Quality Assurance<br><b style="color:var(--navy)">CGPA 3.63 / 4.00</b></div></div>
+        <div class="item"><div class="when">Mar 2020 — Oct 2021</div><h3>Intermediate in ICS (Statistics)</h3><div class="meta">Govt Shalimar Graduate College For Boys — Lahore<br><b style="color:var(--navy)">Grade A+ (97%)</b></div></div>
+      </div>
+      <div>
+        <div class="col-title">Certifications</div>
+        <div class="item cert-hero"><div class="when">Oct 2026</div><h3>Odoo Technical Academy</h3><div class="meta">Recognition of Completion — Odoo</div></div>
+        <div class="item"><div class="when">Jan 2025</div><h3>AWS Academy Graduate</h3><div class="meta">AWS Academy Cloud Foundations</div></div>
+        <div class="item"><div class="when">Oct 2024</div><h3>Full Stack Web Application Development</h3><div class="meta">UET Lahore</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="eyebrow">Contact</div>
+      <h2>Let's build something reliable.</h2>
+      <p>Open to Software Engineer, Odoo Developer, Python Developer, and AI/ML roles, as well as freelance Odoo module and migration work.</p>
+      <div class="cta">
+        <a class="btn btn-light" href="mailto:daudamjadofficial@gmail.com">Email me</a>
+        <a class="btn btn-outline" href="https://www.linkedin.com/in/daud-amjad-0625113b1" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <button class="btn btn-outline" type="button" id="openResume3">View résumé</button>
+      </div>
+    </div>
+    <div class="c-card">
+      <div class="c-row"><span>Email</span><a href="mailto:daudamjadofficial@gmail.com">daudamjadofficial@gmail.com</a></div>
+      <div class="c-row"><span>Phone / WhatsApp</span><a href="tel:+923094154183">+92 309 4154183</a></div>
+      <div class="c-row"><span>Location</span><span>Lahore, Pakistan</span></div>
+      <div class="c-row"><span>LinkedIn</span><a href="https://www.linkedin.com/in/daud-amjad-0625113b1" target="_blank" rel="noopener">/in/daud-amjad-0625113b1</a></div>
+    </div>
+  </div>
+</section>
 </main>
 
-<script>
-  // Nav active state on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navlinks = document.querySelectorAll('.navlink');
-  function onScroll(){
-    let current = sections[0].id;
-    const offset = 140;
-    sections.forEach(sec=>{
-      if (window.scrollY + offset >= sec.offsetTop) current = sec.id;
-    });
-    navlinks.forEach(l=>{
-      l.classList.toggle('active', l.getAttribute('href') === '#'+current);
-    });
-  }
-  window.addEventListener('scroll', onScroll);
-  onScroll();
+<button class="to-top" id="toTop" type="button" aria-label="Back to top">↑</button>
+<footer>© 2026 Daud Amjad — Software Engineer · Odoo ERP &amp; AI/ML · Lahore, Pakistan</footer>
 
-  // Reveal on scroll
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduced && 'IntersectionObserver' in window){
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-    }, {threshold:0.15});
-    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
-  } else {
-    document.querySelectorAll('[data-reveal]').forEach(el=>el.classList.add('in'));
-  }
-
-  // Ledger demo widget — duplicate invoice line bug fix
-  const upgradeBtn = document.getElementById('upgradeBtn');
-  const line2Row = document.getElementById('line2Row');
-  const line1 = document.getElementById('line1');
-  const alterVal = document.getElementById('alterVal');
-  const totalVal = document.getElementById('totalVal');
-  const statusText = document.getElementById('statusText');
-  const ledgerStatus = document.getElementById('ledgerStatus');
-  let fixed = false;
-
-  upgradeBtn.addEventListener('click', ()=>{
-    fixed = !fixed;
-    [line1, alterVal, totalVal, statusText].forEach(f=>f.classList.add('changed'));
-
-    setTimeout(()=>{
-      if(fixed){
-        line2Row.style.display = 'none';
-        line1.textContent = 'Basic Plan — Rs. 2,500';
-        alterVal.textContent = '2 (merged into 1 line)';
-        totalVal.textContent = 'Rs. 2,500';
-        statusText.textContent = 'resolved';
-        ledgerStatus.style.color = 'var(--teal)';
-        ledgerStatus.querySelector('.d').style.background = 'var(--teal)';
-        upgradeBtn.textContent = 'Revert → Show Original Bug';
-      } else {
-        line2Row.style.display = 'flex';
-        line1.textContent = 'Basic Plan — Rs. 2,500';
-        alterVal.textContent = '2';
-        totalVal.textContent = 'Rs. 5,000';
-        statusText.textContent = 'duplicate detected';
-        ledgerStatus.style.color = 'var(--amber)';
-        ledgerStatus.querySelector('.d').style.background = 'var(--amber)';
-        upgradeBtn.textContent = 'Run Fix → Dedupe Invoice Lines';
-      }
-    }, 180);
-
-    setTimeout(()=>{
-      [line1, alterVal, totalVal, statusText].forEach(f=>f.classList.remove('changed'));
-    }, 1400);
-  });
-</script>
-
-<!-- RESUME MODAL -->
-<div class="modal-overlay" id="resumeOverlay">
-  <div class="resume-modal" id="resumeModal">
-    <div class="resume-modal-bar">
-      <span class="resume-modal-label">daud_amjad.resume — v2026</span>
-      <div style="display:flex;gap:10px;">
-        <button class="resume-print-btn" id="printResumeBtn" type="button">Print / Save PDF</button>
-        <button class="resume-close-btn" id="closeResumeBtn" type="button" aria-label="Close resume">✕</button>
-      </div>
+<!-- RESUME (also what prints) — mirrors the LaTeX CV -->
+<div id="resumeOverlay" aria-hidden="true">
+  <div class="rbar">
+    <span>Résumé — Daud Amjad</span>
+    <div class="btns">
+      <button class="solid" id="printBtn" type="button">Print / Save as PDF</button>
+      <a href="Daud_Amjad_Resume.pdf" download>Download PDF</a>
+      <button id="closeResume" type="button">Close ✕</button>
     </div>
-    <div class="resume-doc" id="resumeDoc">
-      <div class="rd-head">
-        <img src="profile.jpg" alt="Daud Amjad" class="rd-photo">
-        <div>
-          <div class="rd-name">Daud Amjad</div>
-          <div class="rd-title">Odoo 19 Developer | Software Developer | ERP Customization Specialist</div>
-          <div class="rd-contact">Lahore, Pakistan &nbsp;·&nbsp; +92 309 4154183 &nbsp;·&nbsp; daudamjadofficial@gmail.com &nbsp;·&nbsp; linkedin.com/in/daud-amjad-0625113b1</div>
-        </div>
-      </div>
+  </div>
 
-      <div class="rd-section">
-        <div class="rd-section-title">Professional Summary</div>
-        <p>Results-driven Odoo 19 Developer with hands-on experience in ERP customization, custom module development, Odoo 17→19 migration, and workflow automation. Specialized in CRM, Sales, Inventory, Accounting, Subscription Management, Payroll &amp; HR, Utility Billing, POP Management, Netops, and Approval Workflows. Proficient in access rights, record rules, security groups, and administrator-level configuration. Strong command of Python, PostgreSQL, XML, Git/GitHub, and Linux for production ERP deployment and maintenance.</p>
-      </div>
-
-      <div class="rd-section">
-        <div class="rd-section-title">Work Experience</div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Odoo Developer / Software Developer</b><span>Mar 2026 — Present</span></div>
-          <div class="rd-entry-sub">KK Networks (PVT) Ltd — Lahore</div>
-          <ul>
-            <li>Design, develop, and maintain custom Odoo 19 modules for CRM, Sales, Inventory, Accounting, Subscription Management, Payroll &amp; HR, Utility Billing, POP, and Netops.</li>
-            <li>Lead Odoo 17→19 migration; resolve model, view, security, and workflow breaking changes.</li>
-            <li>Configure administrator-level access rights, record rules, and security groups aligned to business roles.</li>
-            <li>Debug production issues via Odoo logs, tracebacks, Odoo shell, and PostgreSQL; deliver root-cause fixes with minimal downtime.</li>
-            <li>Manage Git/GitHub deployments and administer Linux Ubuntu ERP servers and VMs.</li>
-          </ul>
-        </div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Summer Intern</b><span>Apr 2024 — May 2024</span></div>
-          <div class="rd-entry-sub">National Highway Authority (NHA) — Lahore</div>
-          <ul><li>Supported documentation, compliance reporting, meeting briefs, and internal administrative coordination.</li></ul>
-        </div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Sales Executive</b><span>Jul 2022 — Aug 2023</span></div>
-          <div class="rd-entry-sub">VNOXTEL LLC</div>
-          <ul><li>Handled client communication, lead generation, and sales coordination — consistently met targets.</li></ul>
-        </div>
-      </div>
-
-      <div class="rd-section">
-        <div class="rd-section-title">Technical Skills</div>
-        <div class="rd-skill-row"><b>ERP &amp; Odoo:</b> Odoo 19, 17→19 Migration, Custom Modules, CRM, Sales, Inventory, Accounting, Subscription Management, Payroll &amp; HR, POP, Utility Billing, Netops, Approval Workflows, Access Rights, QWeb Reports, Wizards, Dashboards</div>
-        <div class="rd-skill-row"><b>Programming:</b> Python, JavaScript, XML, HTML, CSS, Bootstrap, SQL, PostgreSQL, MySQL, C++, PHP</div>
-        <div class="rd-skill-row"><b>Tools:</b> Git, GitHub, Linux Ubuntu, Odoo Shell, VS Code, PyCharm, pgAdmin 4, VMware, VirtualBox, AWS, Figma, Canva</div>
-      </div>
-
-      <div class="rd-section">
-        <div class="rd-section-title">Education</div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>BS Computer Science</b><span>Mar 2022 — Feb 2026</span></div>
-          <div class="rd-entry-sub">University of Central Punjab — Lahore · Major: Software Development · Minor: Quality Assurance · CGPA 3.63/4.00</div>
-        </div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Intermediate in ICS (Statistics)</b><span>2020 — 2021</span></div>
-          <div class="rd-entry-sub">Govt Shalimar Graduate College For Boys — Lahore · Grade A+ (97%)</div>
-        </div>
-      </div>
-
-      <div class="rd-section">
-        <div class="rd-section-title">Projects</div>
-        <div class="rd-entry">
-          <div class="rd-entry-top"><b>Wander Hub AI — Intelligent Travel Planning System</b></div>
-          <ul><li>AI-powered travel recommendation platform for Pakistan &amp; Saudi Arabia with chatbot support, multilingual translation, voice generation, real-time weather updates, and currency conversion.</li></ul>
-        </div>
-      </div>
-
-      <div class="rd-section">
-        <div class="rd-section-title">Certifications</div>
-        <div class="rd-skill-row">AWS Academy Graduate — AWS Academy Cloud Foundations (Jan 2025)</div>
-        <div class="rd-skill-row">Full Stack Web Application Development — University of Engineering and Technology (UET), Lahore (Oct 2024)</div>
-      </div>
-
-      <div class="rd-section" style="border:none;">
-        <div class="rd-section-title">Languages</div>
-        <div class="rd-skill-row">English — Fluent &nbsp;|&nbsp; Urdu — Native &nbsp;|&nbsp; Punjabi — Native</div>
-      </div>
+  <div class="cv" id="cv">
+    <div class="cv-head">
+      <div class="cv-name">DAUD AMJAD</div>
+      <div class="cv-tag">Software Engineer | Odoo ERP Developer | AI/ML &amp; NLP Practitioner | Team Lead</div>
+      <div class="cv-contact"><span>Lahore, Pakistan</span><span>+92 309 4154183</span><span>daudamjadofficial@gmail.com</span></div>
+      <div class="cv-contact" style="margin-top:.8mm"><span>linkedin.com/in/daud-amjad-0625113b1</span><span>daud-amjad-portfolio.vercel.app</span><span>mian-amjad-garments-erp.vercel.app</span></div>
     </div>
+    <hr class="cv-rule">
+
+    <h5>Professional Summary</h5>
+    <p>Results-driven <b>Software Engineer</b> and <b>Team Lead</b> with <b>3+ years</b> of experience building production software across <b>ERP systems, full-stack applications,</b> and <b>AI/ML solutions</b>. Led the <b>Odoo 17–19 migration</b> and the development of custom Odoo 19 modules for a live telecom business, and independently built an <b>AI-powered recommendation system</b> using <b>KNN/K-Means, NLP chatbots,</b> and multilingual/voice features. Strong command of <b>Python, PostgreSQL, JavaScript, Git/GitHub,</b> and <b>Linux</b>, with an <b>Odoo Technical Academy</b> certification.</p>
+
+    <h5>Work Experience</h5>
+    <div class="row"><b>KK Networks (PVT) Ltd — Lahore</b><span class="r">August 2025 – Present</span></div>
+    <div class="row"><i>Software Engineer — Team Lead</i></div>
+    <ul>
+      <li>Lead a development team and own the design, development, and maintenance of interconnected <b>custom Odoo 19 modules</b> covering CRM, Subscription Billing, Accounting, HR, and Infrastructure/Utility (POP) tracking for a live telecom business.</li>
+      <li>Led the <b>Odoo 17–19 migration</b> of core modules, resolving breaking API changes, view syntax renames, and workflow regressions.</li>
+      <li>Configure <b>access rights, record rules, and security groups</b>; build <b>QWeb PDF reports</b>, XML views, dashboards, wizards, and automated approval workflows.</li>
+      <li>Debug production issues using Odoo logs, Python tracebacks, Odoo shell, and <b>PostgreSQL queries</b>; deliver root-cause fixes with minimal downtime.</li>
+      <li>Administer <b>Linux Ubuntu</b> ERP servers and manage code with <b>Git &amp; GitHub</b> using structured branching and deployment practices.</li>
+    </ul>
+    <div class="row gap"><b>Self-Employed / Freelance</b><span class="r">August 2023 – August 2025</span></div>
+    <div class="row"><i>Freelance Software &amp; Odoo Developer</i></div>
+    <ul>
+      <li>Delivered <b>custom Odoo module development</b> and ERP customization for multiple clients across CRM, Sales, Inventory, and Accounting, from requirements gathering to deployment.</li>
+      <li>Built <b>XML views, QWeb reports, wizards,</b> and automated workflows, with role-based <b>access rights and record rules</b>.</li>
+      <li>Managed end-to-end <b>Odoo deployment and maintenance</b> on Linux servers, including installation, upgrades, and PostgreSQL troubleshooting.</li>
+    </ul>
+    <div class="row gap"><b>National Highway Authority (NHA) — Lahore</b><span class="r">April 2024 – May 2024</span></div>
+    <div class="row"><i>Summer Intern</i></div>
+    <ul><li>Supported documentation, compliance reporting, meeting briefs, data entry, and internal administrative coordination.</li></ul>
+    <div class="row gap"><b>VNOXTEL LLC</b><span class="r">July 2022 – August 2023</span></div>
+    <div class="row"><i>Sales Executive</i></div>
+    <ul><li>Handled client communication, lead generation, and sales coordination; consistently met targets through negotiation and follow-up.</li></ul>
+
+    <h5>Key Projects</h5>
+    <div class="row"><b>Wander Hub AI — Intelligent Travel Planning System</b><span class="r2">BSCS Final Year Project</span></div>
+    <ul><li>AI-powered travel recommendation platform for Pakistan &amp; Saudi Arabia featuring <b>KNN/K-Means</b> package recommendations, an <b>NLP chatbot</b>, multilingual translation, <b>voice generation</b>, real-time weather, and currency conversion. Designed and built end-to-end.</li></ul>
+    <div class="row"><b>Mian Amjad Garments — Business Management System</b><span class="r2">mian-amjad-garments-erp.vercel.app</span></div>
+    <ul><li>Full-stack inventory, billing, and ledger system for a garments business: role-based access, multi-attribute inventory, custom per-inch pricing calculator, billing engine with GST and live invoice preview, and customer ledger.</li></ul>
+
+    <h5>Technical Skills</h5>
+    <table>
+      <tr><td>AI / ML:</td><td>Machine Learning (KNN, K-Means), Recommendation Systems, NLP, Chatbot Development, Text-to-Speech / Voice Generation, Multilingual Translation, AI-Powered Application Design</td></tr>
+      <tr><td>ERP &amp; Odoo:</td><td>Odoo 19, Odoo 17–19 Migration, Custom Module Development, CRM, Sales, Inventory, Accounting, Subscription Billing, Utility Billing, POP, Approval Workflows, Access Rights, Record Rules, QWeb Reports, XML Views, Wizards, Dashboards</td></tr>
+      <tr><td>Programming:</td><td>Python, JavaScript, SQL, PostgreSQL, MySQL, XML, HTML, CSS, Bootstrap, C++, PHP</td></tr>
+      <tr><td>Tools &amp; Cloud:</td><td>Git, GitHub, Linux Ubuntu, Odoo Shell, VS Code, PyCharm, pgAdmin 4, VMware, VirtualBox, AWS, Figma, Canva</td></tr>
+      <tr><td>Professional:</td><td>Team Leadership, Business Process Analysis, Functional &amp; Technical Documentation, User Training</td></tr>
+      <tr><td>Languages:</td><td>English (Fluent), Urdu (Native), Punjabi (Native)</td></tr>
+    </table>
+
+    <h5>Education</h5>
+    <div class="row"><b>University of Central Punjab — Lahore</b><span class="r">March 2022 – February 2026</span></div>
+    <div class="row"><i>BS Computer Science | Major: Software Development | Minor: Quality Assurance</i><span class="r2">CGPA: 3.63/4.00</span></div>
+    <div class="row gap"><b>Govt Shalimar Graduate College For Boys — Lahore</b><span class="r">March 2020 – October 2021</span></div>
+    <div class="row"><i>Intermediate in ICS (Statistics)</i><span class="r2">Grade: A+ (97%)</span></div>
+
+    <h5>Certifications</h5>
+    <ul>
+      <li><b>Odoo Technical Academy</b> — Recognition of Completion, Odoo (Oct 2026)</li>
+      <li><b>AWS Academy Graduate</b> — AWS Academy Cloud Foundations (Jan 2025)</li>
+      <li><b>Full Stack Web Application Development</b> — UET Lahore (Oct 2024)</li>
+    </ul>
   </div>
 </div>
 
 <script>
-  // Resume modal
-  const resumeOverlay = document.getElementById('resumeOverlay');
-  const openResumeBtn = document.getElementById('openResumeBtn');
-  const closeResumeBtn = document.getElementById('closeResumeBtn');
-  const printResumeBtn = document.getElementById('printResumeBtn');
+// Mobile menu + active link
+const links = document.getElementById('links');
+document.getElementById('menuBtn').addEventListener('click', () => links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+const secs = [...document.querySelectorAll('main section[id]')];
+const navA = [...links.querySelectorAll('a')];
+const spy = () => {
+  const y = window.scrollY + 120; let cur = '';
+  secs.forEach(s => { if (s.offsetTop <= y) cur = s.id; });
+  navA.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+};
+window.addEventListener('scroll', spy, {passive:true}); spy();
 
-  function openResume(){
-    resumeOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeResume(){
-    resumeOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  openResumeBtn.addEventListener('click', openResume);
-  closeResumeBtn.addEventListener('click', closeResume);
-  resumeOverlay.addEventListener('click', (e)=>{ if(e.target === resumeOverlay) closeResume(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeResume(); });
-  printResumeBtn.addEventListener('click', ()=>window.print());
-
-  // Business calculator
-  const modMinus = document.getElementById('modMinus');
-  const modPlus = document.getElementById('modPlus');
-  const modCountEl = document.getElementById('modCount');
-  const complexityToggle = document.getElementById('complexityToggle');
-  const migrationToggle = document.getElementById('migrationToggle');
-  const calcCost = document.getElementById('calcCost');
-  const calcWeeks = document.getElementById('calcWeeks');
-
-  let modCount = 2;
-  let complexity = 1;
-  let migration = 0;
-
-  const BASE_PER_MODULE = 35000; // Rs, illustrative base rate per simple module
-  const MIGRATION_FLAT = 40000;
-
-  function formatRs(n){
-    return 'Rs. ' + Math.round(n).toLocaleString('en-PK');
-  }
-
-  function recalc(){
-    const low = modCount * BASE_PER_MODULE * complexity * (migration ? 1.15 : 1) + (migration ? MIGRATION_FLAT * 0.8 : 0);
-    const high = low * 1.4;
-    calcCost.textContent = formatRs(low) + ' – ' + formatRs(high);
-
-    const weeksLow = Math.max(1, Math.round(modCount * 0.8 * complexity));
-    const weeksHigh = weeksLow + Math.round(modCount * 0.5) + (migration ? 1 : 0);
-    calcWeeks.textContent = weeksLow + '–' + weeksHigh;
-  }
-
-  modMinus.addEventListener('click', ()=>{ modCount = Math.max(1, modCount - 1); modCountEl.textContent = modCount; recalc(); });
-  modPlus.addEventListener('click', ()=>{ modCount = Math.min(15, modCount + 1); modCountEl.textContent = modCount; recalc(); });
-
-  complexityToggle.querySelectorAll('.calc-opt').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      complexityToggle.querySelectorAll('.calc-opt').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      complexity = parseFloat(btn.dataset.val);
-      recalc();
-    });
+// Module search / filter / expand
+const cards = [...document.querySelectorAll('#modGrid .card')];
+const search = document.getElementById('search');
+const count = document.getElementById('count');
+const empty = document.getElementById('empty');
+let filter = 'all';
+function applyFilter(){
+  const q = search.value.trim().toLowerCase(); let n = 0;
+  cards.forEach(c => {
+    const okTag = filter === 'all' || c.dataset.tags.split(' ').includes(filter);
+    const text = (c.dataset.s + ' ' + c.textContent).toLowerCase();
+    const show = okTag && (!q || text.includes(q));
+    c.classList.toggle('hide', !show); if (show) n++;
   });
-
-  migrationToggle.querySelectorAll('.calc-opt').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      migrationToggle.querySelectorAll('.calc-opt').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      migration = parseFloat(btn.dataset.val);
-      recalc();
-    });
+  count.textContent = 'Showing ' + n + ' of ' + cards.length + ' modules';
+  empty.style.display = n ? 'none' : 'block';
+}
+search.addEventListener('input', applyFilter);
+document.getElementById('filters').addEventListener('click', e => {
+  const b = e.target.closest('.f'); if (!b) return;
+  document.querySelectorAll('#filters .f').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); filter = b.dataset.f; applyFilter();
+});
+cards.forEach(c => {
+  const btn = c.querySelector('.more'); if (!btn) return;
+  const d = c.querySelector('.detail');
+  btn.addEventListener('click', () => {
+    const open = d.classList.toggle('open');
+    btn.textContent = open ? 'Hide detail ▴' : 'Technical detail ▾';
   });
+});
+applyFilter();
 
-  recalc();
+// Résumé overlay (same markup is what prints)
+const overlay = document.getElementById('resumeOverlay');
+const cv = document.getElementById('cv');
+function fitCv(){
+  // On narrow screens, scale the A4 sheet to fit the viewport (screen only)
+  const avail = window.innerWidth - 24;
+  const w = cv.offsetWidth;
+  if (avail < w){ const s = avail / w; cv.style.transform = 'scale(' + s + ')'; cv.style.marginBottom = (-(cv.offsetHeight * (1 - s))) + 'px'; }
+  else { cv.style.transform = ''; cv.style.marginBottom = ''; }
+}
+function openResume(){ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; fitCv(); overlay.scrollTop = 0; }
+function closeResume(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+['openResume','openResume2','openResume3'].forEach(id => document.getElementById(id).addEventListener('click', openResume));
+document.getElementById('closeResume').addEventListener('click', closeResume);
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeResume(); });
+window.addEventListener('resize', () => { if (overlay.classList.contains('open')) fitCv(); });
+window.addEventListener('beforeprint', () => { cv.style.transform = ''; cv.style.marginBottom = ''; });
+window.addEventListener('afterprint', () => { if (overlay.classList.contains('open')) fitCv(); });
+
+// ===== THEME TOGGLE =====
+(function(){
+  const root = document.documentElement;
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.classList.add('theme-anim');
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch(e) {}
+    setTimeout(() => root.classList.remove('theme-anim'), 500);
+  });
+})();
+
+// ===== ANIMATIONS =====
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bar = document.getElementById('progress');
+  const nav = document.querySelector('header.nav');
+  const toTop = document.getElementById('toTop');
+  function onScroll(){
+    const h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+    nav.classList.toggle('scrolled', scrollY > 10);
+    toTop.classList.toggle('on', scrollY > 500);
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  toTop.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+
+  // Scroll reveal with stagger inside grids
+  const targets = document.querySelectorAll('.eyebrow,main h2,.sub,.mini,.job,.timeline,.skill,#modGrid .card,.toolbar,.proj,.item,.col-title,.about-grid > div > p,.c-row,.contact .cta,.contact p');
+  targets.forEach(el => {
+    el.classList.add('reveal');
+    const sibs = el.parentElement ? [...el.parentElement.children].filter(c => c.classList.contains('reveal') || targets.length) : [];
+    const i = sibs.indexOf(el);
+    el.style.setProperty('--d', (i > 0 ? Math.min(i, 6) * 0.08 : 0) + 's');
+  });
+  if (reduce || !('IntersectionObserver' in window)) {
+    targets.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    }), {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+    targets.forEach(el => io.observe(el));
+  }
+
+  // Animated counters
+  const counters = document.querySelectorAll('[data-count]');
+  function runCounter(el){
+    const end = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0), suf = el.dataset.suffix || '';
+    if (reduce){ el.textContent = end.toFixed(dec) + suf; return; }
+    const t0 = performance.now(), dur = 1500;
+    (function tick(t){
+      const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (end * e).toFixed(dec) + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  setTimeout(() => counters.forEach(runCounter), 900);
+
+  // Typing effect
+  const words = ['Odoo 19 ERP modules','AI / ML recommendation systems','NLP chatbots with Python','Odoo 17 → 19 migrations','PostgreSQL & Linux deployments'];
+  const out = document.getElementById('typed');
+  if (reduce){ out.textContent = words[0]; }
+  else {
+    let w = 0, c = 0, del = false;
+    (function type(){
+      const word = words[w];
+      out.textContent = word.slice(0, c);
+      let delay = del ? 35 : 70;
+      if (!del && c === word.length){ del = true; delay = 1500; }
+      else if (del && c === 0){ del = false; w = (w + 1) % words.length; delay = 350; }
+      c += del ? -1 : 1;
+      setTimeout(type, delay);
+    })();
+  }
+
+  // Subtle 3D tilt on the profile card
+  const card = document.querySelector('.profile');
+  if (card && !reduce && matchMedia('(hover:hover)').matches){
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = 'perspective(800px) rotateY(' + (x * 8) + 'deg) rotateX(' + (-y * 8) + 'deg)';
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  }
+
+  // Re-animate module cards when filtering
+  const mg = document.getElementById('modGrid');
+  const reflow = () => mg.querySelectorAll('.card:not(.hide)').forEach((c, i) => {
+    c.classList.remove('show-anim'); void c.offsetWidth; c.style.animationDelay = (i * 0.05) + 's'; c.classList.add('show-anim');
+  });
+  document.getElementById('filters').addEventListener('click', reflow);
+  document.getElementById('search').addEventListener('input', reflow);
+})();
 </script>
-
 </body>
 </html>
